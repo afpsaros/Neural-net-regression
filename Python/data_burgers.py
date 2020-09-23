@@ -54,8 +54,7 @@ class data_getter:
                    -0.5*(x[i]-4*t-2*PI)/(NU*(t+1))*exp( -(x[i]-4*t-2*PI)**2/(4*NU*(t+1)) ) )
         
                 u_analytical[i,n] = -2*NU*(dphi/phi) + 4
-            
-        
+                 
         self.u, self.x, self.t = u_analytical, x, np.array(time)
     
     def create_data_time(self):
@@ -72,15 +71,13 @@ class data_getter:
             random_indices = np.random.choice(data.shape[0], size=self.n, replace=False)
             
             data = data[random_indices, :]
-
-    
-            
+           
             _data_tr, _data_val = np.split(data, [int(self.val_split * self.n)], axis = 0)
             self.data_tr.append(_data_tr)
             self.data_val.append(_data_val)
             
         self.n_tr, self.n_val = _data_tr.shape[0], _data_val.shape[0]
-        # print(self.data_tr)
+
         return self
     
     def create_data_3D(self):
@@ -102,8 +99,6 @@ class data_getter:
             data = np.concatenate((data, self.u[:, i].reshape(-1,1)), axis=0)
             
         data = np.concatenate((xxx, ttt, data), axis=1)
- 
-        
 
         random_indices = np.random.choice(data.shape[0], size=self.n, replace=False)
             
@@ -127,7 +122,6 @@ class data_getter:
             self.data_eval = np.concatenate((self.data_eval, self.u[:, i].reshape(-1,1)), axis=0)
         self.data_eval = np.concatenate((_xxx, _ttt, self.data_eval), axis=1)
         
-        # print(_xxx.shape, _ttt.shape, self.data_eval.shape)
         return self
 
     def plot_tr_data(self):

@@ -36,7 +36,7 @@ class regressor(scores):
     
     def __init__(self, sess):
         self.sess = sess
-        # self.optimizer = tf.train.AdamOptimizer()
+        self.optimizer = tf.train.AdamOptimizer()
         
     def close_sess(self):
         self.sess.close()
@@ -114,8 +114,10 @@ class regressor(scores):
         self.wd_par = wd_par   
         self.num_epochs = num_epochs
         if self.initialize == 1:
-            self.xmin = min(Xt)
-            self.xmax = max(Yt)
+# =============================================================================
+#             self.xmin = min(Xt)
+#             self.xmax = max(Yt)
+# =============================================================================
             self.Xt = Xt
             self.Yt = Yt    
         self.Xv = Xv
@@ -190,8 +192,10 @@ class DNN(regressor):
         self.b_keys = [('').join(('b', str(i + 1))) for i in range(self.layers)] + ['out']
         
     def initialize(self, Xt, Yt):
-        self.xmin = min(Xt)
-        self.xmax = max(Yt)
+# =============================================================================
+#         self.xmin = min(Xt)
+#         self.xmax = max(Yt)
+# =============================================================================
         self.Xt = Xt
         self.Yt = Yt
         
@@ -213,8 +217,10 @@ class DNN(regressor):
 
     def ffn(self):
         
-        # self.A = 2.0 * (self.X - self.xmin) / (self.xmax - self.xmin) - 1.0
-        # layer = tf.tanh(tf.add(tf.matmul(self.A, self.weights['h1']), self.biases['b1']))    
+# =============================================================================
+#         self.A = 2.0 * (self.X - self.xmin) / (self.xmax - self.xmin) - 1.0
+#         layer = tf.tanh(tf.add(tf.matmul(self.A, self.weights['h1']), self.biases['b1']))    
+# =============================================================================
         layer = tf.tanh(tf.add(tf.matmul(self.X, self.weights['h1']), self.biases['b1'])) 
         for i in range(1, self.layers):
             layer = tf.tanh(tf.add(tf.matmul(layer, self.weights[self.w_keys[i]]), self.biases[self.b_keys[i]]))        
