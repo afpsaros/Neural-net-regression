@@ -6,6 +6,7 @@ Created on %(date)s
 """
 import tensorflow as tf
 import numpy as np
+import time
 
 class scores:
     def errors(self):     
@@ -35,10 +36,11 @@ class regressor(scores):
     
     def __init__(self, sess):
         self.sess = sess
-        self.optimizer = tf.train.AdamOptimizer()
+        # self.optimizer = tf.train.AdamOptimizer()
         
     def close_sess(self):
         self.sess.close()
+        
     
     def fit_from_dict(self, fit_dict):
         return self.fit(*list(fit_dict.values()))  
@@ -46,18 +48,22 @@ class regressor(scores):
     def adv_fit_from_dict(self, fit_dict):
         return self.adv_fit(*list(fit_dict.values()))     
     
-    def fit(self, wd_par, num_epochs, Xt, Yt, \
+    def fit(self, initialize, wd_par, num_epochs, Xt, Yt, \
             Xv = None, Yv = None, lr = None, batches = None):
 # =============================================================================
 #     def fit(self, wd_par, num_epochs, Xt, Yt, \
 #             Xv = None, Yv = None, lr = None, batches = None):
 # =============================================================================
+        self.initialize = initialize
         self.wd_par = wd_par
         self.num_epochs = num_epochs
-        self.xmin = min(Xt)
-        self.xmax = max(Yt)
-        self.Xt = Xt
-        self.Yt = Yt    
+        if self.initialize == 1:
+# =============================================================================
+#             self.xmin = min(Xt)
+#             self.xmax = max(Yt)
+# =============================================================================
+            self.Xt = Xt
+            self.Yt = Yt    
         self.lr = lr
 # =============================================================================
 #         self.batches = batches
@@ -66,10 +72,11 @@ class regressor(scores):
 #             self.batch_size = self.Xt.shape[0] // self.batches
 #             self.itpep = self.Xt.shape[0] // self.batch_size
 # ============================================================================= 
-        self.hyper_initial()
-        self.fp = self.ffn()
         
-        self.error_mean = self.errors()[0]
+        if self.initialize == 1:
+            self.hyper_initial()
+            self.fp = self.ffn()  
+            self.error_mean = self.errors()[0]
         
         self.obj = self.error_mean + \
                         self.wd_par * tf.reduce_sum([tf.reduce_sum(tf.square(self.weights[i])) for i in self.weights])
@@ -78,9 +85,13 @@ class regressor(scores):
             self.optimizer = tf.train.AdamOptimizer(learning_rate = self.lr)
          
         self.train_op = self.optimizer.minimize(self.obj)
-        self.init = tf.global_variables_initializer()
+               
+        if self.initialize == 1:
+            self.init = tf.global_variables_initializer()
+            self.sess.run(tf.global_variables_initializer())
+        else: 
+            self.sess.run([self.init, tf.variables_initializer(self.optimizer.variables())])   
        
-        self.sess.run(self.init)    
 # =============================================================================
 #         if self.batches is not None:
 #             for epoch in range(self.num_epochs): 
@@ -94,34 +105,41 @@ class regressor(scores):
 # =============================================================================        
         for epoch in range(self.num_epochs): 
             self.sess.run(self.train_op, feed_dict={self.X: self.Xt, self.Y: self.Yt}) 
+
         return self
     
-    def adv_fit(self, wd_par, num_epochs, Xt, Yt, Xv, Yv, lr = None):
+    def adv_fit(self, initialize, wd_par, num_epochs, Xt, Yt, Xv, Yv, lr = None):
         
+        self.initialize = initialize
         self.wd_par = wd_par   
         self.num_epochs = num_epochs
-        self.xmin = min(Xt)
-        self.xmax = max(Yt)
-        self.Xt = Xt
-        self.Yt = Yt
+        if self.initialize == 1:
+            self.xmin = min(Xt)
+            self.xmax = max(Yt)
+            self.Xt = Xt
+            self.Yt = Yt    
         self.Xv = Xv
         self.Yv = Yv
         self.lr = lr
         
-        self.hyper_initial()
-        self.fp = self.ffn()
-        
-        self.error_mean = self.errors()[0]
+        if self.initialize == 1:
+            self.hyper_initial()
+            self.fp = self.ffn()  
+            self.error_mean = self.errors()[0]
         
         self.obj = self.error_mean + \
                         self.wd_par * tf.reduce_sum([tf.reduce_sum(tf.square(self.weights[i])) for i in self.weights])
                 
         if self.lr is not None:
             self.optimizer = tf.train.AdamOptimizer(learning_rate = self.lr)
-            
+        
         self.train_op = self.optimizer.minimize(self.obj)
-        self.init = tf.global_variables_initializer()
-        self.sess.run(self.init)
+        
+        if self.initialize == 1:
+            self.init = tf.global_variables_initializer()
+            self.sess.run(tf.global_variables_initializer())
+        else: 
+            self.sess.run([self.init, tf.variables_initializer(self.optimizer.variables())])   
         
         self.check_w, self.check_b, self.tr_error, self.val_error = \
                     [[] for i in range(4)]   # not 4 * [[]] 
@@ -163,12 +181,24 @@ class DNN(regressor):
         self.widths = widths
         self.layers = len(self.widths) - 2
         
-        self.X = tf.placeholder(tf.float32, shape = [None, 1])
-        self.Y = tf.placeholder(tf.float32, shape = [None, 1])
+        self.X = tf.placeholder(tf.float32, shape = [None, self.widths[0]])
+        self.Y = tf.placeholder(tf.float32, shape = [None, self.widths[-1]])
+        
         self.w_sizes = [[self.widths[i], self.widths[i + 1]] for i in range(len(self.widths) - 1)]
         self.w_keys = [('').join(('h', str(i + 1))) for i in range(self.layers)] + ['out']
         self.b_sizes = self.widths[1:]
         self.b_keys = [('').join(('b', str(i + 1))) for i in range(self.layers)] + ['out']
+        
+    def initialize(self, Xt, Yt):
+        self.xmin = min(Xt)
+        self.xmax = max(Yt)
+        self.Xt = Xt
+        self.Yt = Yt
+        
+        self.hyper_initial()
+        self.fp = self.ffn()
+        self.error_mean = self.errors()[0]
+        self.init = tf.global_variables_initializer()
         
     
     def hyper_initial(self): 
@@ -183,8 +213,9 @@ class DNN(regressor):
 
     def ffn(self):
         
-        self.A = 2.0 * (self.X - self.xmin) / (self.xmax - self.xmin) - 1.0
-        layer = tf.tanh(tf.add(tf.matmul(self.A, self.weights['h1']), self.biases['b1']))    
+        # self.A = 2.0 * (self.X - self.xmin) / (self.xmax - self.xmin) - 1.0
+        # layer = tf.tanh(tf.add(tf.matmul(self.A, self.weights['h1']), self.biases['b1']))    
+        layer = tf.tanh(tf.add(tf.matmul(self.X, self.weights['h1']), self.biases['b1'])) 
         for i in range(1, self.layers):
             layer = tf.tanh(tf.add(tf.matmul(layer, self.weights[self.w_keys[i]]), self.biases[self.b_keys[i]]))        
         layer = tf.add(tf.matmul(layer, self.weights['out']), self.biases['out'])
@@ -194,5 +225,6 @@ class DNN(regressor):
     def standard(cls, DNN_dict, sess):
         n_in, n_out, layers, width = list(DNN_dict.values())
         widths = [n_in] + layers * [width] + [n_out]
+        
         return cls(widths, sess)
         
