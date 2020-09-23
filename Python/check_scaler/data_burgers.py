@@ -8,6 +8,8 @@ Created on Mon Sep 21 15:45:40 2020
 
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+
 from math import pi as PI
 from math import exp as exp
 
@@ -175,7 +177,35 @@ class data_getter:
 
         if show == 1:
             plt.show()
-        
+            
+    def preproc(self, normalize):
+        self.normalize = normalize          
+                           
+        self.Xt, self.Yt = self.data_tr[:, 0:2], self.data_tr[:, [2]]
+        self.Xv, self.Yv = self.data_val[:, 0:2], self.data_val[:, [2]]
+        self.Xe, self.Ye = self.data_eval[:, 0:2], self.data_eval[:, [2]]
+        if self.normalize == 1:
+            self.scaler_x = MinMaxScaler(feature_range=(-1, 1))
+            self.scaler_y = MinMaxScaler(feature_range=(-1, 1))
+            self.scaler_x.fit(self.Xt)
+            self.scaler_y.fit(self.Yt)
+            
+            self.Xt_norm = self.scaler_x.transform(self.Xt)
+            self.Yt_norm = self.scaler_y.transform(self.Yt)
+            self.Xv_norm = self.scaler_x.transform(self.Xv)
+            self.Yv_norm = self.scaler_y.transform(self.Yv)
+            self.Xe_norm = self.scaler_x.transform(self.Xe)
+            self.Ye_norm = self.scaler_y.transform(self.Ye)
+            
+        else:
+            self.Xt_norm = self.Xt
+            self.Yt_norm = self.Yt
+            self.Xv_norm = self.Xv
+            self.Yv_norm = self.Yv
+            self.Xe_norm = self.Xe
+            self.Ye_norm = self.Ye
+            
+        return self        
 
 if __name__ == '__main__':
     
