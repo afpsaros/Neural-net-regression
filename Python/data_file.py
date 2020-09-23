@@ -17,7 +17,7 @@ class data_getter:
         self.n_eval = n_eval
         
     def create_data(self):
- 
+        np.random.seed(1)
         x = np.linspace(-1, 2, self.n)
         x = x.reshape((self.n, 1))
         y = np.cos(x / 5)**3 + 4* np.sin(2 * x)**3 + \
@@ -62,6 +62,7 @@ if __name__ == '__main__':
     s = 0
     val_split = 0.5
     n_eval = 50
+   
     data = data_getter(n, s, val_split, n_eval).create_data()
     
     data.plot_tr_data()
