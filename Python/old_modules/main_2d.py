@@ -8,6 +8,8 @@ Created on Tue Sep 22 16:36:19 2020
 
 import tensorflow as tf
 import numpy as np
+
+
 import matplotlib.pyplot as plt
 
 import time

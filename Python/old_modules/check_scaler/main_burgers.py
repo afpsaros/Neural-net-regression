@@ -43,7 +43,7 @@ fit_dict = {
 }
 
 sess = tf.Session()
-#%%
+
 model = DNN.standard(DNN_dict, sess)
 model.initialize(fit_dict['Xt'], fit_dict['Yt'])
 model.fit_from_dict(fit_dict)
