@@ -59,6 +59,8 @@ class data_getter:
         self.u, self.x, self.t = u_analytical, x, np.array(time)
     
     def create_data_time(self):
+        np.random.seed(1)
+        
         self.analytical_solution()        
         
         xx = self.x.reshape(-1,1)
@@ -82,6 +84,7 @@ class data_getter:
         return self
     
     def create_tr_data_3D(self):
+        np.random.seed(1)
         self.analytical_solution()        
         
         self.xx = self.x.reshape(-1,1)
@@ -214,7 +217,7 @@ if __name__ == '__main__':
     n = 200
     s = 0
     val_split = 0.7
-    nu = .1
+    nu = 1e-3
     normalize = 1
     data = data_getter(n, s, val_split, nu).create_tr_data_3D().create_eval_data_3D(nt_eval = 3).preproc(normalize)
     data.plot3D_train()

@@ -26,7 +26,7 @@ DNN_dict = {
 refit = 1
 adv_refit = 1    
 random_sel = 1
-n_random = 20
+n_random = 5
 random_seed = 3
 
 ev_arch = {
@@ -35,7 +35,7 @@ ev_arch = {
         }
 
 ev_params = {
-    'num_epochs': ([5000], 'b'),
+    'num_epochs': ([50], 'b'),
     'wd_par': ([0, -5, -3], 'e'),
     'lr': ([-3, -2], 'd')
     }      

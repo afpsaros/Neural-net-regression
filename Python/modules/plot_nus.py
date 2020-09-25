@@ -36,3 +36,6 @@ plt.plot(nus, widths, '-o')
 plt.xlabel('nu')
 plt.ylabel('width')
 plt.show()
+
+lrs = [float(lines[i].split(',')[4][1:-2]) for i in range(1, len(lines), 2)]
+print(lrs)
