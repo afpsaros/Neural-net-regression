@@ -32,6 +32,8 @@ class scores:
         self.fp = self.ffn()
         return self.sess.run(self.errors(), feed_dict = {self.X: Xe, self.Y: Ye})  
     
+    
+    
 class regressor(scores):
     
     def __init__(self, sess):
@@ -233,9 +235,9 @@ if __name__ == '__main__':
     val_split = 0.8
     n_eval = 100
     
-    normalize = 0
+    scale = 1
     
-    data = data_getter(n, s, val_split, n_eval).create_data().preproc(normalize)
+    data = data_getter(n, s, val_split, n_eval).create_data().preproc(scale)
     data.plot_tr_data()
     data.plot_eval_data(1)
     
@@ -251,16 +253,16 @@ if __name__ == '__main__':
         'initialize': 0,
         'wd_par': 0,
         'num_epochs': 5000,
-        'Xt': data.Xt_norm,
-        'Yt': data.Yt_norm,
-        'Xv': data.Xv_norm,
-        'Yv': data.Yv_norm,
+        'Xt': data.Xt_scal,
+        'Yt': data.Yt_scal,
+        'Xv': data.Xv_scal,
+        'Yv': data.Yv_scal,
         'lr': 0.01
     }
 
     eval_dict = {
-        'Xe': data.Xe_norm,
-        'Ye': data.Ye_norm
+        'Xe': data.Xe_scal,
+        'Ye': data.Ye_scal
     }  
 
     sess = tf.Session()
@@ -278,20 +280,26 @@ if __name__ == '__main__':
         plt.show()
     else:
         model.fit_from_dict(fit_dict)
-        print(model.score(eval_dict)[0])
-           
-    if normalize == 1:
-        x = data.Xe
-        x_norm = data.Xe_norm
-        pred = data.scaler_y.inverse_transform(model.pred(x_norm))
-        plt.plot(x.reshape(-1,1), pred, '.')
+#%%           
+    if scale == 1:
+        x = data.Xe.reshape(-1,1)
+        x_scal = data.Xe_scal
+        pred = data.scaler_y.inverse_transform(model.pred(x_scal))
+        plt.plot(x, pred, '.')
         data.plot_eval_data(1)
+        
+        print(data.assess_pred(pred)[0])
+        plt.plot(x, data.assess_pred(pred)[1])        
+
        
     else:
-        x = data.Xe
+        x = data.Xe.reshape(-1,1)
         pred = model.pred(x)
-        plt.plot(x.reshape(-1,1), pred, '.')
-        data.plot_eval_data(1)       
+        plt.plot(x, pred, '.')
+        data.plot_eval_data(1)     
+        
+        print(data.assess_pred(pred)[0])
+        plt.plot(x, data.assess_pred(pred)[1])
         
 
 

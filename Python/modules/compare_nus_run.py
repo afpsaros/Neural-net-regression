@@ -16,7 +16,7 @@ import numpy as np
 n = 200
 s = 0
 val_split = 0.7
-normalize = 1
+scale = 1
 
 DNN_dict = {
     'input dimension': 2,
@@ -27,8 +27,8 @@ DNN_dict = {
 
 refit = 0
 adv_refit = 1    
-random_sel = 1
-n_random = 250
+
+n_random = 2
 random_seed = 3
 
 ev_arch = {
@@ -37,7 +37,7 @@ ev_arch = {
         }
 
 ev_params = {
-    'num_epochs': ([2000], 'b'),
+    'num_epochs': ([100], 'b'),
     'wd_par': ([0, -5, -3], 'e'),
     'lr': ([-3, -2], 'd')
     }      
@@ -48,16 +48,16 @@ for nu in np.linspace(0.1, 1, 10):
     
     file.write('nu = {} \n'.format(nu))
     
-    data = data_getter(n, s, val_split, nu).create_tr_data_3D().create_eval_data_3D(nt_eval = 3).preproc(normalize)
+    data = data_getter(n, s, val_split, nu).create_tr_data_3D().create_eval_data_3D(nt_eval = 3).preproc(scale)
     
     fit_dict = {
         'initialize': 1,
         'wd_par': None,
         'num_epochs': None,
-        'Xt': data.Xt_norm,
-        'Yt': data.Yt_norm,
-        'Xv': data.Xv_norm,
-        'Yv': data.Yv_norm,
+        'Xt': data.Xt_scal,
+        'Yt': data.Yt_scal,
+        'Xv': data.Xv_scal,
+        'Yv': data.Yv_scal,
         'lr': None
     }      
     

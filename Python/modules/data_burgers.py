@@ -84,7 +84,9 @@ class data_getter:
         return self
     
     def create_tr_data_3D(self):
-        np.random.seed(1)
+        rng = np.random.RandomState(1)
+        
+        # np.random.seed(1)
         self.analytical_solution()        
         
         self.xx = self.x.reshape(-1,1)
@@ -104,7 +106,9 @@ class data_getter:
             
         data = np.concatenate((xxx, ttt, data), axis=1)
 
-        random_indices = np.random.choice(data.shape[0], size=self.n, replace=False)
+        # random_indices = np.random.choice(data.shape[0], size=self.n, replace=False)
+        
+        random_indices = rng.choice(data.shape[0], size=self.n, replace=False)
             
         data = data[random_indices, :]
 
@@ -181,34 +185,39 @@ class data_getter:
         if show == 1:
             plt.show()
             
-    def preproc(self, normalize):
-        self.normalize = normalize          
+    def preproc(self, scale):
+        self.scale = scale       
                            
         self.Xt, self.Yt = self.data_tr[:, 0:2], self.data_tr[:, [2]]
         self.Xv, self.Yv = self.data_val[:, 0:2], self.data_val[:, [2]]
         self.Xe, self.Ye = self.data_eval[:, 0:2], self.data_eval[:, [2]]
-        if self.normalize == 1:
+        if self.scale == 1:
             self.scaler_x = MinMaxScaler(feature_range=(-1, 1))
             self.scaler_y = MinMaxScaler(feature_range=(-1, 1))
             self.scaler_x.fit(self.Xt)
             self.scaler_y.fit(self.Yt)
             
-            self.Xt_norm = self.scaler_x.transform(self.Xt)
-            self.Yt_norm = self.scaler_y.transform(self.Yt)
-            self.Xv_norm = self.scaler_x.transform(self.Xv)
-            self.Yv_norm = self.scaler_y.transform(self.Yv)
-            self.Xe_norm = self.scaler_x.transform(self.Xe)
-            self.Ye_norm = self.scaler_y.transform(self.Ye)
+            self.Xt_scal = self.scaler_x.transform(self.Xt)
+            self.Yt_scal = self.scaler_y.transform(self.Yt)
+            self.Xv_scal = self.scaler_x.transform(self.Xv)
+            self.Yv_scal = self.scaler_y.transform(self.Yv)
+            self.Xe_scal = self.scaler_x.transform(self.Xe)
+            self.Ye_scal = self.scaler_y.transform(self.Ye)
             
         else:
-            self.Xt_norm = self.Xt
-            self.Yt_norm = self.Yt
-            self.Xv_norm = self.Xv
-            self.Yv_norm = self.Yv
-            self.Xe_norm = self.Xe
-            self.Ye_norm = self.Ye
+            self.Xt_scal = self.Xt
+            self.Yt_scal = self.Yt
+            self.Xv_scal = self.Xv
+            self.Yv_scal = self.Yv
+            self.Xe_scal = self.Xe
+            self.Ye_scal = self.Ye
             
-        return self        
+        return self    
+
+    def assess_pred(self, pred):
+            error = np.mean(np.square(pred - self.Ye))
+            error_p = np.abs(pred - self.Ye)
+            return error, error_p    
 #%%
 if __name__ == '__main__':
     import tensorflow as tf
@@ -217,9 +226,9 @@ if __name__ == '__main__':
     n = 200
     s = 0
     val_split = 0.7
-    nu = 1e-3
-    normalize = 1
-    data = data_getter(n, s, val_split, nu).create_tr_data_3D().create_eval_data_3D(nt_eval = 3).preproc(normalize)
+    nu = 1e-2
+    scale = 1
+    data = data_getter(n, s, val_split, nu).create_tr_data_3D().create_eval_data_3D(nt_eval = 3).preproc(scale)
     data.plot3D_train()
     data.plot3D_eval(1)
     
@@ -231,37 +240,48 @@ if __name__ == '__main__':
     }
     
     fit_dict = {
-        'initialize': 0,
+        'initialize': 1,
         'wd_par': 0,
         'num_epochs': 1000,
-        'Xt': data.Xt_norm,
-        'Yt': data.Yt_norm,
-        'Xv': data.Xv_norm,
-        'Yv': data.Yv_norm,
+        'Xt': data.Xt_scal,
+        'Yt': data.Yt_scal,
+        'Xv': data.Xv_scal,
+        'Yv': data.Yv_scal,
         'lr': 0.001
     }
     
     sess = tf.Session()
     
-    model = DNN.standard(DNN_dict, sess)
-    model.initialize(fit_dict['Xt'], fit_dict['Yt'])
+    model = DNN.standard(DNN_dict, sess, seed = 1)
+    # model.initialize(fit_dict['Xt'], fit_dict['Yt'])
     model.fit_from_dict(fit_dict)
-
-    data.create_eval_data_3D(nt_eval = 5).preproc(normalize)
+#%%
+    data.create_eval_data_3D(nt_eval = 5).preproc(scale)
     
     xlen = data.xs
     
     data.plot2D_eval(0)
     x = data.Xe[:xlen, 0]
-    if normalize == 1:
+    
+
+    if scale == 1:
         for i in range(len(data.times)):         
-            pred = data.scaler_y.inverse_transform(model.pred(data.Xe_norm[i * xlen:xlen + i * xlen, 0:2]))
+            pred = data.scaler_y.inverse_transform(model.pred(data.Xe_scal[i * xlen:xlen + i * xlen, :]))
             plt.plot(x.reshape(-1,1), pred, '.')
+            
+        global_pred = data.scaler_y.inverse_transform(model.pred(data.Xe_scal))
+        print(data.assess_pred(global_pred)[0])
     else:
         for i in range(len(data.times)):
-            pred = model.pred(data.Xe_norm[i * xlen:xlen + i * xlen, 0:2])
+            pred = model.pred(data.Xe_scal[i * xlen:xlen + i * xlen, :])
             plt.plot(x, pred, '.')    
+            
+        global_pred = model.pred(data.Xe_scal)
+        print(data.assess_pred(global_pred)[0])
+            
     plt.show()   
+    
+    
     
     
     

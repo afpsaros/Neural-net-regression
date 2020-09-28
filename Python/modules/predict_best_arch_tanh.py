@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Sep 24 18:31:16 2020
+Created on Mon Sep 28 11:59:34 2020
 
 @author: afpsaros
 """
@@ -10,55 +10,44 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 
 import tensorflow as tf
-
 from reg_classes import DNN
 
+
 class data_getter:
-    
-    def __init__(self, n, s, val_split, n_eval):
-        self.n = n
-        self.s = s
-        self.val_split = val_split
-        self.n_eval = n_eval
-        
+
     def create_data(self):
-        rng = np.random.RandomState(1)
+                    
+        with open("tanh_archs.txt", "r") as f:
+            lines = [ line.strip( ) for line in list(f) ]
+        # print(lines)
         
-        x = np.linspace(-1, 2, self.n)
-        x = x.reshape((self.n, 1))
+        a = []
+        for i in range(3):
+            a.append(lines[i].split(', '))
+            for j, el in enumerate(a[i]):
+                if j == 0:
+                    a[i][j] = int(el[1:])
+                elif j == len(a[i])-1:
+                    a[i][j] = int(el[:-1])
+                else:
+                    a[i][j] = int(el)
+                    
+            a[i] = np.array(a[i]).reshape(-1,1)
+                    
+        self.data_tr, self.data_val = np.concatenate((a[0], a[1], a[2]), axis=1), None
         
-        y1 = np.cos(x / 5)**3 + 4* np.sin(2 * x)**3 + \
-        .3 * (x - 5)**2 + 0.02 * (x - 2)**3 
+        self.n_tr, self.n_val = self.data_tr.shape[0], None
         
-        y2 = np.cos(x / 5)**3 * 1000
+        self.data_eval = np.concatenate((a[0], a[1], a[2]), axis=1)
         
-        # y += np.random.normal(0, self.s, [self.n, 1])
-        
-        data = np.concatenate((x, y1, y2), axis=1)
-        
-        rng.shuffle(data)
-        
-        self.data_tr, self.data_val = np.split(data, [int(self.val_split * self.n)], axis = 0)
-        
-        self.n_tr, self.n_val = self.data_tr.shape[0], self.data_val.shape[0]
-        
-        x = np.linspace(-1, 2, self.n_eval)
-        x = x.reshape((self.n_eval, 1))
-        y1 = np.cos(x / 5)**3 + 4* np.sin(2 * x)**3 + \
-        .3 * (x - 5)**2 + 0.02 * (x - 2)**3 
-        
-        y2 = np.cos(x / 5)**3 * 1000
-        
-        self.data_eval = np.concatenate((x, y1, y2), axis=1)
-        
-        return self        
+        return self   
     
     def preproc(self, scale):
         
         self.scale = scale     
         
         self.Xt, self.Yt = self.data_tr[:, [0]], self.data_tr[:, 1:3]
-        self.Xv, self.Yv = self.data_val[:, [0]], self.data_val[:, 1:3]
+        self.Xv, self.Yv = None, None
         self.Xe, self.Ye = self.data_eval[:, [0]], self.data_eval[:, 1:3]                                        
 
         if self.scale == 1:
@@ -69,16 +58,16 @@ class data_getter:
             
             self.Xt_scal = self.scaler_x.transform(self.Xt)
             self.Yt_scal = self.scaler_y.transform(self.Yt)
-            self.Xv_scal = self.scaler_x.transform(self.Xv)
-            self.Yv_scal = self.scaler_y.transform(self.Yv)
+            self.Xv_scal = None
+            self.Yv_scal = None
             self.Xe_scal = self.scaler_x.transform(self.Xe)
             self.Ye_scal = self.scaler_y.transform(self.Ye)
             
         else:
             self.Xt_scal = self.Xt
             self.Yt_scal = self.Yt
-            self.Xv_scal = self.Xv
-            self.Yv_scal = self.Yv
+            self.Xv_scal = None
+            self.Yv_scal = None
             self.Xe_scal = self.Xe
             self.Ye_scal = self.Ye
             
@@ -86,19 +75,19 @@ class data_getter:
     
     def plot_tr_data_1(self):
         data_tr_1 = np.concatenate((self.data_tr[:, 0].reshape(-1, 1), self.data_tr[:, 1].reshape(-1, 1)), axis=1)
-        data_val_1 = np.concatenate((self.data_val[:, 0].reshape(-1, 1), self.data_val[:, 1].reshape(-1, 1)), axis=1)
+        # data_val_1 = np.concatenate((self.data_val[:, 0].reshape(-1, 1), self.data_val[:, 1].reshape(-1, 1)), axis=1)
         
         plt.plot(*list(zip(*data_tr_1)), 'bo', label = 'train data')
-        plt.plot(*list(zip(*data_val_1)), 'ro', label = 'val data')
+        # plt.plot(*list(zip(*data_val_1)), 'ro', label = 'val data')
         plt.legend()
         plt.show()
 
     def plot_tr_data_2(self):
         data_tr_2 = np.concatenate((self.data_tr[:, 0].reshape(-1, 1), self.data_tr[:, 2].reshape(-1, 1)), axis=1)
-        data_val_2 = np.concatenate((self.data_val[:, 0].reshape(-1, 1), self.data_val[:, 2].reshape(-1, 1)), axis=1)
+        # data_val_2 = np.concatenate((self.data_val[:, 0].reshape(-1, 1), self.data_val[:, 2].reshape(-1, 1)), axis=1)
         
         plt.plot(*list(zip(*data_tr_2)), 'bo', label = 'train data')
-        plt.plot(*list(zip(*data_val_2)), 'ro', label = 'val data')
+        # plt.plot(*list(zip(*data_val_2)), 'ro', label = 'val data')
         plt.legend()
         plt.show()
         
@@ -118,25 +107,24 @@ class data_getter:
         
         if show == 1:
             plt.legend()
-            plt.show()            
-            
-            
+            plt.show()  
+
 if __name__ == '__main__':
     
-    n = 50 
-    s = 0
-    val_split = 0.7
-    n_eval = 50
+    # n = 50 
+    # s = 0
+    # val_split = 0.7
+    # n_eval = 50
     
     scale = 1
    
-    data = data_getter(n, s, val_split, n_eval).create_data().preproc(scale)
+    data = data_getter().create_data().preproc(scale)
     
     data.plot_tr_data_1()
     data.plot_tr_data_2()
     data.plot_eval_data_1(1)
     data.plot_eval_data_2(1)
-    
+#%%    
     DNN_dict = {
         'input dimension': 1,
         'output dimension': 2,
@@ -152,7 +140,7 @@ if __name__ == '__main__':
         'Yt': data.Yt_scal,
         'Xv': data.Xv_scal,
         'Yv': data.Yv_scal,
-        'lr': 0.01
+        'lr': 0.001
     }
     eval_dict = {
         'Xe': data.Xe_scal,

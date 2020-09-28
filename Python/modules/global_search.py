@@ -48,6 +48,8 @@ class random_global_cv:
                     ev_DNN_dict[key] = int(10 ** np.random.uniform(val[0][0], val[0][1]))
                     l1.append(ev_DNN_dict[key]) 
             
+            print(l1)
+            
             l2 = []
                 
             for key, val in self.ev_params.items():  
@@ -144,8 +146,8 @@ if __name__ == '__main__':
     s = 0
     val_split = 0.7
     nu = .1
-    normalize = 1
-    data = data_getter(n, s, val_split, nu).create_tr_data_3D().create_eval_data_3D(nt_eval = 3).preproc(normalize)
+    scale = 1
+    data = data_getter(n, s, val_split, nu).create_tr_data_3D().create_eval_data_3D(nt_eval = 3).preproc(scale)
     data.plot3D_train()
     data.plot3D_eval(1)
     
@@ -160,17 +162,16 @@ if __name__ == '__main__':
         'initialize': 1,
         'wd_par': None,
         'num_epochs': None,
-        'Xt': data.Xt_norm,
-        'Yt': data.Yt_norm,
-        'Xv': data.Xv_norm,
-        'Yv': data.Yv_norm,
+        'Xt': data.Xt_scal,
+        'Yt': data.Yt_scal,
+        'Xv': data.Xv_scal,
+        'Yv': data.Yv_scal,
         'lr': None
     }      
 
     refit = 1
     adv_refit = 1    
-    random_sel = 1
-    n_random = 50
+    n_random = 5
     random_seed = 3
 
     ev_arch = {
@@ -194,20 +195,20 @@ if __name__ == '__main__':
     plt.plot(arch_cv.tocs) 
     plt.show()
     
-    data.create_eval_data_3D(nt_eval = 5).preproc(normalize)
+    data.create_eval_data_3D(nt_eval = 5).preproc(scale)
     
     xlen = data.xs
     
     data.plot2D_eval(0)
     x = data.Xe[:xlen, 0]
-    if normalize == 1:
+    if scale== 1:
         for i in range(len(data.times)):
             
-            pred = data.scaler_y.inverse_transform(model.pred(data.Xe_norm[i * xlen:xlen + i * xlen, 0:2]))
+            pred = data.scaler_y.inverse_transform(model.pred(data.Xe_scal[i * xlen:xlen + i * xlen, 0:2]))
             plt.plot(x.reshape(-1,1), pred, '.')
     else:
         for i in range(len(data.times)):
-            pred = model.pred(data.Xe_norm[i * xlen:xlen + i * xlen, 0:2])
+            pred = model.pred(data.Xe_scal[i * xlen:xlen + i * xlen, 0:2])
             plt.plot(x, pred, '.')
     
     plt.show()      

@@ -66,7 +66,7 @@ class param_cv:
                         else: 
                             ev_fit_dict[key] = 10 ** np.random.uniform(val[0][1], val[0][2])
                         l.append(ev_fit_dict[key]) 
-                print(tuple(l))
+                # print(tuple(l))
                 self.scores[tuple(l)] = \
                     model.fit_from_dict(ev_fit_dict).score(val_dict)[0]          
         else:
@@ -79,7 +79,9 @@ class param_cv:
             vals_vert = list(zip(*self.vals))
     
             for i in range(n):
-                print('{} out of {}'.format(i + 1, n))
+# =============================================================================
+#                 print('{} out of {}'.format(i + 1, n))
+# =============================================================================
                 for key in self.keys:
                     ev_fit_dict[key] = self.grid_d[key][i]
                   
@@ -135,7 +137,9 @@ class grid_cv_arch(param_cv):
         vals_vert = list(zip(*self.vals))
 
         for i in range(n):
-            print('{} out of {} architectures'.format(i + 1, n))
+# =============================================================================
+#             print('{} out of {} architectures'.format(i + 1, n))
+# =============================================================================
             
             g = tf.Graph()
             sess = tf.Session(graph = g)
@@ -164,7 +168,9 @@ class grid_cv_arch(param_cv):
             
                 for i, key in enumerate(self.keys):
                     ev_DNN_dict[key] = self.best[0][i]
-                    print('best arch', key, ev_DNN_dict[key])
+# =============================================================================
+#                     print('best arch', key, ev_DNN_dict[key])
+# =============================================================================
                     
                 self.model = DNN.standard(ev_DNN_dict, sess, seed)
                 if self.fit_dict['initialize'] == 0:
@@ -172,7 +178,9 @@ class grid_cv_arch(param_cv):
                 
                 for i, key in enumerate(list(self.ev_params.keys())):
                     self.fit_dict[key] = self.best[1][0][i]
-                    print('best params', key, self.fit_dict[key])
+# =============================================================================
+#                     print('best params', key, self.fit_dict[key])
+# =============================================================================
                 if self.adv_refit == 1:              
                     self.best_fit = self.model.adv_fit_from_dict(self.fit_dict)
                 else: 
@@ -198,8 +206,8 @@ if __name__ == '__main__':
     s = 0
     val_split = 0.7
     nu = .1
-    normalize = 1
-    data = data_getter(n, s, val_split, nu).create_tr_data_3D().create_eval_data_3D(nt_eval = 3).preproc(normalize)
+    scale = 1
+    data = data_getter(n, s, val_split, nu).create_tr_data_3D().create_eval_data_3D(nt_eval = 3).preproc(scale)
     data.plot3D_train()
     data.plot3D_eval(1)
 #%%    
@@ -214,10 +222,10 @@ if __name__ == '__main__':
         'initialize': 0,
         'wd_par': None,
         'num_epochs': None,
-        'Xt': data.Xt_norm,
-        'Yt': data.Yt_norm,
-        'Xv': data.Xv_norm,
-        'Yv': data.Yv_norm,
+        'Xt': data.Xt_scal,
+        'Yt': data.Yt_scal,
+        'Xv': data.Xv_scal,
+        'Yv': data.Yv_scal,
         'lr': None
     }
     
@@ -247,7 +255,7 @@ if __name__ == '__main__':
 #%%    
     sess = tf.Session()
 
-    model = DNN.standard(DNN_dict, sess, seed = 0)
+    model = DNN.standard(DNN_dict, sess, seed = 1)
     if fit_dict['initialize'] == 0:
         model.initialize(fit_dict['Xt'], fit_dict['Yt'])
     cv = param_cv(ev_params, refit, adv_refit, random_sel, n_random)
@@ -257,20 +265,20 @@ if __name__ == '__main__':
     print(min_score)
     
 #%%
-    data.create_eval_data_3D(nt_eval = 5).preproc(normalize)
+    data.create_eval_data_3D(nt_eval = 5).preproc(scale)
     
     xlen = data.xs
     
     data.plot2D_eval(0)
     x = data.Xe[:xlen, 0]
-    if normalize == 1:
+    if scale == 1:
         for i in range(len(data.times)):
             
-            pred = data.scaler_y.inverse_transform(model.pred(data.Xe_norm[i * xlen:xlen + i * xlen, 0:2]))
+            pred = data.scaler_y.inverse_transform(model.pred(data.Xe_scal[i * xlen:xlen + i * xlen, 0:2]))
             plt.plot(x.reshape(-1,1), pred, '.')
     else:
         for i in range(len(data.times)):
-            pred = model.pred(data.Xe_norm[i * xlen:xlen + i * xlen, 0:2])
+            pred = model.pred(data.Xe_scal[i * xlen:xlen + i * xlen, 0:2])
             plt.plot(x, pred, '.')
     
     plt.show()    
@@ -304,20 +312,20 @@ if __name__ == '__main__':
     scores, best, model = arch_cv.fit(fit_dict, DNN_dict, seed = 0)    
     print(time.perf_counter() - tic)
 #%%
-    data.create_eval_data_3D(nt_eval = 5).preproc(normalize)
+    data.create_eval_data_3D(nt_eval = 5).preproc(scale)
     
     xlen = data.xs
     
     data.plot2D_eval(0)
     x = data.Xe[:xlen, 0]
-    if normalize == 1:
+    if scale == 1:
         for i in range(len(data.times)):
             
-            pred = data.scaler_y.inverse_transform(model.pred(data.Xe_norm[i * xlen:xlen + i * xlen, 0:2]))
+            pred = data.scaler_y.inverse_transform(model.pred(data.Xe_scal[i * xlen:xlen + i * xlen, 0:2]))
             plt.plot(x.reshape(-1,1), pred, '.')
     else:
         for i in range(len(data.times)):
-            pred = model.pred(data.Xe_norm[i * xlen:xlen + i * xlen, 0:2])
+            pred = model.pred(data.Xe_scal[i * xlen:xlen + i * xlen, 0:2])
             plt.plot(x, pred, '.')
     
     plt.show()    

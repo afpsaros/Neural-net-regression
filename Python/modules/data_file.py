@@ -18,17 +18,18 @@ class data_getter:
         self.n_eval = n_eval
         
     def create_data(self):
-        np.random.seed(1)
+        rng = np.random.RandomState(1)
+        
         x = np.linspace(-1, 2, self.n)
         x = x.reshape((self.n, 1))
         y = np.cos(x / 5)**3 + 4* np.sin(2 * x)**3 + \
         .3 * (x - 5)**2 + 0.02 * (x - 2)**3 
         
-        y += np.random.normal(0, self.s, [self.n, 1])
+        y += rng.normal(0, self.s, [self.n, 1])
         
         data = np.concatenate((x, y), axis=1)
         
-        np.random.shuffle(data)
+        rng.shuffle(data)
         
         self.data_tr, self.data_val = np.split(data, [int(self.val_split * self.n)], axis = 0)
         
@@ -43,36 +44,35 @@ class data_getter:
         
         return self
     
-    def preproc(self, normalize):
-        self.normalize = normalize          
+    def preproc(self, scale):
+        self.scale = scale       
                            
         self.Xt, self.Yt = self.data_tr[:, [0]], self.data_tr[:, [1]]
         self.Xv, self.Yv = self.data_val[:, [0]], self.data_val[:, [1]]
         self.Xe, self.Ye = self.data_eval[:, [0]], self.data_eval[:, [1]]
-        if self.normalize == 1:
+        if self.scale == 1:
             self.scaler_x = MinMaxScaler(feature_range=(-1, 1))
             self.scaler_y = MinMaxScaler(feature_range=(-1, 1))
             self.scaler_x.fit(self.Xt)
             self.scaler_y.fit(self.Yt)
             
-            self.Xt_norm = self.scaler_x.transform(self.Xt)
-            self.Yt_norm = self.scaler_y.transform(self.Yt)
-            self.Xv_norm = self.scaler_x.transform(self.Xv)
-            self.Yv_norm = self.scaler_y.transform(self.Yv)
-            self.Xe_norm = self.scaler_x.transform(self.Xe)
-            self.Ye_norm = self.scaler_y.transform(self.Ye)
+            self.Xt_scal = self.scaler_x.transform(self.Xt)
+            self.Yt_scal = self.scaler_y.transform(self.Yt)
+            self.Xv_scal = self.scaler_x.transform(self.Xv)
+            self.Yv_scal = self.scaler_y.transform(self.Yv)
+            self.Xe_scal = self.scaler_x.transform(self.Xe)
+            self.Ye_scal = self.scaler_y.transform(self.Ye)
             
         else:
-            self.Xt_norm = self.Xt
-            self.Yt_norm = self.Yt
-            self.Xv_norm = self.Xv
-            self.Yv_norm = self.Yv
-            self.Xe_norm = self.Xe
-            self.Ye_norm = self.Ye
+            self.Xt_scal = self.Xt
+            self.Yt_scal = self.Yt
+            self.Xv_scal = self.Xv
+            self.Yv_scal = self.Yv
+            self.Xe_scal = self.Xe
+            self.Ye_scal = self.Ye
             
         return self
-            
-   
+              
     def plot_tr_data(self):
         plt.plot(*list(zip(*self.data_tr)), 'bo', label = 'train data')
         plt.plot(*list(zip(*self.data_val)), 'ro', label = 'val data')
@@ -85,8 +85,12 @@ class data_getter:
         if show == 1:
             plt.legend()
             plt.show()
-        
-
+            
+    def assess_pred(self, pred):
+            error = np.mean(np.square(pred - self.Ye))
+            error_p = np.abs(pred - self.Ye)
+            return error, error_p
+               
 if __name__ == '__main__':
     
     n = 30 
