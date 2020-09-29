@@ -5,6 +5,14 @@ Created on Sat Sep 19 10:45:33 2020
 @author: afpsaros
 """
 
+# =============================================================================
+# import os,sys,inspect
+# current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+# parent_dir = os.path.dirname(current_dir)
+# sys.path.insert(0, parent_dir) 
+# import reg_classes
+# =============================================================================
+
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
@@ -92,6 +100,8 @@ class data_getter:
             return error, error_p
                
 if __name__ == '__main__':
+    
+    
     
     n = 30 
     s = 0

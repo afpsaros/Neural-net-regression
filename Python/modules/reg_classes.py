@@ -51,7 +51,7 @@ class regressor(scores):
         return self.adv_fit(*list(fit_dict.values()))     
     
     def fit(self, initialize, wd_par, num_epochs, Xt, Yt, \
-            Xv = None, Yv = None, lr = None, batches = None):
+            snap_step = None, Xv = None, Yv = None, lr = None, batches = None):
 # =============================================================================
 #     def fit(self, wd_par, num_epochs, Xt, Yt, \
 #             Xv = None, Yv = None, lr = None, batches = None):
@@ -62,6 +62,8 @@ class regressor(scores):
         if self.initialize == 1:
             self.Xt = Xt
             self.Yt = Yt    
+            
+        self.snap_step = snap_step
         self.lr = lr
 # =============================================================================
 #         self.batches = batches
@@ -88,8 +90,12 @@ class regressor(scores):
             self.init = tf.global_variables_initializer()
             self.sess.run(tf.global_variables_initializer())
         else: 
-            self.sess.run([self.init, tf.variables_initializer(self.optimizer.variables())])   
-       
+            self.sess.run(tf.variables_initializer(self.optimizer.variables()))   
+# =============================================================================
+#             self.sess.run([self.init, tf.variables_initializer(self.optimizer.variables())])   
+# =============================================================================
+
+
 # =============================================================================
 #         if self.batches is not None:
 #             for epoch in range(self.num_epochs): 
@@ -101,8 +107,19 @@ class regressor(scores):
 #             for epoch in range(self.num_epochs): 
 #                 self.sess.run(self.train_op, feed_dict={self.X: self.Xt, self.Y: self.Yt}) 
 # =============================================================================        
-        for epoch in range(self.num_epochs): 
-            self.sess.run(self.train_op, feed_dict={self.X: self.Xt, self.Y: self.Yt}) 
+        if self.snap_step is not None:
+            self.snap_weights = []
+            self.snap_biases = []
+            for epoch in range(self.num_epochs): 
+                self.sess.run(self.train_op, feed_dict={self.X: self.Xt, self.Y: self.Yt}) 
+            
+                if (epoch + 1) % self.snap_step == 0 and epoch != self.num_epochs - 1:           
+                    self.snap_weights.append(self.sess.run(self.weights))
+                    self.snap_biases.append(self.sess.run(self.biases)) # after update
+                
+        else: 
+            for epoch in range(self.num_epochs): 
+                self.sess.run(self.train_op, feed_dict={self.X: self.Xt, self.Y: self.Yt}) 
 
         return self
     
@@ -194,7 +211,9 @@ class DNN(regressor):
         self.hyper_initial()
         self.fp = self.ffn()
         self.error_mean = self.errors()[0]
-        self.init = tf.global_variables_initializer()       
+        self.init = tf.global_variables_initializer()     
+        
+        self.sess.run(self.init)   
     
     def hyper_initial(self): 
         w_vars = []
@@ -227,6 +246,7 @@ class DNN(regressor):
 
 #%%
 if __name__ == '__main__':
+    
     import matplotlib.pyplot as plt 
     from data_file import data_getter
     
@@ -252,7 +272,7 @@ if __name__ == '__main__':
     fit_dict = {
         'initialize': 0,
         'wd_par': 0,
-        'num_epochs': 5000,
+        'num_epochs': 1000,
         'Xt': data.Xt_scal,
         'Yt': data.Yt_scal,
         'Xv': data.Xv_scal,
@@ -268,7 +288,8 @@ if __name__ == '__main__':
     sess = tf.Session()
     model = DNN.standard(DNN_dict, sess, seed = 1)
     model.initialize(fit_dict['Xt'], fit_dict['Yt'])
-    advanced_fit = 0
+    
+    advanced_fit = 1
     
     if advanced_fit == 1:
         model.adv_fit_from_dict(fit_dict)
@@ -280,11 +301,14 @@ if __name__ == '__main__':
         plt.show()
     else:
         model.fit_from_dict(fit_dict)
+        
+    
 #%%           
     if scale == 1:
         x = data.Xe.reshape(-1,1)
         x_scal = data.Xe_scal
-        pred = data.scaler_y.inverse_transform(model.pred(x_scal))
+        pred = model.pred(x_scal)
+        pred = data.scaler_y.inverse_transform(pred)
         plt.plot(x, pred, '.')
         data.plot_eval_data(1)
         
@@ -301,9 +325,34 @@ if __name__ == '__main__':
         print(data.assess_pred(pred)[0])
         plt.plot(x, data.assess_pred(pred)[1])
         
+#%%
+    for i in [10, 500, 900]:
+        pred = model.pred_w(x_scal, check_w[i], check_b[i])
+        pred = data.scaler_y.inverse_transform(pred)
+        plt.plot(x, pred, '.', label = '{}'.format(i))
+        
+    data.plot_eval_data(0)  
+    plt.legend()    
+    plt.show()
+#%%    
+    tocs = []
+    
+    tic1 = time.perf_counter()
+    for i in range(fit_dict['num_epochs']):
+        tic = time.perf_counter()
+        
+        g = tf.Graph()
+        sess = tf.Session(graph = g)
+        with g.as_default() as g:
+            model = DNN.standard(DNN_dict, sess, seed = 1)        
+            pred = model.pred_w(x_scal, check_w[i], check_b[i])
+        tocs.append(time.perf_counter() - tic)
+     
+    print(time.perf_counter() - tic1)    
+    plt.plot(tocs)
+    plt.show()
 
-
-
+    
 
 
 
