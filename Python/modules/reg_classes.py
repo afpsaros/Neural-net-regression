@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on %(date)s
+Created on Sep 20 2020
 
-@author: %(afpsaros)s
+@author: afpsaros
 """
+
 import tensorflow as tf
 import numpy as np
 import time
