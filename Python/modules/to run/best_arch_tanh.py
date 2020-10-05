@@ -4,9 +4,6 @@ Created on Mon Sep 28 11:20:18 2020
 
 @author: afpsaros
 """
-# import sys
-# sys.path.insert(0, '/modules')
-
 import matplotlib.pyplot as plt
 from data_tanh import data_getter
 from reg_classes import DNN
@@ -16,7 +13,6 @@ from hyper_opt import grid_cv_arch
 import numpy as np
 
 import time 
-
 
 n = 100
 s = 0
@@ -33,7 +29,7 @@ DNN_dict = {
 }
 
 ev_params = {
-        'num_epochs': [100],
+        'num_epochs': [10000],
         'wd_par': [0],
         'lr': [1e-3]
         }
@@ -71,22 +67,6 @@ for nu in nus:
         'lr': None
     }
 
-    # =============================================================================
-    # n_random = 3
-    # 
-    # if random_sel == 1:
-    #     ev_params = {
-    #         'num_epochs': ([1000, 1500], 'b'),
-    #         'wd_par': ([0, -5, -3], 'e'),
-    #         'lr': ([-3, -2], 'd')
-    #         }
-    # else: 
-    #     ev_params = {
-    #             'num_epochs': [10000],
-    #             'wd_par': np.linspace(1e-6, 1e-4, 2),
-    #             'lr': np.linspace(1e-3, 1e-2, 2)
-    #             }
-    # =============================================================================
     tic = time.perf_counter()  
     arch_cv = grid_cv_arch(ev_params, refit, adv_refit, ev_arch, random_sel, n_random)
     scores, (best, _), model = arch_cv.fit(fit_dict, DNN_dict, seed = 0)   
@@ -95,18 +75,22 @@ for nu in nus:
     depths.append(best[0])
     widths.append(best[1])
 #%%        
+fig = plt.figure() 
 plt.plot(depths, '-o')
-# name = 'tanh_depths.png'
-# plt.savefig(name, dpi = 400)
-plt.show()
+name = 'tanh_depths.png'
+plt.savefig(name, dpi = 400)
+# plt.show()
+plt.close(fig)
 
+fig = plt.figure() 
 plt.plot(widths, '-o')
-# name = 'tanh_widths.png'
-# plt.savefig(name, dpi = 400)
-plt.show()        
+name = 'tanh_widths.png'
+plt.savefig(name, dpi = 400)
+# plt.show()
+plt.close(fig)      
 #%%
-# file = open("tanh_archs.txt","w") 
-# file.write('{} \n'.format(list(nus)))  
-# file.write('{} \n'.format(depths))  
-# file.write('{} \n'.format(widths))  
-# file.close()         
+file = open("tanh_archs.txt","w") 
+file.write('{} \n'.format(list(nus)))  
+file.write('{} \n'.format(depths))  
+file.write('{} \n'.format(widths))  
+file.close()         
