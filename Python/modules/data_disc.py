@@ -22,7 +22,7 @@ class data_getter:
     def create_data(self):
         rng = np.random.RandomState(1234)
         
-        x = np.linspace(-np.pi, np.pi, n_eval)
+        x = np.linspace(-np.pi, np.pi, self.n_eval)
         x = x.reshape((self.n_eval, 1))
         
         y = np.zeros(x.shape)

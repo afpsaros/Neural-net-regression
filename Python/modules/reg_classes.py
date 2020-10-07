@@ -61,7 +61,6 @@ class regressor(scores):
         
         self.Xv = Xv
         self.Yv = Yv
-        self.snap_step = snap_step
         self.lr = lr
         
 ##############################################        
