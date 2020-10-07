@@ -6,8 +6,8 @@ Created on Wed Oct  7 09:40:28 2020
 """
 
 
-import sys
-sys.path.insert(0,'..')
+# import sys
+# sys.path.insert(0,'..')
 
 from reg_classes import DNN
 from data_disc import data_getter
@@ -38,7 +38,7 @@ fit_dict = {
     'callbacks': None,
     'initialize': 1,
     'wd_par': 0,
-    'num_epochs': 15000,
+    'num_epochs': 15,
     'Xt': data.Xt_scal,
     'Yt': data.Yt_scal,
     'Xv': data.Xv_scal,
@@ -57,7 +57,7 @@ loss = None if loss_hist is None else Losshistory()
 if loss is not None: r_callbacks.append(loss) 
 
 refit = 0   
-n_random = 100
+n_random = 10
 random_seed = 1
 
 ev_arch = {
@@ -73,12 +73,10 @@ arch_cv = random_global_cv(ev_params, ev_arch, refit, r_callbacks, n_random, ran
 scores, best, model = arch_cv.fit(fit_dict, DNN_dict)
 
 # print(arch_cv.best)
-
+#%%
 file = open("best_arch.txt","w") 
 file.write('{} \n'.format(arch_cv.best[0]))  
-# file.write('{} \n'.format(d))  
-# file.write('{} \n'.format(w))  
-# file.close()    
+file.close()    
 #%%
 # tr_error, val_error = loss.get_loss_history()
 

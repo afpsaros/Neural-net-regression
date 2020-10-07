@@ -45,28 +45,12 @@ class regressor(scores):
         
     def close_sess(self):
         self.sess.close()
-
-    def _get_learningrate(self, lr, decay):
-        if decay is None:
-            return lr, None
-        global_step = tf.Variable(0, trainable=False)
-        return (
-            {
-                "inverse time": tf.train.inverse_time_decay(
-                    lr, global_step, decay[1], decay[2]
-                ),
-                "cosine": tf.train.cosine_decay(lr, global_step, decay[1], alpha=decay[2]),
-                "cosine_restarts": tf.train.cosine_decay_restarts(
-                    lr, global_step, decay[1], t_mul=decay[3], m_mul=decay[4], alpha=decay[2])
-            }[decay[0]],
-            global_step,
-        )
             
     def fit_from_dict(self, fit_dict):
         return self.fit(*list(fit_dict.values()))  
       
     def fit(self, callbacks, initialize, wd_par, num_epochs, Xt, Yt, \
-            Xv = None, Yv = None, lr = None, decay = None, batches = None):
+            Xv = None, Yv = None, lr = None, batches = None):
 
         self.initialize = initialize
         self.wd_par = wd_par
@@ -77,8 +61,7 @@ class regressor(scores):
         
         self.Xv = Xv
         self.Yv = Yv
-        
-        self.lr, self.global_step = self._get_learningrate(lr, decay)
+        self.lr = lr
         
 ##############################################        
         self.callbacks = CallbackList(callbacks = callbacks)
@@ -242,8 +225,7 @@ if __name__ == '__main__':
         'Yt': data.Yt_scal,
         'Xv': data.Xv_scal,
         'Yv': data.Yv_scal,
-        'lr': 0.01,
-        'decay': None,
+        'lr': 0.01
     }
 
     eval_dict = {
