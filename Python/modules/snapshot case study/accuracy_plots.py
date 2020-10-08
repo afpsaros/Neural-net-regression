@@ -23,6 +23,7 @@ with open('sm_out.txt', 'rb') as f:
     
 with open('ens_out.txt', 'rb') as f:
     [ms, ENS_errors] = pickle.load(f) 
+    # ms = pickle.load(f) 
     
 with open('snapen_out.txt', 'rb') as f:
     [budgets, B_errors, ms] = pickle.load(f)    

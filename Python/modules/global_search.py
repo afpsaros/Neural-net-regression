@@ -146,17 +146,18 @@ if __name__ == '__main__':
     n = 200
     s = 0
     val_split = 0.7
-    nu = .1
+    nu = .1 / np.pi
     scale = 1
     data = data_getter(n, s, val_split, nu).create_tr_data_3D().create_eval_data_3D(nt_eval = 3).preproc(scale)
     data.plot3D_train()
     data.plot3D_eval(1)
+    data.plot2D_eval(1)
     
     DNN_dict = {
         'input dimension': 2,
         'output dimension': 1,
-        'number of layers': None,
-        'layer width': None, 
+        'number of layers': 4,
+        'layer width': 20, 
     }
 
     callbacks = []
@@ -173,12 +174,12 @@ if __name__ == '__main__':
         'callbacks': callbacks,
         'initialize': 1,
         'wd_par': 0,
-        'num_epochs': 50,
+        'num_epochs': None,
         'Xt': data.Xt_scal,
         'Yt': data.Yt_scal,
         'Xv': data.Xv_scal,
         'Yv': data.Yv_scal,
-        'lr': 0.01
+        'lr': None
     }
     
     # fit_dict = {
@@ -192,23 +193,23 @@ if __name__ == '__main__':
     #     'lr': None
     # }      
 
-    refit = 0
-    adv_refit = 0    
+    refit = 1
+    r_callbacks = None 
     n_random = 5
     random_seed = 3
 
-    ev_arch = {
-            'number of layers': ([2, 8], 'a'),
-            'layer width': ([10, 60], 'a')
-            }
-    
+    # ev_arch = {
+    #         'number of layers': ([2, 8], 'a'),
+    #         'layer width': ([10, 60], 'a')
+    #         }
+    ev_arch = {}
+        # 'wd_par': ([0, -5, -3], 'e'),    
     ev_params = {
-        'num_epochs': ([5000, 10000], 'b'),
-        'wd_par': ([0, -5, -3], 'e'),
-        'lr': ([-3, -2], 'd')
+        'num_epochs': ([10000], 'b'),
+        'lr': ([-4, -2], 'd')
         }                    
  
-    arch_cv = random_global_cv(ev_params, ev_arch, refit, adv_refit, n_random, random_seed)
+    arch_cv = random_global_cv(ev_params, ev_arch, refit, r_callbacks, n_random, random_seed)
     scores, best, model = arch_cv.fit(fit_dict, DNN_dict)
     
     print(arch_cv.best)
@@ -234,9 +235,16 @@ if __name__ == '__main__':
             pred = model.pred(data.Xe_scal[i * xlen:xlen + i * xlen, 0:2])
             plt.plot(x, pred, '.')
     
-    plt.show()      
+    plt.show()   
+
+    pred = model.pred(data.Xe_scal)
+    pred = data.scaler_y.inverse_transform(pred)    
+    print(data.assess_pred(pred)[0])    
                 
-           
+    plt.plot(data.assess_pred(pred)[1])      
+    print(np.mean(data.assess_pred(pred)[1]))    
+    
+    print(max(data.assess_pred(pred)[1]))
                 
                 
                 

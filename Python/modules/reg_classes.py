@@ -19,7 +19,12 @@ class scores:
 
     def pred_ens(self, Xe, ens):
         return self.sess.run(ens, feed_dict={self.X: Xe})
-                    
+    
+    def score_ens(self, eval_dict, ens):
+        Xe, Ye = list(eval_dict.values())
+        ens_error = tf.reduce_mean(tf.square(ens - self.Y))
+        return self.sess.run(ens_error, feed_dict = {self.X: Xe, self.Y: Ye})  
+                            
     def pred(self, Xe):
         return self.sess.run(self.fp, feed_dict={self.X: Xe})
 
@@ -38,8 +43,7 @@ class scores:
         self.fp = self.ffn()
         return self.sess.run(self.errors(), feed_dict = {self.X: Xe, self.Y: Ye})  
     
-    
-    
+        
 class regressor(scores):
     
     def __init__(self, sess):
@@ -69,6 +73,21 @@ class regressor(scores):
         self.weights, self.biases = W, b
         self.fp = self.ffn()
         return self
+    
+    def fun_ensemble(self, snap_weights, snap_biases):
+        
+        m = len(snap_weights)
+        for i in range(m):
+            # print(i)
+            
+            sw, sb = snap_weights[i], snap_biases[i]
+            
+            if i == 0:
+                self.ensemble = tf.math.divide(self.fun_test(sw, sb).fp, m)
+            else:
+                self.ensemble = tf.math.add(self.ensemble, tf.math.divide(self.fun_test(sw, sb).fp, m))   
+                
+        return self.ensemble
         
     def fit_from_dict(self, fit_dict):
         return self.fit(*list(fit_dict.values()))  
@@ -86,6 +105,7 @@ class regressor(scores):
         self.Xv = Xv
         self.Yv = Yv
         
+        # print(decay)
         self.lr, self.global_step = self._get_learningrate(lr, decay)
 ##############################################        
         self.callbacks = CallbackList(callbacks = callbacks)
