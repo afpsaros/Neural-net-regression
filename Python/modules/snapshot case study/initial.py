@@ -78,7 +78,7 @@ file = open("best_arch.txt","w")
 file.write('{} \n'.format(arch_cv.best[0]))  
 # file.write('{} \n'.format(d))  
 # file.write('{} \n'.format(w))  
-# file.close()    
+file.close()    
 #%%
 # tr_error, val_error = loss.get_loss_history()
 

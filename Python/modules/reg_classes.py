@@ -16,6 +16,9 @@ class scores:
         error = tf.reduce_mean(tf.square(self.fp - self.Y))
         error_p = tf.math.abs(self.fp - self.Y)
         return error, error_p
+
+    def pred_ens(self, Xe, ens):
+        return self.sess.run(ens, feed_dict={self.X: Xe})
                     
     def pred(self, Xe):
         return self.sess.run(self.fp, feed_dict={self.X: Xe})
@@ -61,7 +64,12 @@ class regressor(scores):
             }[decay[0]],
             global_step,
         )
-            
+    
+    def fun_test(self, W, b):
+        self.weights, self.biases = W, b
+        self.fp = self.ffn()
+        return self
+        
     def fit_from_dict(self, fit_dict):
         return self.fit(*list(fit_dict.values()))  
       
@@ -79,7 +87,6 @@ class regressor(scores):
         self.Yv = Yv
         
         self.lr, self.global_step = self._get_learningrate(lr, decay)
-        
 ##############################################        
         self.callbacks = CallbackList(callbacks = callbacks)
         self.callbacks.set_model(self)
@@ -102,7 +109,7 @@ class regressor(scores):
         if self.lr is not None:
             self.optimizer = tf.train.AdamOptimizer(learning_rate = self.lr)
          
-        self.train_op = self.optimizer.minimize(self.obj)
+        self.train_op = self.optimizer.minimize(self.obj, global_step=self.global_step)
                
         if self.initialize == 1:
             self.init = tf.global_variables_initializer()
@@ -235,7 +242,7 @@ if __name__ == '__main__':
 
     fit_dict = {
         'callbacks': callbacks,
-        'initialize': 0,
+        'initialize': 1,
         'wd_par': 0,
         'num_epochs': 1000,
         'Xt': data.Xt_scal,
@@ -245,7 +252,9 @@ if __name__ == '__main__':
         'lr': 0.01,
         'decay': None,
     }
-
+    
+    fit_dict['decay'] = ['cosine_restarts',snap_step, 0.002, 1., 1.]
+    
     eval_dict = {
         'Xe': data.Xe_scal,
         'Ye': data.Ye_scal
