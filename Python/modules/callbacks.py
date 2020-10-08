@@ -79,6 +79,8 @@ class Snapper(Callback):
     def on_train_begin(self):
             self.snap_weights = []
             self.snap_biases = []
+            
+            self.snap_epochs = []
     
     def at_step(self):
         if (self.model.epoch + 1) % self.snap_step == 0:    
@@ -87,9 +89,14 @@ class Snapper(Callback):
             
             self.snap_weights.append(_snap_w)
             self.snap_biases.append(_snap_b)
+            
+            self.snap_epochs.append(self.model.epoch)
         
     def get_snaps(self):
         return self.snap_weights, self.snap_biases
+
+    def get_snap_epochs(self):
+        return self.snap_epochs
     
 class Losshistory(Callback):
     
@@ -109,6 +116,17 @@ class Losshistory(Callback):
                
     def get_loss_history(self):
         return self.tr_error, self.val_error
+    
+class LRschedule(Callback):
+    
+        def on_train_begin(self):
+            self.lr_sched = []
+        
+        def on_epoch_begin(self):
+            self.lr_sched.append(self.model.sess.run(self.model.optimizer._lr))
+                    
+        def get_lr_schedule(self):
+            return self.lr_sched
     
     
     

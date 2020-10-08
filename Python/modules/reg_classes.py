@@ -135,6 +135,7 @@ class regressor(scores):
         self.callbacks.on_train_begin()
         
         for self.epoch in range(self.num_epochs): 
+            # print(sess.run(self.optimizer._lr))
             self.callbacks.on_epoch_begin()
             
             self.sess.run(self.train_op, feed_dict={self.X: self.Xt, self.Y: self.Yt}) 
@@ -255,10 +256,10 @@ if __name__ == '__main__':
     
     fit_dict['decay'] = ['cosine_restarts',snap_step, 0.002, 1., 1.]
     
-    eval_dict = {
-        'Xe': data.Xe_scal,
-        'Ye': data.Ye_scal
-    }  
+    # eval_dict = {
+    #     'Xe': data.Xe_scal,
+    #     'Ye': data.Ye_scal
+    # }  
 
     sess = tf.Session()
     model = DNN.standard(DNN_dict, sess, seed = 1)
@@ -266,7 +267,7 @@ if __name__ == '__main__':
     
     model.fit_from_dict(fit_dict)
         
-#%%
+
     snap_weights, snap_biases = snap.get_snaps()
     tr_error, val_error = loss.get_loss_history()
     
@@ -275,7 +276,7 @@ if __name__ == '__main__':
     plt.plot(val_error, label = 'validation error')
     plt.legend()
     plt.show()
-#%%           
+       
     if scale == 1:
         x = data.Xe.reshape(-1,1)
         x_scal = data.Xe_scal
@@ -296,8 +297,8 @@ if __name__ == '__main__':
         
         print(data.assess_pred(pred)[0])
         plt.plot(x, data.assess_pred(pred)[1])
-        
-#%%
+        plt.show()        
+
     for i in range(len(snap_weights)):
         pred = model.pred_w(x_scal, snap_weights[i], snap_biases[i])
         pred = data.scaler_y.inverse_transform(pred)
