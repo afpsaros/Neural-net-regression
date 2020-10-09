@@ -1,0 +1,5 @@
+arch 4, 76 
+learning rate 0.0005578063091521597 
+num epochs 30000 
+M 10 
+snap step 6000 
