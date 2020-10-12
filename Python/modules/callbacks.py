@@ -69,7 +69,28 @@ class CallbackList(Callback):
         if not isinstance(callback, Callback):
             raise Exception(str(callback) + " is an invalid Callback object")
         self.callbacks.append(callback)
+
+class InitialFinal(Callback):
+    def __init__(self, initial, final):
+        super().__init__()
+        self.initial = initial
+        self.final = final
         
+    def on_train_begin(self):
+        if self.initial == 1:
+            self.init_weights, self.init_biases = self.model.sess.run([self.model.weights, self.model.biases])
+        else: 
+            self.init_weights, self.init_biases = None, None
+    
+    def on_train_end(self):
+        if self.final == 1:
+            self.final_weights, self.final_biases = self.model.sess.run([self.model.weights, self.model.biases])  
+        else: 
+            self.final_weights, self.final_biases = None, None
+
+    def get_params(self):
+        return self.init_weights, self.init_biases, self.final_weights, self.final_biases 
+            
 class Snapper(Callback):
 
     def __init__(self, snap_step):

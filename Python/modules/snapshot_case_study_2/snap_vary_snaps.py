@@ -75,9 +75,9 @@ fit_dict['lr'] = float(line.split(',')[2][2:])
 lr_ratio = float(line.split(',')[4][1:-2])
 # print(lr_ratio, lr_ratio * 10)
 #%%
-budgets = 600 * np.arange(1, 6, 1)
+budgets = 6000 * np.arange(1, 6, 1)
 
-reps = 6
+reps = 10
 
 snap_nums = np.arange(1, 7, 1)
 

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#SBATCH --time=00:30:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH -c 24
+#SBATCH --mem=24g
+#SBATCH -J tfjob
+##SBATCH -p gpu --gres=gpu:1
+#SBATCH -p batch
+#SBATCH -o "tfjob-%j.out"
+#SBATCH -e "tfjob-%j.err"
+
+#module load python/3.5.2
+module load python/3.6.6_test
+
+module load cuda/10.0.130
+module load cudnn/7.4
+module load mpi/openmpi_4.0.0_gcc
+
+module load tensorflow/1.14.0_gpu_py36
+
+bash bscript
+
+mkdir results
+
+mv *.txt -t results

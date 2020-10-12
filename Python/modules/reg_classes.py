@@ -76,12 +76,8 @@ class regressor(scores):
     
     def fun_ensemble(self, snap_weights, snap_biases, snap_range):
         
-        # m = len(snap_weights)
-        # for i in range(m):
-        
         m = len(snap_range)
         for i, snap_i in enumerate(snap_range):
-            # print(i)
             
             sw, sb = snap_weights[snap_i], snap_biases[snap_i]
             

@@ -58,7 +58,7 @@ fit_dict = {
 
 refit = 0
 r_callbacks = None  
-n_random = 30
+n_random = 50
 random_seed = 3
 
 # ev_arch = {

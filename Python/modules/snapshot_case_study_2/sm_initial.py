@@ -61,7 +61,7 @@ loss = None if loss_hist is None else Losshistory()
 if loss is not None: r_callbacks.append(loss) 
 
 refit = 0   
-n_random = 30
+n_random = 50
 random_seed = 1
 
 ev_arch = {

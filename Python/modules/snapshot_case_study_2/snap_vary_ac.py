@@ -68,7 +68,7 @@ fit_dict['lr'] = float(line.split(',')[2][2:])
 lr_ratio = float(line.split(',')[4][1:-2])
 # print(lr_ratio, lr_ratio * 10)
 #%%
-b = 3000
+b = 30000
 
 max_cycles = 10
 cycles = np.arange(2, max_cycles + 1, 2)
@@ -77,7 +77,7 @@ if sum([b % c for c in cycles]) != 0:
     raise ValueError('some number of cycles is not integer')    
 
 #%%
-reps = 2
+reps = 10
 
 fit_dict['num_epochs'] = b
 

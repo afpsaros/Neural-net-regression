@@ -134,7 +134,8 @@ class random_global_cv:
 
 ##############################################################################################################                
                 snap_weights, snap_biases = snap.get_snaps()
-                ensemble = model.fun_ensemble(snap_weights, snap_biases)
+                snap_range = range(len(snap_weights))
+                ensemble = model.fun_ensemble(snap_weights, snap_biases, snap_range)
                 self.scores[tuple([tuple(l1), tuple(l2)])] = model.score_ens(val_dict, ensemble)
 ##############################################################################################################  
                 
@@ -143,7 +144,7 @@ class random_global_cv:
             
         self.best = self.minscore()
                 
-
+        
         if self.refit == 1: 
             
             ev_fit_dict['callbacks'] = self.r_callbacks
@@ -178,7 +179,8 @@ class random_global_cv:
                 
                 model.fit_from_dict(ev_fit_dict)
                 snap_weights, snap_biases = snap.get_snaps()
-                model.fun_ensemble(snap_weights, snap_biases)
+                snap_range = range(len(snap_weights))
+                model.fun_ensemble(snap_weights, snap_biases, snap_range)
                     
         return (self.scores, self.best, model)                   
             

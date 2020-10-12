@@ -34,7 +34,7 @@ fit_dict = {
     'callbacks': None,
     'initialize': 1,
     'wd_par': 0,
-    'num_epochs': 3000,
+    'num_epochs': 30000,
     'Xt': data.Xt_scal,
     'Yt': data.Yt_scal,
     'Xv': data.Xv_scal,
@@ -66,7 +66,7 @@ for m in range(M):
         
         callbacks = []
 
-        snap_step = 600
+        snap_step = 30000
         snap = None if snap_step is None else Snapper(snap_step)   
         if snap is not None: callbacks.append(snap) 
         

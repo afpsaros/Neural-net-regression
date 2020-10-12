@@ -69,8 +69,8 @@ lr_ratio = float(line.split(',')[4][1:-2])
 # print(lr_ratio, lr_ratio * 10)
 
 #%%
-budgets = 600 * np.arange(1, 6, 1)
-reps = 2
+budgets = 6000 * np.arange(1, 6, 1)
+reps = 10
 c = 6
 B_errors = []
 for b in budgets:

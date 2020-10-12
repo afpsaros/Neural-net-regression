@@ -76,7 +76,7 @@ class planes_projections:
         v_sq = sum([x**2 for x in vvec])
         v_norm = np.sqrt(v_sq)
         
-        print(u_hat_b_norm)
+        # print(u_hat_b_norm)
     
         v_hat_vec = vvec / v_norm
         v_hat_w, v_hat_b = self.cvectodict(v_hat_vec, wkeys, bkeys, sw, lw, sb, lb)
@@ -100,6 +100,7 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt 
     from data_file import data_getter
     from reg_classes import DNN
+    from callbacks import *
     
     n = 30
     s = 0
@@ -119,14 +120,6 @@ if __name__ == '__main__':
         'number of layers': 2,
         'layer width': 50, 
     }
-
-    fit_dict = {
-        'initialize': 0,
-        'wd_par': 0,
-        'num_epochs': 5000,
-        'Xt': data.Xt_scal,
-        'Yt': data.Yt_scal,
-    }
     
     # fit_dict = {
     #     'initialize': 0,
@@ -139,10 +132,33 @@ if __name__ == '__main__':
     #     'lr': 0.01
     # }
 
-    eval_dict = {
-        'Xe': data.Xe_scal,
-        'Ye': data.Ye_scal
-    }  
+    # eval_dict = {
+    #     'Xe': data.Xe_scal,
+    #     'Ye': data.Ye_scal
+    # }  
+        
+    callbacks = []
+    
+    initial, final = 1, 1
+    inifin = None if initial == 0 and final == 0 else InitialFinal(initial, final)
+    if inifin is not None: callbacks.append(inifin)
+    
+    snap_step = None
+    snap = None if snap_step is None else Snapper(snap_step)   
+    if snap is not None: callbacks.append(snap) 
+    
+    loss_hist = 0
+    loss = None if loss_hist == 0 else Losshistory()   
+    if loss is not None: callbacks.append(loss) 
+    
+    fit_dict = {
+        'callbacks': callbacks,
+        'initialize': 1,
+        'wd_par': 0,
+        'num_epochs': 500,
+        'Xt': data.Xt_scal,
+        'Yt': data.Yt_scal,
+    }
 #%%    
     opt_weights = []
     opt_biases = []
@@ -156,15 +172,14 @@ if __name__ == '__main__':
         sess = tf.Session(graph = g)
         with g.as_default() as g:
             model = DNN.standard(DNN_dict, sess, seed = 0)
-            model.initialize(fit_dict['Xt'], fit_dict['Yt'])     
-            
-            init_weights.append(sess.run(model.weights))
-            init_biases.append(sess.run(model.biases))
-            
+
             model.fit_from_dict(fit_dict)    
-    
-            opt_weights.append(sess.run(model.weights))
-            opt_biases.append(sess.run(model.biases))    
+            _iw, _ib, _fw, _fb = inifin.get_params()
+            
+            init_weights.append(_iw)
+            init_biases.append(_ib)            
+            opt_weights.append(_fw)
+            opt_biases.append(_fb)    
 #%%
     pj = planes_projections()
             
@@ -305,25 +320,39 @@ if __name__ == '__main__':
             pred = model.pred_w(x_scal, weights, biases)
             pred = data.scaler_y.inverse_transform(pred)
             
-            temp_error = data.assess_pred(pred)[1]
+            temp_error = data.assess_pred(pred)[-1]
             print('error {}'.format(c+1), data.assess_pred(pred)[0])
     
         ensemble += pred / num
         plt.plot(x, temp_error, label = 'optimum %.1d' %(c+1))
     
-    ens_error = data.assess_pred(ensemble)[1]
+    ens_error = data.assess_pred(ensemble)[-1]
     print('ensemble error', data.assess_pred(ensemble)[0])
     plt.plot(x, ens_error, label = 'ensemble')
     plt.legend(bbox_to_anchor=(1.4, 1.0))
     plt.show()
 #%%   
+    callbacks = []
+    
+    initial, final = 1, 1
+    inifin = None if initial == 0 and final == 0 else InitialFinal(initial, final)
+    if inifin is not None: callbacks.append(inifin)
+    
+    snap_step = 50
+    snap = None if snap_step is None else Snapper(snap_step)   
+    if snap is not None: callbacks.append(snap) 
+    
+    loss_hist = 0
+    loss = None if loss_hist == 0 else Losshistory()   
+    if loss is not None: callbacks.append(loss) 
+    
     fit_dict = {
-        'initialize': 0,
+        'callbacks': callbacks,
+        'initialize': 1,
         'wd_par': 0,
-        'num_epochs': 5000,
+        'num_epochs': 500,
         'Xt': data.Xt_scal,
         'Yt': data.Yt_scal,
-        'snap_step': 500
     }
     
     snaps = list(range(num))
@@ -342,18 +371,21 @@ if __name__ == '__main__':
         sess = tf.Session(graph = g)
         with g.as_default() as g:
             model = DNN.standard(DNN_dict, sess, seed = 0)
-            model.initialize(fit_dict['Xt'], fit_dict['Yt'])     
-            
-            init_weights.append(sess.run(model.weights))
-            init_biases.append(sess.run(model.biases))
             
             model.fit_from_dict(fit_dict)    
             
-            snap_weights[c] = model.snap_weights
-            snap_biases[c] = model.snap_biases
-    
-            opt_weights.append(sess.run(model.weights))
-            opt_biases.append(sess.run(model.biases))   
+            _iw, _ib, _fw, _fb = inifin.get_params()
+            
+            init_weights.append(_iw)
+            init_biases.append(_ib)            
+            opt_weights.append(_fw)
+            opt_biases.append(_fb)    
+            
+            _sw, _sb = snap.get_snaps()
+            
+            snap_weights[c] = _sw
+            snap_biases[c] = _sb
+
             
 #%%           
 # =============================================================================
