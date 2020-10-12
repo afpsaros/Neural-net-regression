@@ -35,7 +35,7 @@ DNN_dict = {
 
 callbacks = []
 
-snap_step = 250
+snap_step = 999
 snap = None if snap_step is None else Snapper(snap_step)   
 if snap is not None: callbacks.append(snap) 
 

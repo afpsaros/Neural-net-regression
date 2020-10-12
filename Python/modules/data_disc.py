@@ -89,9 +89,12 @@ class data_getter:
             plt.show()
             
     def assess_pred(self, pred):
-            error = np.mean(np.square(pred - self.Ye))
-            error_p = np.abs(pred - self.Ye)
-            return error, error_p
+            l2_error = np.mean(np.square(pred - self.Ye))
+            l2_rel = np.sqrt(np.sum(np.square(pred - self.Ye)) / np.sum(np.square(self.Ye)))
+            l1_rel = np.sum(np.abs(pred - self.Ye)) / np.sum(np.abs(self.Ye))
+            l1_point = np.abs(pred - self.Ye)
+            
+            return l2_error, l2_rel, l1_rel, l1_point
                
 if __name__ == '__main__':
     

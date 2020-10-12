@@ -74,13 +74,16 @@ class regressor(scores):
         self.fp = self.ffn()
         return self
     
-    def fun_ensemble(self, snap_weights, snap_biases):
+    def fun_ensemble(self, snap_weights, snap_biases, snap_range):
         
-        m = len(snap_weights)
-        for i in range(m):
+        # m = len(snap_weights)
+        # for i in range(m):
+        
+        m = len(snap_range)
+        for i, snap_i in enumerate(snap_range):
             # print(i)
             
-            sw, sb = snap_weights[i], snap_biases[i]
+            sw, sb = snap_weights[snap_i], snap_biases[snap_i]
             
             if i == 0:
                 self.ensemble = tf.math.divide(self.fun_test(sw, sb).fp, m)
@@ -305,9 +308,9 @@ if __name__ == '__main__':
         plt.plot(x, pred, '.')
         data.plot_eval_data(1)
         
-        print(data.assess_pred(pred)[0])
-        plt.plot(x, data.assess_pred(pred)[1])        
-
+        print(data.assess_pred(pred)[:3])
+        plt.plot(x, data.assess_pred(pred)[-1])        
+        plt.show()
        
     else:
         x = data.Xe.reshape(-1,1)
@@ -315,8 +318,8 @@ if __name__ == '__main__':
         plt.plot(x, pred, '.')
         data.plot_eval_data(1)     
         
-        print(data.assess_pred(pred)[0])
-        plt.plot(x, data.assess_pred(pred)[1])
+        print(data.assess_pred(pred)[:3])
+        plt.plot(x, data.assess_pred(pred)[-1])
         plt.show()        
 
     for i in range(len(snap_weights)):

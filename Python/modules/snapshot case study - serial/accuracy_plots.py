@@ -29,6 +29,8 @@ with open('ens_out.txt', 'rb') as f:
     
 with open('snapen_out.txt', 'rb') as f:
     [budgets, B_errors, ms] = pickle.load(f)    
+    
+
 #%%    
 for i in range(0, len(budgets)):    
     plt.scatter(budgets[0] * (i + 1) * np.ones(M), list(zip(*M_errors))[i])    
