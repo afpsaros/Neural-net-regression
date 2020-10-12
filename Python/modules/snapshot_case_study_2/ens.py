@@ -65,19 +65,17 @@ def binom(n, k):
 with open('sm_out.txt', 'rb') as f:
     [budgets, M_snaps, M_errors] = pickle.load(f)
     
-M = 6
+no_models_max = 6
 
 ENS_errors = []
 
-ms = np.arange(1, M + 1, 1)
+no_models = np.arange(1, no_models_max + 1, 1)
 #%%
-for m in ms:
+for m in no_models:
     
-    combs = combinations(np.arange(0, M, 1), m) 
+    combs = combinations(np.arange(0, no_models_max, 1), m) 
     print(m)
-    # print(len(list(perms)))
     errors = []
-    # print(m)
     
     for comb in combs:
 
@@ -86,21 +84,12 @@ for m in ms:
         with g.as_default() as g:
             model = DNN.standard(DNN_dict, sess, seed = 1) 
             
-            for i in range(m):
-                # print(i)
-                
-                sw, sb = M_snaps[comb[i]][0][-1], M_snaps[comb[i]][1][-1]
-            
-                # pred = model.pred_w(x_scal, sw, sb)
-                # pred = data.scaler_y.inverse_transform(pred)
-                
-                if i == 0:
-                    ensemble = tf.math.divide(model.fun_test(sw, sb).fp, m)
-                else:
-                    ensemble = tf.math.add(ensemble, tf.math.divide(model.fun_test(sw, sb).fp, m))   
+            ens_weights = [M_snaps[comb[i]][0][-1] for i in range(m)]
+            ens_biases = [M_snaps[comb[i]][1][-1] for i in range(m)]
+                            
+            ens_range = range(m)          
+            ensemble = model.fun_ensemble(ens_weights, ens_biases, ens_range)
                     
-            # print(ensemble)
-            # print('1', data.assess_pred(ensemble[0]))
             pred = model.pred_ens(x_scal, ensemble)
             pred = data.scaler_y.inverse_transform(pred)
             errors.append(data.assess_pred(pred)[0])
@@ -109,23 +98,23 @@ for m in ms:
             
     
 #%%
-# for mi, m in enumerate(ms): 
-#     plt.scatter(m * np.ones(len(ENS_errors[mi])), ENS_errors[mi])   
+for mi, m in enumerate(no_models): 
+    plt.scatter(m * np.ones(len(ENS_errors[mi])), ENS_errors[mi])   
 
-# plt.plot(ms, [np.mean(el) for el in ENS_errors])    
+plt.plot(no_models, [np.mean(el) for el in ENS_errors])    
 
-# sm_mean = np.mean(list(zip(*M_errors))[-1])
+sm_mean = np.mean(list(zip(*M_errors))[-1])
 
-# plt.plot(ms, sm_mean * np.ones(len(ms)))         
-# plt.show()
+plt.plot(no_models, sm_mean * np.ones(len(no_models)))         
+plt.show()
 # print('rel', (sm_mean - np.mean(ENS_errors[-1])) / sm_mean * 100) 
         
 #%%
 import pickle 
 
 with open('ens_out.txt', 'wb') as f:
-    pickle.dump([ms, ENS_errors], f)      
+    pickle.dump([no_models, ENS_errors], f)      
     
 # with open('ens_out.txt', 'rb') as f:
-#     [ms, ENS_errors] = pickle.load(f)
+#     [no_models, ENS_errors] = pickle.load(f)
     

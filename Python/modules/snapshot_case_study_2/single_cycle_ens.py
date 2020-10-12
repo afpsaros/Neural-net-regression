@@ -106,8 +106,8 @@ for b in budgets:
                 ens_weights.append(snap_weights[0])
                 ens_biases.append(snap_biases[0])
                 
-        snap_range = range(c)          
-        ensemble = model.fun_ensemble(ens_weights, ens_biases, snap_range)
+        ens_range = range(c)          
+        ensemble = model.fun_ensemble(ens_weights, ens_biases, ens_range)
                
         pred = model.pred_ens(x_scal, ensemble)
         pred = data.scaler_y.inverse_transform(pred)

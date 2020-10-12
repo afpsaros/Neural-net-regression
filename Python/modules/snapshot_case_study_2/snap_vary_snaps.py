@@ -94,7 +94,7 @@ fit_dict['decay'] = ['cosine_restarts',snap_step, lr_ratio, 1., 1.]
 SN_R_errors = []
 #%%
 for r in range(reps):
-    # print(r)
+    print(r)
     g = tf.Graph()
     sess = tf.Session(graph = g)
     with g.as_default() as g:    

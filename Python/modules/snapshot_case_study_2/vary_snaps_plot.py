@@ -24,7 +24,7 @@ with open('sm_out.txt', 'rb') as f:
 M = len(M_snaps)  
     
 with open('ens_out.txt', 'rb') as f:
-    [ms, ENS_errors] = pickle.load(f)     
+    [no_models, ENS_errors] = pickle.load(f)     
     
 with open('vary_snaps_out.txt', 'rb') as f:
     [snap_nums, SN_R_errors, SN_R_means] = pickle.load(f)        
@@ -34,11 +34,11 @@ with open('vary_snaps_out.txt', 'rb') as f:
 plt.title('Snapshot and true ensembles vs Single model')
 plt.plot(snap_nums, SN_R_means, '-o', label = 'Snapshot ensemble')
     
-plt.plot(ms, [np.mean(el) for el in ENS_errors], '-o', label = 'True ensemble')   
+plt.plot(no_models, [np.mean(el) for el in ENS_errors], '-o', label = 'True ensemble')   
 
 sm_mean = np.mean(list(zip(*M_errors))[-1])
 
-plt.plot(ms, sm_mean * np.ones(len(ms)), '--', label = 'Single model')      
+plt.plot(no_models, sm_mean * np.ones(len(no_models)), '--', label = 'Single model')      
 
 plt.xlim([snap_nums[0], snap_nums[-1]])
 plt.xlabel('Number of models')
