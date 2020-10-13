@@ -75,7 +75,7 @@ fit_dict['lr'] = float(line.split(',')[2][2:])
 lr_ratio = float(line.split(',')[4][1:-2])
 # print(lr_ratio, lr_ratio * 10)
 #%%
-budgets = 600 * np.arange(1, 6, 1)
+budgets = 6000 * np.arange(1, 6, 1)
 
 reps = 6
 
@@ -107,7 +107,8 @@ for r in range(reps):
         if snap is not None: callbacks.append(snap) 
         
         fit_dict['callbacks'] = callbacks
-        model = DNN.standard(DNN_dict, sess, seed = r + 1)
+        # model = DNN.standard(DNN_dict, sess, seed = r + 1)
+        model = DNN.standard(DNN_dict, sess, seed = 0)
 
         model.fit_from_dict(fit_dict)
         
@@ -136,7 +137,7 @@ for r in range(reps):
             pred = model.pred_ens(x_scal, ensemble)
             pred = data.scaler_y.inverse_transform(pred)
             
-            SN_errors.append(data.assess_pred(pred)[0])
+            SN_errors.append(data.assess_pred(pred)[1])
         
         SN_R_errors.append(SN_errors)
        

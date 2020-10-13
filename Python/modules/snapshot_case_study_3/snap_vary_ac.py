@@ -68,7 +68,7 @@ fit_dict['lr'] = float(line.split(',')[2][2:])
 lr_ratio = float(line.split(',')[4][1:-2])
 # print(lr_ratio, lr_ratio * 10)
 #%%
-b = 3000
+b = 30000
 
 max_cycles = 10
 cycles = np.arange(2, max_cycles + 1, 2)
@@ -113,7 +113,7 @@ for c in cycles:
                    
             pred = model.pred_ens(x_scal, ensemble)
             pred = data.scaler_y.inverse_transform(pred)
-            R_errors.append(data.assess_pred(pred)[0])
+            R_errors.append(data.assess_pred(pred)[1])
         
     C_errors.append(np.mean(R_errors))
         

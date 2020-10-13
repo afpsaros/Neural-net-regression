@@ -80,6 +80,7 @@ the_table = ax2.table(cellText=CA_params_cosims.round(2), rowLabels = np.array(C
                       colLabels = np.arange(1, c + 1),\
                           loc = 'center', cellLoc='center', cellColours=img.to_rgba(CA_params_cosims.round(2)))
 fig.tight_layout() 
+plt.savefig('params_cosine_similarities.png', dpi = 300)    
 #%%
 M_preds_cosims = np.zeros([c,c])
 CA_preds_cosims = np.zeros([c,c])
@@ -113,5 +114,5 @@ the_table = ax2.table(cellText=CA_preds_cosims.round(2), rowLabels = np.array(CA
                       colLabels = np.arange(1, c + 1),\
                           loc = 'center', cellLoc='center', cellColours=img.to_rgba(CA_preds_cosims.round(2)))
 fig.tight_layout() 
-    
+plt.savefig('preds_cosine_similarities.png', dpi = 300)    
 

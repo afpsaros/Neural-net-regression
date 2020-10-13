@@ -1,5 +1,0 @@
-arch 3, 45 
-learning rate 0.0008882838771277177 
-num epochs 3000 
-M 6 
-snap step 500 

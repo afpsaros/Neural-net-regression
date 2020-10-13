@@ -1,0 +1,131 @@
+\include{template}
+
+\usepackage{subcaption}
+
+\usepackage[english]{babel}
+\usepackage{blindtext}
+\begin{document}
+	
+	\sloppy
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\begin{center}	
+		\Large
+		\textbf{Case study on ensembles}\\
+		\large
+		Apostolos Psaros\\	
+		\today
+%		July 10, 2020
+	\end{center}
+	\vskip 0.5in
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Figures}
+\blindtext
+\begin{figure}[ht]
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		% include first image
+		\includegraphics[width=1\linewidth]{./figs/vary_b.png}  
+		\caption{Put your sub-caption here}
+		\label{fig:sub-first}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		% include second image
+		\includegraphics[width=1\linewidth]{./figs/vary_ac.png}  
+		\caption{Put your sub-caption here}
+		\label{fig:sub-second}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/vary_snaps.png}  
+		\caption{Put your sub-caption here}
+		\label{fig:sub-second}
+	\end{subfigure}
+	\caption{Put your caption here}
+	\label{fig:fig}
+\end{figure}
+
+\blindtext
+
+\begin{figure}[ht]
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		% include first image
+		\includegraphics[width=.9\linewidth]{./figs/params_tSNE_0.png}  
+		\caption{Put your sub-caption here}
+		\label{fig:sub-first}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		% include second image
+		\includegraphics[width=.9\linewidth]{./figs/params_tSNE_1.png}  
+		\caption{Put your sub-caption here}
+		\label{fig:sub-second}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=.9\linewidth]{./figs/params_tSNE_2.png}  
+		\caption{Put your sub-caption here}
+		\label{fig:sub-second}
+	\end{subfigure}
+	\caption{Put your caption here}
+	\label{fig:fig}
+\end{figure}
+
+\blindtext
+
+\begin{figure}[ht]
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		% include first image
+		\includegraphics[width=.9\linewidth]{./figs/preds_tSNE_0.png}  
+		\caption{Put your sub-caption here}
+		\label{fig:sub-first}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		% include second image
+		\includegraphics[width=.9\linewidth]{./figs/preds_tSNE_1.png}  
+		\caption{Put your sub-caption here}
+		\label{fig:sub-second}
+	\end{subfigure}	
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=.9\linewidth]{./figs/preds_tSNE_2.png}  
+		\caption{Put your sub-caption here}
+		\label{fig:sub-second}
+	\end{subfigure}
+	\caption{Put your caption here}
+	\label{fig:fig}
+\end{figure}
+
+\blindtext
+
+\begin{figure}[ht]
+	\begin{subfigure}{1\textwidth}
+		\centering
+		% include first image
+		\includegraphics[width=1\linewidth]{./figs/params_cosine_similarities.png}  
+		\caption{Put your sub-caption here}
+		\label{fig:sub-first}
+	\end{subfigure}
+	\begin{subfigure}{1\textwidth}
+		\centering
+		% include second image
+		\includegraphics[width=1\linewidth]{./figs/preds_cosine_similarities.png}  
+		\caption{Put your sub-caption here}
+		\label{fig:sub-second}
+	\end{subfigure}	
+\end{figure}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+%\section*{Appendix}
+	
+\printbibliography[heading=bibintoc,title={References}]
+	
+\end{document}

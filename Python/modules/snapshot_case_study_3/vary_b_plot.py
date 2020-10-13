@@ -25,6 +25,7 @@ with open('single_cycle_ens_out.txt', 'rb') as f:
     [budgets, single_cycle_B_errors] = pickle.load(f)     
     
 #%%
+plt.figure(figsize=(5,4))
 plt.title('Snapshot ensembles vs Single-cycle ensembles')
 plt.plot(budgets, snap_B_errors, '-o', label = 'Snapshot ensemble')
 plt.plot(budgets, single_cycle_B_errors, '-o', label = 'Single-cycle ensemble')
@@ -33,5 +34,6 @@ plt.ylabel('Test MSE')
 plt.xticks(budgets)
 plt.xlim([budgets[0], budgets[-1]])
 plt.legend()
-
+plt.tight_layout()
+plt.savefig('vary_b.png', dpi = 300)
 plt.show()

@@ -1,0 +1,206 @@
+\documentclass{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{csquotes,xpatch}% recommended
+\usepackage[backend=bibtex,
+style=authoryear-comp,
+sortcites=false,
+maxbibnames=5,maxcitenames=2,
+firstinits=true,
+natbib=true,
+]{biblatex}
+
+\addbibresource{refs.bib}
+
+% natbib = true: add comma between author and year
+% firstinits: for first name initials in bibliography
+\renewcommand{\postnotedelim}{ } % remove comma in post citation in autocite
+%\addbibresource{refs.bib}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Combine label and labelyear links
+\xpatchbibmacro{cite}
+{\usebibmacro{cite:label}%
+	\setunit{\addspace}%
+	\usebibmacro{cite:labelyear+extrayear}}
+{\printtext[bibhyperref]{%
+		\DeclareFieldAlias{bibhyperref}{default}%
+		\usebibmacro{cite:label}%
+		\setunit{\addspace}%
+		\usebibmacro{cite:labelyear+extrayear}}}{}{}
+
+% Include labelname in labelyear link
+\xpatchbibmacro{cite}
+{\printnames{labelname}%
+	\setunit{\nameyeardelim}%
+	\usebibmacro{cite:labelyear+extrayear}}
+{\printtext[bibhyperref]{%
+		\DeclareFieldAlias{bibhyperref}{default}%
+		\printnames{labelname}%
+		\setunit{\nameyeardelim}%
+		\usebibmacro{cite:labelyear+extrayear}}}{}{}
+
+% Access hyperref's citation link start/end commands
+\makeatletter
+\protected\def\blx@imc@biblinkstart{%
+	\@ifnextchar[%]
+	{\blx@biblinkstart}
+	{\blx@biblinkstart[\abx@field@entrykey]}}
+\def\blx@biblinkstart[#1]{%
+	\blx@sfsave\hyper@natlinkstart{\the\c@refsection @#1}\blx@sfrest}
+\protected\def\blx@imc@biblinkend{%
+	\blx@sfsave\hyper@natlinkend\blx@sfrest}
+\blx@regimcs{\biblinkstart \biblinkend}
+\makeatother
+
+\newbool{cbx:link}
+
+% Include parentheses around labelyear in \textcite only in
+% single citations without pre- and postnotes
+\def\iflinkparens{%
+	\ifboolexpr{ test {\ifnumequal{\value{multicitetotal}}{0}} and
+		test {\ifnumequal{\value{citetotal}}{1}} and
+		test {\iffieldundef{prenote}} and
+		test {\iffieldundef{postnote}} }}
+
+\xpatchbibmacro{textcite}
+{\printnames{labelname}}
+{\iflinkparens
+	{\DeclareFieldAlias{bibhyperref}{default}%
+		\global\booltrue{cbx:link}\biblinkstart%
+		\printnames{labelname}}
+	{\printtext[bibhyperref]{\printnames{labelname}}}}{}{}
+
+\xpatchbibmacro{textcite}
+{\usebibmacro{cite:label}}
+{\iflinkparens
+	{\DeclareFieldAlias{bibhyperref}{default}%
+		\global\booltrue{cbx:link}\biblinkstart%
+		\usebibmacro{cite:label}}
+	{\usebibmacro{cite:label}}}{}{}
+
+\xpretobibmacro{textcite:postnote}
+{\ifbool{cbx:link}% patch 2.7+
+	{\ifbool{cbx:parens}
+		{\bibcloseparen\global\boolfalse{cbx:parens}}
+		{}%
+		\biblinkend\global\boolfalse{cbx:link}}
+	{}}
+{}
+{\xpatchbibmacro{textcite}% patch earlier releases
+	{\setunit{%
+			\ifbool{cbx:parens}
+			{\bibcloseparen\global\boolfalse{cbx:parens}}
+			{}%
+			\multicitedelim}}
+	{\ifbool{cbx:link}
+		{\ifbool{cbx:parens}
+			{\bibcloseparen\global\boolfalse{cbx:parens}}
+			{}%
+			\biblinkend\global\boolfalse{cbx:link}}
+		{}%
+		\setunit{%
+			\ifbool{cbx:parens}
+			{\bibcloseparen\global\boolfalse{cbx:parens}}
+			{}%
+			\multicitedelim}}
+	{}{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\DeclareNameAlias{sortname}{last-first} % last name first
+\renewbibmacro{in:}{} % remove in: before journal
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx}
+\usepackage{epstopdf} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{calrsfs}
+\usepackage{physics}
+\usepackage{mathtools}  
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tabulary}
+\usepackage{booktabs}
+\usepackage{hyperref}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{chngcntr}
+%\numberwithin{equation}{chapter}
+%\counterwithin{figure}{chapter}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+
+\linespread{1.6}
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	total={134mm,225mm},
+	left=38mm,
+	top=35mm,
+	headsep=.5in
+}
+\raggedbottom
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{blindtext}
+\usepackage{ragged2e}
+\usepackage{float}
+
+\usepackage{epstopdf}
+\usepackage{empheq} 
+
+\usepackage{array}
+\hypersetup{
+	colorlinks
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphics}
+\graphicspath{ {figures/} }
+\renewcommand{\listfigurename}{List of figures}
+
+\usepackage[labelfont=bf,justification=justified,singlelinecheck=false]{caption}
+\captionsetup[figure]{name=Fig. ,labelsep=period}
+\captionsetup[table]{labelsep=newline,font=footnotesize}
+\captionsetup[figure]{labelfont={bf},labelformat={default},labelsep=period,name={Fig.}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{xcolor}
+
+\usepackage{comment}
+
+\usepackage{enumitem}
+
+\usepackage{wrapfig}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{titlesec}
+
+\titlespacing*{\section}
+{0pt}{1ex plus .5ex minus .2ex}{.5ex plus .2ex}
+\titlespacing*{\subsection}
+{0pt}{0.5ex plus .5ex minus .2ex}{.5ex plus .2ex}
+%\titlespacing*{\subparagraph}
+%{0pt}{2.5ex plus 1ex minus .2ex}{1.3ex plus .2ex}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+\newcommand{\hsp}{\hspace{5pt}}
+
+\titleformat{\section}[block]{\bfseries\large}{\thesection}{1em}{}
+\titleformat{\subsection}[block]{\bfseries\itshape}{\thesubsection}{1em}{}
+
+
+%\titleformat{\subsubsection}
+%{\normalfont\normalsize\itshape}{\thesubsubsection}{1em}{}
+%\titleformat{\subparagraph}[runin]
+%{\itshape\normalsize}{\thesubparagraph}{1em}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{subcaption}
+\usepackage{bbm}
+\usepackage{tabularx}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{mycolor}{RGB}{207,42,40}
+\AtBeginDocument{\hypersetup{citecolor=violet, linkcolor = mycolor}}
+
+\usepackage{indentfirst}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

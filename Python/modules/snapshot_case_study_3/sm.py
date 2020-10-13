@@ -34,7 +34,7 @@ fit_dict = {
     'callbacks': None,
     'initialize': 1,
     'wd_par': 0,
-    'num_epochs': 3000,
+    'num_epochs': 30000,
     'Xt': data.Xt_scal,
     'Yt': data.Yt_scal,
     'Xv': data.Xv_scal,
@@ -67,12 +67,13 @@ for m in range(M):
         
         callbacks = []
 
-        snap_step = 500
+        snap_step = 5000
         snap = None if snap_step is None else Snapper(snap_step)   
         if snap is not None: callbacks.append(snap) 
         
         fit_dict['callbacks'] = callbacks
 
+        # model = DNN.standard(DNN_dict, sess, seed = 0)
         model = DNN.standard(DNN_dict, sess, seed = m + 1)
 
         model.fit_from_dict(fit_dict)
@@ -87,7 +88,7 @@ for m in range(M):
             pred = data.scaler_y.inverse_transform(pred)
             
             preds.append(pred)
-            errors.append(data.assess_pred(pred)[0])
+            errors.append(data.assess_pred(pred)[1])
         
         M_preds.append(preds)    
         M_errors.append(errors)

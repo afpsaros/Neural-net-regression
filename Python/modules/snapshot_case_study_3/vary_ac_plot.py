@@ -28,6 +28,7 @@ with open('vary_ac_out.txt', 'rb') as f:
 
 sm_mean = np.mean(list(zip(*M_errors))[-1])
 #%%
+plt.figure(figsize=(5,4))
 plt.title('Snapshot ensembles vs Single model')
 plt.plot(cycles, C_errors, '-o', label = 'Snapshot ensemble') 
 plt.plot(cycles, sm_mean * np.ones(len(cycles)), '--', label = 'Single model')      
@@ -37,4 +38,6 @@ plt.legend()
 plt.xlim([cycles[0], cycles[-1]])
 plt.ylim([0.8*min(C_errors), 1.2 * sm_mean])
 plt.xticks(cycles)
+plt.tight_layout()
+plt.savefig('vary_ac.png', dpi = 300)
 plt.show()

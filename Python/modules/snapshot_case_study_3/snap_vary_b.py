@@ -75,7 +75,7 @@ fit_dict['lr'] = float(line.split(',')[2][2:])
 lr_ratio = float(line.split(',')[4][1:-2])
 # print(lr_ratio, lr_ratio * 10)
 #%%
-budgets = 600 * np.arange(1, 6, 1)
+budgets = 6000 * np.arange(1, 6, 1)
 
 c = 6
 
@@ -117,7 +117,7 @@ for b in budgets:
                     
             pred = model.pred_ens(x_scal, ensemble)
             pred = data.scaler_y.inverse_transform(pred)
-            R_errors.append(data.assess_pred(pred)[0])
+            R_errors.append(data.assess_pred(pred)[1])
 
         
     B_errors.append(np.mean(R_errors))

@@ -37,7 +37,7 @@ fit_dict = {
     'callbacks': None,
     'initialize': 1,
     'wd_par': 0,
-    'num_epochs': 3000,
+    'num_epochs': 30000,
     'Xt': data.Xt_scal,
     'Yt': data.Yt_scal,
     'Xv': data.Xv_scal,
@@ -92,7 +92,7 @@ for m in no_models:
                     
             pred = model.pred_ens(x_scal, ensemble)
             pred = data.scaler_y.inverse_transform(pred)
-            errors.append(data.assess_pred(pred)[0])
+            errors.append(data.assess_pred(pred)[1])
             
     ENS_errors.append(errors)
             

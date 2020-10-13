@@ -27,13 +27,17 @@ with open('ens_out.txt', 'rb') as f:
     [no_models, ENS_errors] = pickle.load(f)     
     
 with open('vary_snaps_out.txt', 'rb') as f:
-    [snap_nums, SN_R_errors, SN_R_means] = pickle.load(f)        
+    [snap_nums, SN_R_errors, SN_R_means] = pickle.load(f)   
+
+with open('NC_vary_snaps_out.txt', 'rb') as f:
+    [snap_nums, NC_R_errors, NC_R_means] = pickle.load(f)      
 #%%  
 # for i in range(len(snap_rep_errors)):          
 #     plt.plot(snap_nums, snap_rep_errors[i], '-o', label = 'rep {}'.format(i+1))
-plt.title('Snapshot and true ensembles vs Single model')
+plt.figure(figsize=(5,4))
+plt.title('Snapshot, no-cycle and true ensembles vs single model')
 plt.plot(snap_nums, SN_R_means, '-o', label = 'Snapshot ensemble')
-    
+plt.plot(snap_nums, NC_R_means, '-o', label = 'No-cycle ensemble')    
 plt.plot(no_models, [np.mean(el) for el in ENS_errors], '-o', label = 'True ensemble')   
 
 sm_mean = np.mean(list(zip(*M_errors))[-1])
@@ -45,6 +49,7 @@ plt.xlabel('Number of models')
 plt.ylabel('Test MSE')
 plt.xticks(snap_nums) 
 plt.legend()
-
+plt.tight_layout()
+plt.savefig('vary_snaps.png', dpi = 300)
 plt.show()
 # print('rel', (sm_mean - np.mean(ENS_errors[-1])) / sm_mean * 100) 
