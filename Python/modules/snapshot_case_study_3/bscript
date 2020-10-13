@@ -1,0 +1,8 @@
+python3 sm_initial.py
+python3 sm.py
+python3 ens.py
+python3 snapen_initial.py
+python3 snap_vary_ac.py
+python3 snap_vary_b.py
+python3 snap_vary_snaps.py
+python3 single_cycle_ens.py
