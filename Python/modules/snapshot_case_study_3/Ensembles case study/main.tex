@@ -1,9 +1,11 @@
 \include{template}
 
+
 \usepackage{subcaption}
 
 \usepackage[english]{babel}
 \usepackage{blindtext}
+
 \begin{document}
 	
 	\sloppy
@@ -21,50 +23,90 @@
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Figures}
+\begin{figure}[htbp]
+	\centering
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/sm_rep_fun.png}  
+		\caption{a}
+	\end{subfigure}
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/sm_rep_err.png}  
+		\caption{b}
+	\end{subfigure}
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/snap_rep_fun.png}  
+		\caption{c}
+	\end{subfigure}
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/snap_rep_err.png}  
+		\caption{d}
+	\end{subfigure}
+	\caption{caption.}
+\end{figure}
 \blindtext
-\begin{figure}[ht]
-	\begin{subfigure}{.5\textwidth}
+\begin{figure}[htbp]
+	\centering
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/sm_rep_loss_plot.png}  
+		\caption{a}
+	\end{subfigure}
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/snap_rep_loss_plot.png}  
+		\caption{b}
+	\end{subfigure}
+	\caption{caption.}
+\end{figure}
+\begin{figure}[]
+	\centering
+	\begin{subfigure}{.45\textwidth}
 		\centering
 		% include first image
 		\includegraphics[width=1\linewidth]{./figs/vary_b.png}  
-		\caption{Put your sub-caption here}
+		\caption{Varying budget for fixed number of cycles (6) and number of snapshots (6). \newline}
 		\label{fig:sub-first}
 	\end{subfigure}
-	\begin{subfigure}{.5\textwidth}
+	\begin{subfigure}{.45\textwidth}
 		\centering
 		% include second image
 		\includegraphics[width=1\linewidth]{./figs/vary_ac.png}  
-		\caption{Put your sub-caption here}
+		\caption{Varying number of cycles for fixed budget (30,000 epochs) and number of snapshots (same as number of cycles).}
 		\label{fig:sub-second}
 	\end{subfigure}
-	\begin{subfigure}{.5\textwidth}
+	\begin{subfigure}{.45\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{./figs/vary_snaps.png}  
-		\caption{Put your sub-caption here}
+		\caption{Varying number of snapshots for fixed number of cycles (6) and budget (30,000 epochs).}
 		\label{fig:sub-second}
 	\end{subfigure}
-	\caption{Put your caption here}
+	\caption{Comparisons between single models, snapshot ensembles, no-cycle ensembles (standard lr), single-cycle ensembles (cosine annealing with no warm restarts), and true ensembles.}
 	\label{fig:fig}
 \end{figure}
 
 \blindtext
 
 \begin{figure}[ht]
-	\begin{subfigure}{.5\textwidth}
+	\centering
+	\begin{subfigure}{.45\textwidth}
 		\centering
 		% include first image
 		\includegraphics[width=.9\linewidth]{./figs/params_tSNE_0.png}  
 		\caption{Put your sub-caption here}
 		\label{fig:sub-first}
 	\end{subfigure}
-	\begin{subfigure}{.5\textwidth}
+	\begin{subfigure}{.45\textwidth}
 		\centering
 		% include second image
 		\includegraphics[width=.9\linewidth]{./figs/params_tSNE_1.png}  
 		\caption{Put your sub-caption here}
 		\label{fig:sub-second}
 	\end{subfigure}
-	\begin{subfigure}{.5\textwidth}
+	\begin{subfigure}{.45\textwidth}
 		\centering
 		\includegraphics[width=.9\linewidth]{./figs/params_tSNE_2.png}  
 		\caption{Put your sub-caption here}
@@ -77,21 +119,22 @@
 \blindtext
 
 \begin{figure}[ht]
-	\begin{subfigure}{.5\textwidth}
+	\centering
+	\begin{subfigure}{.45\textwidth}
 		\centering
 		% include first image
 		\includegraphics[width=.9\linewidth]{./figs/preds_tSNE_0.png}  
 		\caption{Put your sub-caption here}
 		\label{fig:sub-first}
 	\end{subfigure}
-	\begin{subfigure}{.5\textwidth}
+	\begin{subfigure}{.45\textwidth}
 		\centering
 		% include second image
 		\includegraphics[width=.9\linewidth]{./figs/preds_tSNE_1.png}  
 		\caption{Put your sub-caption here}
 		\label{fig:sub-second}
 	\end{subfigure}	
-	\begin{subfigure}{.5\textwidth}
+	\begin{subfigure}{.45\textwidth}
 		\centering
 		\includegraphics[width=.9\linewidth]{./figs/preds_tSNE_2.png}  
 		\caption{Put your sub-caption here}
@@ -104,6 +147,7 @@
 \blindtext
 
 \begin{figure}[ht]
+	\centering
 	\begin{subfigure}{1\textwidth}
 		\centering
 		% include first image

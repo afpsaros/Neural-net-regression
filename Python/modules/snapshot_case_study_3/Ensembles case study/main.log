@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.6.29) (preloaded format=pdflatex 2020.7.10)  13 OCT 2020 18:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.6.29) (preloaded format=pdflatex 2020.7.10)  14 OCT 2020 17:44
 entering extended mode
 **./main.tex
 (main.tex
@@ -894,7 +894,7 @@ Package csquotes Info: Redefining alias 'default' -> 'english'.
 
 Package biblatex Warning: Conflicting options.
 (biblatex)                '<namepart>inits' conflicts with 'uniquename=full'.
-(biblatex)                Setting 'uniquename=init' on input line 7.
+(biblatex)                Setting 'uniquename=init' on input line 9.
 
 (main.aux
 
@@ -960,22 +960,22 @@ LaTeX Warning: Label `sub@fig:sub-second' multiply defined.
 )
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
 Package biblatex Info: Trying to load language 'english'...
 Package biblatex Info: ... file 'english.lbx' found.
 
@@ -994,8 +994,8 @@ Package biblatex Info: Data encoding 'utf8' specified.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
  (main.bbl)
-Package biblatex Info: Reference section=0 on input line 7.
-Package biblatex Info: Reference segment=0 on input line 7.
+Package biblatex Info: Reference section=0 on input line 9.
+Package biblatex Info: Reference segment=0 on input line 9.
 
 (C:\Users\apsaros\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.
 mkii
@@ -1013,7 +1013,7 @@ mkii
 \everyMPtoPDFconversion=\toks32
 )
 \AtBeginShipoutBox=\box63
-Package hyperref Info: Link coloring ON on input line 7.
+Package hyperref Info: Link coloring ON on input line 9.
 
 (C:\Users\apsaros\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
@@ -1027,9 +1027,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count455
 )
-LaTeX Info: Redefining \ref on input line 7.
-LaTeX Info: Redefining \pageref on input line 7.
-LaTeX Info: Redefining \nameref on input line 7.
+LaTeX Info: Redefining \ref on input line 9.
+LaTeX Info: Redefining \pageref on input line 9.
+LaTeX Info: Redefining \nameref on input line 9.
  (main.out) (main.out)
 \@outlinefile=\write5
 \openout5 = `main.out'.
@@ -1070,7 +1070,7 @@ LaTeX Info: Redefining \nameref on input line 7.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 ABD: EverySelectfont initializing macros
-LaTeX Info: Redefining \selectfont on input line 7.
+LaTeX Info: Redefining \selectfont on input line 9.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: longtable package is loaded.
 
@@ -1079,11 +1079,11 @@ Package: ltcaption 2020/05/30 v1.4b longtable captions (AR)
 )
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
-<./figs/vary_b.png, id=7, 361.35pt x 289.08pt>
-File: ./figs/vary_b.png Graphic file (type png)
-<use ./figs/vary_b.png>
-Package pdftex.def Info: ./figs/vary_b.png  used on input line 29.
-(pdftex.def)             Requested size: 190.63345pt x 152.5059pt.
+<./figs/sm_rep_fun.png, id=7, 433.62pt x 289.08pt>
+File: ./figs/sm_rep_fun.png Graphic file (type png)
+<use ./figs/sm_rep_fun.png>
+Package pdftex.def Info: ./figs/sm_rep_fun.png  used on input line 30.
+(pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
 LaTeX Font Info:    Trying to load font information for OMS+rsfs on input line 
 32.
  (C:\Users\apsaros\AppData\Local\Programs\MiKTeX\tex/latex/calrsfs\omsrsfs.fd)
@@ -1098,96 +1098,119 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 32.
 (C:\Users\apsaros\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<./figs/vary_ac.png, id=9, 361.35pt x 289.08pt>
+<./figs/sm_rep_err.png, id=9, 433.62pt x 289.08pt>
+File: ./figs/sm_rep_err.png Graphic file (type png)
+<use ./figs/sm_rep_err.png>
+Package pdftex.def Info: ./figs/sm_rep_err.png  used on input line 35.
+(pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
+<./figs/snap_rep_fun.png, id=10, 433.62pt x 289.08pt>
+File: ./figs/snap_rep_fun.png Graphic file (type png)
+<use ./figs/snap_rep_fun.png>
+Package pdftex.def Info: ./figs/snap_rep_fun.png  used on input line 40.
+(pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
+<./figs/snap_rep_err.png, id=11, 433.62pt x 289.08pt>
+File: ./figs/snap_rep_err.png Graphic file (type png)
+<use ./figs/snap_rep_err.png>
+Package pdftex.def Info: ./figs/snap_rep_err.png  used on input line 45.
+(pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
+<./figs/sm_rep_loss_plot.png, id=12, 433.62pt x 289.08pt>
+File: ./figs/sm_rep_loss_plot.png Graphic file (type png)
+<use ./figs/sm_rep_loss_plot.png>
+Package pdftex.def Info: ./figs/sm_rep_loss_plot.png  used on input line 55.
+(pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
+<./figs/snap_rep_loss_plot.png, id=13, 433.62pt x 289.08pt>
+File: ./figs/snap_rep_loss_plot.png Graphic file (type png)
+<use ./figs/snap_rep_loss_plot.png>
+Package pdftex.def Info: ./figs/snap_rep_loss_plot.png  used on input line 60.
+(pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
+
+
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `tbp') on input line 65.
+
+<./figs/vary_b.png, id=14, 361.35pt x 289.08pt>
+File: ./figs/vary_b.png Graphic file (type png)
+<use ./figs/vary_b.png>
+Package pdftex.def Info: ./figs/vary_b.png  used on input line 70.
+(pdftex.def)             Requested size: 171.56894pt x 137.25708pt.
+<./figs/vary_ac.png, id=15, 361.35pt x 289.08pt>
 File: ./figs/vary_ac.png Graphic file (type png)
 <use ./figs/vary_ac.png>
-Package pdftex.def Info: ./figs/vary_ac.png  used on input line 36.
-(pdftex.def)             Requested size: 190.63345pt x 152.5059pt.
-<./figs/vary_snaps.png, id=10, 361.35pt x 289.08pt>
+Package pdftex.def Info: ./figs/vary_ac.png  used on input line 77.
+(pdftex.def)             Requested size: 171.56894pt x 137.25708pt.
+<./figs/vary_snaps.png, id=16, 361.35pt x 289.08pt>
 File: ./figs/vary_snaps.png Graphic file (type png)
 <use ./figs/vary_snaps.png>
-Package pdftex.def Info: ./figs/vary_snaps.png  used on input line 42.
-(pdftex.def)             Requested size: 190.63345pt x 152.5059pt.
-
-Overfull \hbox (2.2222pt too wide) in paragraph at lines 26--46
-[]$[]$ $[]$
- []
-
-<./figs/params_tSNE_0.png, id=11, 361.35pt x 289.08pt>
-File: ./figs/params_tSNE_0.png Graphic file (type png)
-<use ./figs/params_tSNE_0.png>
-Package pdftex.def Info: ./figs/params_tSNE_0.png  used on input line 56.
+Package pdftex.def Info: ./figs/vary_snaps.png  used on input line 83.
 (pdftex.def)             Requested size: 171.56894pt x 137.25708pt.
-<./figs/params_tSNE_1.png, id=12, 361.35pt x 289.08pt>
-File: ./figs/params_tSNE_1.png Graphic file (type png)
-<use ./figs/params_tSNE_1.png>
-Package pdftex.def Info: ./figs/params_tSNE_1.png  used on input line 63.
-(pdftex.def)             Requested size: 171.56894pt x 137.25708pt.
-<./figs/params_tSNE_2.png, id=13, 361.35pt x 289.08pt>
-File: ./figs/params_tSNE_2.png Graphic file (type png)
-<use ./figs/params_tSNE_2.png>
-Package pdftex.def Info: ./figs/params_tSNE_2.png  used on input line 69.
-(pdftex.def)             Requested size: 171.56894pt x 137.25708pt.
-
-Overfull \hbox (2.2222pt too wide) in paragraph at lines 53--73
-[]$[]$ $[]$
- []
-
 [1
 
 
 
-{C:/Users/apsaros/AppData/Local/MiKTeX/pdftex/config/pdftex.map}]
-<./figs/preds_tSNE_0.png, id=22, 361.35pt x 289.08pt>
+{C:/Users/apsaros/AppData/Local/MiKTeX/pdftex/config/pdftex.map} <./figs/sm_rep
+_fun.png> <./figs/sm_rep_err.png> <./figs/snap_rep_fun.png> <./figs/snap_rep_er
+r.png>]
+<./figs/params_tSNE_0.png, id=33, 361.35pt x 289.08pt>
+File: ./figs/params_tSNE_0.png Graphic file (type png)
+<use ./figs/params_tSNE_0.png>
+Package pdftex.def Info: ./figs/params_tSNE_0.png  used on input line 98.
+(pdftex.def)             Requested size: 154.411pt x 123.53004pt.
+<./figs/params_tSNE_1.png, id=34, 361.35pt x 289.08pt>
+File: ./figs/params_tSNE_1.png Graphic file (type png)
+<use ./figs/params_tSNE_1.png>
+Package pdftex.def Info: ./figs/params_tSNE_1.png  used on input line 105.
+(pdftex.def)             Requested size: 154.411pt x 123.53004pt.
+<./figs/params_tSNE_2.png, id=35, 361.35pt x 289.08pt>
+File: ./figs/params_tSNE_2.png Graphic file (type png)
+<use ./figs/params_tSNE_2.png>
+Package pdftex.def Info: ./figs/params_tSNE_2.png  used on input line 111.
+(pdftex.def)             Requested size: 154.411pt x 123.53004pt.
+<./figs/preds_tSNE_0.png, id=36, 361.35pt x 289.08pt>
 File: ./figs/preds_tSNE_0.png Graphic file (type png)
 <use ./figs/preds_tSNE_0.png>
-Package pdftex.def Info: ./figs/preds_tSNE_0.png  used on input line 83.
-(pdftex.def)             Requested size: 171.56894pt x 137.25708pt.
-<./figs/preds_tSNE_1.png, id=23, 361.35pt x 289.08pt>
+Package pdftex.def Info: ./figs/preds_tSNE_0.png  used on input line 126.
+(pdftex.def)             Requested size: 154.411pt x 123.53004pt.
+<./figs/preds_tSNE_1.png, id=37, 361.35pt x 289.08pt>
 File: ./figs/preds_tSNE_1.png Graphic file (type png)
 <use ./figs/preds_tSNE_1.png>
-Package pdftex.def Info: ./figs/preds_tSNE_1.png  used on input line 90.
-(pdftex.def)             Requested size: 171.56894pt x 137.25708pt.
-<./figs/preds_tSNE_2.png, id=24, 361.35pt x 289.08pt>
+Package pdftex.def Info: ./figs/preds_tSNE_1.png  used on input line 133.
+(pdftex.def)             Requested size: 154.411pt x 123.53004pt.
+<./figs/preds_tSNE_2.png, id=38, 361.35pt x 289.08pt>
 File: ./figs/preds_tSNE_2.png Graphic file (type png)
 <use ./figs/preds_tSNE_2.png>
-Package pdftex.def Info: ./figs/preds_tSNE_2.png  used on input line 96.
-(pdftex.def)             Requested size: 171.56894pt x 137.25708pt.
-
-Overfull \hbox (2.2222pt too wide) in paragraph at lines 80--100
-[]$[]$ $[]$
- []
-
-[2 <./figs/vary_b.png> <./figs/vary_ac.png> <./figs/vary_snaps.png>]
-<./figs/params_cosine_similarities.png, id=36, 433.62pt x 144.54pt>
+Package pdftex.def Info: ./figs/preds_tSNE_2.png  used on input line 139.
+(pdftex.def)             Requested size: 154.411pt x 123.53004pt.
+ [2 <./figs/sm_rep_loss_plot.png> <./figs/snap_rep_loss_plot.png>]
+[3 <./figs/vary_b.png> <./figs/vary_ac.png> <./figs/vary_snaps.png>]
+<./figs/params_cosine_similarities.png, id=54, 433.62pt x 144.54pt>
 File: ./figs/params_cosine_similarities.png Graphic file (type png)
 <use ./figs/params_cosine_similarities.png>
 Package pdftex.def Info: ./figs/params_cosine_similarities.png  used on input l
-ine 110.
+ine 154.
 (pdftex.def)             Requested size: 381.26692pt x 127.09633pt.
-<./figs/preds_cosine_similarities.png, id=37, 433.62pt x 144.54pt>
+<./figs/preds_cosine_similarities.png, id=55, 433.62pt x 144.54pt>
 File: ./figs/preds_cosine_similarities.png Graphic file (type png)
 <use ./figs/preds_cosine_similarities.png>
 Package pdftex.def Info: ./figs/preds_cosine_similarities.png  used on input li
-ne 117.
+ne 161.
 (pdftex.def)             Requested size: 381.26692pt x 127.09633pt.
 
 
-LaTeX Warning: Empty bibliography on input line 129.
+LaTeX Warning: Empty bibliography on input line 173.
 
 
 Package caption Warning: Unused \captionsetup[table] on input line 160.
 See the caption package documentation for explanation.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 131.
-[3 <./figs/params_tSNE_0.png> <./figs/params_tSNE_1.png> <./figs/params_tSNE_2.
-png>] [4 <./figs/preds_tSNE_0.png> <./figs/preds_tSNE_1.png> <./figs/preds_tSNE
-_2.png>] [5 <./figs/params_cosine_similarities.png> <./figs/preds_cosine_simila
-rities.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 131.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 175.
+[4 <./figs/params_tSNE_0.png> <./figs/params_tSNE_1.png> <./figs/params_tSNE_2.
+png>] [5 <./figs/preds_tSNE_0.png> <./figs/preds_tSNE_1.png> <./figs/preds_tSNE
+_2.png> <./figs/params_cosine_similarities.png> <./figs/preds_cosine_similariti
+es.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 175.
  (main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 131.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 131.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 175.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 175.
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 6D38B21895D2A4C81C9AF9521005705F;42.
 
@@ -1199,10 +1222,10 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 19767 strings out of 480790
- 339519 string characters out of 2896363
- 858293 words of memory out of 3000000
- 35442 multiletter control sequences out of 15000+200000
+ 19805 strings out of 480790
+ 340487 string characters out of 2896363
+ 860293 words of memory out of 3000000
+ 35472 multiletter control sequences out of 15000+200000
  536657 words of font info for 42 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,9n,47p,1658b,1619s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1213,9 +1236,9 @@ ype1/public/amsfonts/cm/cmbx9.pfb><C:/Users/apsaros/AppData/Local/Programs/MiKT
 eX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/apsaros/AppData/Local/Pro
 grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/apsaros/AppData
 /Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb>
-Output written on main.pdf (5 pages, 1314264 bytes).
+Output written on main.pdf (5 pages, 1801095 bytes).
 PDF statistics:
- 85 PDF objects out of 1000 (max. 8388607)
- 11 named destinations out of 1000 (max. 500000)
- 64 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 100 PDF objects out of 1000 (max. 8388607)
+ 13 named destinations out of 1000 (max. 500000)
+ 94 words of extra memory for PDF output out of 10000 (max. 10000000)
 

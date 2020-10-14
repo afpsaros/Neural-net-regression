@@ -63,7 +63,7 @@ CA_params_cosims = CA_params_cosims + np.tril(np.transpose(CA_params_cosims), -1
 #%%
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(6,2)) 
 ax1.set_title('Standard learning rate')
-img = ax1.imshow(M_params_cosims.round(2), cmap="cividis")
+img = ax1.imshow(M_params_cosims.round(2), cmap="autumn")
 img.set_visible(False)   
 
 ax1.axis('off')
@@ -98,7 +98,7 @@ CA_preds_cosims = CA_preds_cosims + np.tril(np.transpose(CA_preds_cosims), -1)
 #%%
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(6,2)) 
 ax1.set_title('Standard learning rate')
-img = ax1.imshow(M_preds_cosims.round(2), cmap="cividis")
+img = ax1.imshow(M_preds_cosims.round(2), cmap="autumn")
 img.set_visible(False)   
 
 ax1.axis('off')

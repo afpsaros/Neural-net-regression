@@ -26,11 +26,11 @@ with open('single_cycle_ens_out.txt', 'rb') as f:
     
 #%%
 plt.figure(figsize=(5,4))
-plt.title('Snapshot ensembles vs Single-cycle ensembles')
+# plt.title('Snapshot ensembles vs Single-cycle ensembles')
 plt.plot(budgets, snap_B_errors, '-o', label = 'Snapshot ensemble')
 plt.plot(budgets, single_cycle_B_errors, '-o', label = 'Single-cycle ensemble')
-plt.xlabel('Training budget (epochs)')
-plt.ylabel('Test MSE')
+plt.xlabel('Training budget (epochs)', fontsize = 15)
+plt.ylabel('Test error', fontsize = 15)
 plt.xticks(budgets)
 plt.xlim([budgets[0], budgets[-1]])
 plt.legend()

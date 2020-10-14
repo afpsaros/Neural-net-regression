@@ -64,11 +64,11 @@ for i in range(int(2 * reps / 4)):
     plt.figure(figsize=(5,4))
     
     ax = sns.scatterplot(X_embedded[:,0], X_embedded[:,1], hue = y, legend='full', \
-                        palette=palette).set_title('t-SNE of predictions', fontsize = 20)
+                        palette=palette)
     
     plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)    
-    plt.xlabel('t-SNE axis 1')
-    plt.ylabel('t-SNE axis 2')
+    plt.xlabel('t-SNE axis 1', fontsize = 15)
+    plt.ylabel('t-SNE axis 2', fontsize = 15)
         
     colors = list(iter(palette))
         
