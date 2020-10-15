@@ -30,6 +30,7 @@ with open('data_instance.txt', 'rb') as f:
     data = pickle.load(f)    
 
 x_scal = data.Xe_scal
+
 #%%
 DNN_dict = {
     'input dimension': 1,

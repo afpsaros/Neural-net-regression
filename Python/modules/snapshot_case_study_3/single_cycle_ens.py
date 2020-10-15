@@ -26,6 +26,12 @@ with open('data_instance.txt', 'rb') as f:
 
 x_scal = data.Xe_scal
 #%%
+with open('budget_info.txt', 'r') as f:
+    l = list(f)
+    line = l[0].strip()   
+    
+total_budget, mini_budget, given_step = [int(line.split(',')[i]) for i in range(3)]
+#%%
 DNN_dict = {
     'input dimension': 1,
     'output dimension': 1,
@@ -69,7 +75,7 @@ lr_ratio = float(line.split(',')[4][1:-2])
 # print(lr_ratio, lr_ratio * 10)
 
 #%%
-budgets = 6000 * np.arange(1, 6, 1)
+budgets = mini_budget * np.arange(1, 6, 1)
 reps = 6
 c = 6
 B_errors = []

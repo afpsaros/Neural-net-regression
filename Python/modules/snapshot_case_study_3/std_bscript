@@ -25,3 +25,5 @@ bash bscript
 mkdir results
 
 mv *.txt -t results
+
+mv *.png -t results

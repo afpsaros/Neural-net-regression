@@ -23,6 +23,12 @@ with open('data_instance.txt', 'rb') as f:
 
 x_scal = data.Xe_scal
 #%%
+with open('budget_info.txt', 'r') as f:
+    l = list(f)
+    line = l[0].strip()   
+    
+total_budget, mini_budget, given_step = [int(line.split(',')[i]) for i in range(3)]
+#%%
 DNN_dict = {
     'input dimension': 1,
     'output dimension': 1,
@@ -34,7 +40,7 @@ fit_dict = {
     'callbacks': None,
     'initialize': 1,
     'wd_par': 0,
-    'num_epochs': 30000,
+    'num_epochs': total_budget,
     'Xt': data.Xt_scal,
     'Yt': data.Yt_scal,
     'Xv': data.Xv_scal,
@@ -47,6 +53,8 @@ with open("sm_best_arch.txt", "r") as f:
 
     l = list(f)
     line = l[0].strip()
+
+print(l)
     
 DNN_dict['number of layers'] = int(line.split(',')[0][2:])
 
@@ -72,7 +80,7 @@ for m in range(M):
         inifin = None if initial == 0 and final == 0 else InitialFinal(initial, final)
         if inifin is not None: callbacks.append(inifin)
 
-        snap_step = 5000
+        snap_step = given_step
         snap = None if snap_step is None else Snapper(snap_step)   
         if snap is not None: callbacks.append(snap) 
         

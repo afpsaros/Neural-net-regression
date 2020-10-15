@@ -23,6 +23,12 @@ with open('data_instance.txt', 'rb') as f:
 
 x_scal = data.Xe_scal
 #%%
+with open('budget_info.txt', 'r') as f:
+    l = list(f)
+    line = l[0].strip()   
+    
+total_budget, mini_budget, given_step = [int(line.split(',')[i]) for i in range(3)]
+#%%
 DNN_dict = {
     'input dimension': 1,
     'output dimension': 1,
@@ -34,7 +40,7 @@ fit_dict = {
     'callbacks': None,
     'initialize': 1,
     'wd_par': 0,
-    'num_epochs': 30000,
+    'num_epochs': total_budget,
     'Xt': data.Xt_scal,
     'Yt': data.Yt_scal,
     'Xv': data.Xv_scal,
@@ -105,7 +111,7 @@ with g.as_default() as g:
     
     fit_dict['callbacks'] = callbacks
     
-    snap_step = 5000
+    snap_step = given_step
     fit_dict['decay'] = ['cosine_restarts',snap_step, lr_ratio, 1., 1.]
         
     # model = DNN.standard(DNN_dict, sess, seed = 0)
