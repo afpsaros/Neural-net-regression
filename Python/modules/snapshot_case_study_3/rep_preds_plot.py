@@ -44,14 +44,20 @@ x = data.Xe.flatten()
 #%%
 r = 0
 
+ylim = [0, 2.2]
+
 pred = SN_R_preds[r][-1]
 error = data.assess_pred(pred)[-1]
+print(sum(error))
 
 plt.plot(x, error, '-', label = 'snap ensemble')
 plt.xlabel('x', fontsize = 15)
 plt.ylabel('Point-wise error', fontsize = 15)
-# plt.tight_layout()
-# plt.savefig('snap_rep_err.png', dpi = 300)
+
+plt.ylim(ylim)
+
+plt.tight_layout()
+plt.savefig('snap_rep_err.png', dpi = 300)
 plt.show()
 
 pred = pred.flatten()
@@ -62,18 +68,22 @@ data.plot_eval_data(0)
 plt.xlabel('x', fontsize = 15)
 plt.ylabel('y', fontsize = 15)
 plt.legend()
-# plt.tight_layout()
-# plt.savefig('snap_rep_fun.png', dpi = 300)
+plt.tight_layout()
+plt.savefig('snap_rep_fun.png', dpi = 300)
 plt.show()
 #%%
 pred = M_preds[r][-1]
 error = data.assess_pred(pred)[-1]
+print(sum(error))
 
 plt.plot(x, error, '-', label = 'single model')
 plt.xlabel('x', fontsize = 15)
 plt.ylabel('Point-wise error', fontsize = 15)
-# plt.tight_layout()
-# plt.savefig('sm_rep_err.png', dpi = 300)
+
+plt.ylim(ylim)
+
+plt.tight_layout()
+plt.savefig('sm_rep_err.png', dpi = 300)
 plt.show()
 
 plt.plot(x, pred, '-', label = 'single model')
@@ -81,8 +91,8 @@ data.plot_eval_data(0)
 plt.xlabel('x', fontsize = 15)
 plt.ylabel('y', fontsize = 15)
 plt.legend()
-# plt.tight_layout()
-# plt.savefig('sm_rep_fun.png', dpi = 300)
+plt.tight_layout()
+plt.savefig('sm_rep_fun.png', dpi = 300)
 plt.show()
 #%%
 # test_list = [[1, 4, [5,6]], [4, 6, [8,9]], [8, 3, [10,11]]]
@@ -91,12 +101,16 @@ plt.show()
 #%%
 pred = ENS_preds[-1][0]
 error = data.assess_pred(pred)[-1]
+print(sum(error))
 
 plt.plot(x, error, '-', label = 'true ensemble')
 plt.xlabel('x', fontsize = 15)
 plt.ylabel('Point-wise error', fontsize = 15)
-# plt.tight_layout()
-# plt.savefig('sm_rep_err.png', dpi = 300)
+
+plt.ylim(ylim)
+
+plt.tight_layout()
+plt.savefig('ens_rep_err.png', dpi = 300)
 plt.show()
 
 pred = pred.flatten()
@@ -107,52 +121,34 @@ data.plot_eval_data(0)
 plt.xlabel('x', fontsize = 15)
 plt.ylabel('y', fontsize = 15)
 plt.legend()
-# plt.tight_layout()
-# plt.savefig('sm_rep_fun.png', dpi = 300)
-plt.show()
-#%%
-pred = ENS_preds[-1][0]
-error = data.assess_pred(pred)[-1]
-
-plt.plot(x, error, '-', label = 'true ensemble')
-plt.xlabel('x', fontsize = 15)
-plt.ylabel('Point-wise error', fontsize = 15)
-# plt.tight_layout()
-# plt.savefig('sm_rep_err.png', dpi = 300)
-plt.show()
-
-pred = pred.flatten()
-pred_std = np.std(list(zip(*M_preds))[-1], 0).flatten()
-plt.plot(x, pred, '-', label = 'true ensemble')
-plt.fill_between(x, pred-pred_std, pred+pred_std)
-data.plot_eval_data(0)
-plt.xlabel('x', fontsize = 15)
-plt.ylabel('y', fontsize = 15)
-plt.legend()
-# plt.tight_layout()
-# plt.savefig('sm_rep_fun.png', dpi = 300)
+plt.tight_layout()
+plt.savefig('ens_rep_fun.png', dpi = 300)
 plt.show()
 #%%
 pred = NC_R_preds[r][-1]
 error = data.assess_pred(pred)[-1]
+print(sum(error))
 
-plt.plot(x, error, '-', label = 'snap ensemble')
+plt.plot(x, error, '-', label = 'no-cycle ensemble')
 plt.xlabel('x', fontsize = 15)
 plt.ylabel('Point-wise error', fontsize = 15)
-# plt.tight_layout()
-# plt.savefig('snap_rep_err.png', dpi = 300)
+
+plt.ylim(ylim)
+
+plt.tight_layout()
+plt.savefig('nc_rep_err.png', dpi = 300)
 plt.show()
 
 pred = pred.flatten()
 pred_std = np.std(M_preds[r], 0).flatten()
-plt.plot(x, pred, '-', label = 'snap ensemble')
+plt.plot(x, pred, '-', label = 'no-cycle ensemble')
 plt.fill_between(x, pred-pred_std, pred+pred_std)
 data.plot_eval_data(0)
 plt.xlabel('x', fontsize = 15)
 plt.ylabel('y', fontsize = 15)
 plt.legend()
-# plt.tight_layout()
-# plt.savefig('snap_rep_fun.png', dpi = 300)
+plt.tight_layout()
+plt.savefig('nc_rep_fun.png', dpi = 300)
 plt.show()
 
 
