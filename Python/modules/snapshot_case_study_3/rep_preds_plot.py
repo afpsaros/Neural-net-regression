@@ -46,7 +46,7 @@ plt.savefig('snap_rep_fun.png', dpi = 300)
 plt.show()
 
 pred = M_preds[0][-1]
-plt.plot(x, pred, '.', label = 'snap ensemble')
+plt.plot(x, pred, '.', label = 'single model')
 data.plot_eval_data(0)
 plt.xlabel('x', fontsize = 15)
 plt.ylabel('y', fontsize = 15)
@@ -66,7 +66,7 @@ plt.show()
 
 pred = M_preds[0][-1]
 error = data.assess_pred(pred)[-1]
-plt.plot(x, error, '-', label = 'snap ensemble')
+plt.plot(x, error, '-', label = 'single model')
 plt.xlabel('x', fontsize = 15)
 plt.ylabel('Point-wise error', fontsize = 15)
 plt.tight_layout()

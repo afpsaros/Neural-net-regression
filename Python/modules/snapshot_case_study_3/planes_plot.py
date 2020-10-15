@@ -25,25 +25,7 @@ with open('sm_out.txt', 'rb') as f:
 with open('ca_out.txt', 'rb') as f:
     [CA_snaps, CA_preds, CA_errors] = pickle.load(f)    
 #%%
-pj = planes_projections()    
 
-reps = len(M_snaps)
-c = len(M_snaps[0][0])
-#%%
-r = 4
-
-w_vecs = []
-for ci in range(-3, 0):
-    w_vecs.append(pj.abtovec(M_snaps[r][0][ci], M_snaps[r][1][ci]))
-    
-sw, lw = pj.shapeslengths(M_snaps[r][0][ci])
-sb, lb = pj.shapeslengths(M_snaps[r][1][ci])
-wkeys = M_snaps[r][0][ci].keys()
-bkeys = M_snaps[r][1][ci].keys()
-
-u_hat_vec, v_hat_vec, u_norm, v_norm, inner = \
-pj.abcvectobasis(*w_vecs, wkeys, bkeys, sw, lw, sb, lb)
-#%%
 with open('data_instance.txt', 'rb') as f:
     data = pickle.load(f)  
 
@@ -65,113 +47,109 @@ with open("sm_best_arch.txt", "r") as f:
     line = l[0].strip()
     
 DNN_dict['number of layers'] = int(line.split(',')[0][2:])
-
 #%%
-pars = np.linspace(-5, 10, 30)
-error_mat = []
+pj = planes_projections(*M_snaps[0])    
 
-for par_1 in pars:
-    error_v = []
-    for par_2 in pars:        
-        wvec_new = w_vecs[0] + par_1 * u_hat_vec + par_2 * v_hat_vec
-        
-        weights, biases = pj.cvectodict(wvec_new, wkeys, bkeys, sw, lw, sb, lb)      
-        
-        g = tf.Graph()
-        sess = tf.Session(graph = g)
-        with g.as_default() as g:  
-            model = DNN.standard(DNN_dict, sess, seed = 1)
-            error_v.append(model.score_w(tr_dict, weights, biases)[0])
-
-    error_mat.append(error_v)   
+reps = len(M_snaps)
+c = len(M_snaps[0][0])
 #%%
-basis = np.concatenate((u_hat_vec.reshape(-1,1), v_hat_vec.reshape(-1,1)), axis = 1)
-ata = np.linalg.inv(np.matmul(basis.transpose(), basis))
+r = 4
 
-init_proj_x = []
-init_proj_y = []
+plane_ws, plane_bs = M_snaps[r][0][-3:], M_snaps[r][1][-3:]
 
-# for c in range(num):
-#     prx, pry = pj.projtoplane(pj.abtovec(init_weights[c], init_biases[c]), w1vec, u_hat_vec, v_hat_vec)
-#     init_proj_x.append(prx)
-#     init_proj_y.append(pry)    
+pars_1 = np.linspace(-8, 8, 30)
 
-xx, yy = np.meshgrid(pars, pars)
+error_mat_1, _for_projection_1, (u_norm_1, v_norm_1, inner_1) = \
+    pj.createplane(plane_ws, plane_bs, pars_1, DNN_dict, tr_dict)
+#%%
+plane_ws, plane_bs = CA_snaps[r][0][-3:], CA_snaps[r][1][-3:]  
+
+pars_2 = np.linspace(-8, 20, 30)   
+ 
+error_mat_2, _for_projection_2, (u_norm_2, v_norm_2, inner_2) = \
+    pj.createplane(plane_ws, plane_bs, pars_2, DNN_dict, tr_dict)
+#%%
+projected = pj.projmultoplane(M_snaps[r][0][:-3], M_snaps[r][1][:-3], _for_projection_1)
+    
+xx, yy = np.meshgrid(pars_1, pars_1)
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
-fig.suptitle('Training loss contour plots', fontsize = 30)
-
-im1 = ax1.contourf(xx, yy, np.array(error_mat).transpose(), 200, origin='lower', cmap='RdGy')
+ax1.set_title('Standard learning rate')
+norm = plt.Normalize(0, 0.5)
+im1 = ax1.contourf(xx, yy, np.array(error_mat_1).transpose(), 200, origin='lower', cmap='RdGy', norm = norm)
 fig.colorbar(im1, ax=ax1)
-ax1.scatter([0, u_norm, inner / u_norm], [0, 0, v_norm], marker = 'x', color = 'k', s = 50, label = 'final')
-# ax1.scatter(init_proj_x, init_proj_y, marker = 'x', color = 'm', s = 50, label = 'initial')
-ax1.legend();
 
-im2 = ax2.contour(xx, yy, np.array(error_mat).transpose(), 40, origin='lower', cmap='RdGy')
+ax1.scatter(*projected, marker = 'x', color = 'm', s = 50, label = 'early snaps')
+ax1.scatter([0], [0], marker = 'x', color = 'y', s = 50, label = 'snap -2')
+ax1.scatter([u_norm_1], [0], marker = 'x', color = 'b', s = 50, label = 'snap -1')
+ax1.scatter([inner_1 / u_norm_1], [v_norm_1], marker = 'x', color = 'k', s = 50, label = 'final')
+
+# ax1.legend(); 
+
+projected = pj.projmultoplane(CA_snaps[r][0][:-3], CA_snaps[r][1][:-3], _for_projection_2)
+   
+xx, yy = np.meshgrid(pars_2, pars_2)
+
+ax2.set_title('Cosine annealing')
+im2 = ax2.contourf(xx, yy, np.array(error_mat_2).transpose(), 200, origin='lower', cmap='RdGy', norm = norm)
 fig.colorbar(im2, ax=ax2)
-ax2.scatter([0, u_norm, inner / u_norm], [0, 0, v_norm], color = 'k', marker = 'x', s = 50, label = 'final')
-# ax2.scatter(init_proj_x, init_proj_y, marker = 'x', color = 'm', s = 50, label = 'initial')
-ax2.legend();       
-#%%    
-w_vecs = []
-for ci in range(-3, 0):
-    w_vecs.append(pj.abtovec(CA_snaps[r][0][ci], CA_snaps[r][1][ci]))
-    
-# sw, lw = pj.shapeslengths(M_snaps[r][0][ci])
-# sb, lb = pj.shapeslengths(M_snaps[r][1][ci])
-# wkeys = M_snaps[r][0][ci].keys()
-# bkeys = M_snaps[r][1][ci].keys()
 
-u_hat_vec, v_hat_vec, u_norm, v_norm, inner = \
-pj.abcvectobasis(*w_vecs, wkeys, bkeys, sw, lw, sb, lb)    
+ax2.scatter(*projected, marker = 'x', color = 'm', s = 50, label = 'early snaps')
+ax2.scatter([0], [0], marker = 'x', color = 'y', s = 50, label = 'snap -2')
+ax2.scatter([u_norm_2], [0], marker = 'x', color = 'b', s = 50, label = 'snap -1')
+ax2.scatter([inner_2 / u_norm_2], [v_norm_2], marker = 'x', color = 'k', s = 50, label = 'final')
+
+ax2.legend(bbox_to_anchor=(1.6, 1.0))
+
+plt.tight_layout()
+plt.savefig('planes.png', dpi = 300)   
+
 #%%
-pars = np.linspace(-5, 20, 30)
-error_mat = []
-
-for par_1 in pars:
-    error_v = []
-    for par_2 in pars:        
-        wvec_new = w_vecs[0] + par_1 * u_hat_vec + par_2 * v_hat_vec
-        
-        weights, biases = pj.cvectodict(wvec_new, wkeys, bkeys, sw, lw, sb, lb)      
-        
-        g = tf.Graph()
-        sess = tf.Session(graph = g)
-        with g.as_default() as g:  
-            model = DNN.standard(DNN_dict, sess, seed = 1)
-            error_v.append(model.score_w(tr_dict, weights, biases)[0])
-
-    error_mat.append(error_v)   
-#%%
-basis = np.concatenate((u_hat_vec.reshape(-1,1), v_hat_vec.reshape(-1,1)), axis = 1)
-ata = np.linalg.inv(np.matmul(basis.transpose(), basis))
-
-init_proj_x = []
-init_proj_y = []
-
-# for c in range(num):
-#     prx, pry = pj.projtoplane(pj.abtovec(init_weights[c], init_biases[c]), w1vec, u_hat_vec, v_hat_vec)
-#     init_proj_x.append(prx)
-#     init_proj_y.append(pry)    
-
-xx, yy = np.meshgrid(pars, pars)
+# r = 4
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
-fig.suptitle('Training loss contour plots', fontsize = 30)
 
-im1 = ax1.contourf(xx, yy, np.array(error_mat).transpose(), 200, origin='lower', cmap='RdGy')
-fig.colorbar(im1, ax=ax1)
-ax1.scatter([0, u_norm, inner / u_norm], [0, 0, v_norm], marker = 'x', color = 'k', s = 50, label = 'final')
-# ax1.scatter(init_proj_x, init_proj_y, marker = 'x', color = 'm', s = 50, label = 'initial')
-ax1.legend();
+combs = [[-1, i] for i in range(-6, -1)] 
 
-im2 = ax2.contour(xx, yy, np.array(error_mat).transpose(), 40, origin='lower', cmap='RdGy')
-fig.colorbar(im2, ax=ax2)
-ax2.scatter([0, u_norm, inner / u_norm], [0, 0, v_norm], color = 'k', marker = 'x', s = 50, label = 'final')
-# ax2.scatter(init_proj_x, init_proj_y, marker = 'x', color = 'm', s = 50, label = 'initial')
-ax2.legend();     
+pars = np.linspace(0, 1, 11)
+
+ax1.set_title('Standard learning rate')
+for c in range(len(combs)):
     
+    _ws = [M_snaps[r][0][combs[c][0]], M_snaps[r][0][combs[c][1]]]
+    _bs = [M_snaps[r][1][combs[c][0]], M_snaps[r][1][combs[c][1]]]
     
+    error_line, _ = pj.lineloss(_ws, _bs, pars, DNN_dict, tr_dict, None, None)
+   
+    ax1.plot(pars, error_line, '-o', label = 'snaps %.1d and %.1d' %(combs[c][0] + 1, combs[c][1] + 1))
+
+ax1.set_ylim([-0.01, 0.2])
+
+pars = np.linspace(0, 1, 11)
+
+ax2.set_title('Cosine annealing')
+for c in range(len(combs)):
+    
+    _ws = [CA_snaps[r][0][combs[c][0]], CA_snaps[r][0][combs[c][1]]]
+    _bs = [CA_snaps[r][1][combs[c][0]], CA_snaps[r][1][combs[c][1]]]
+    
+    error_line, _ = pj.lineloss(_ws, _bs, pars, DNN_dict, tr_dict, None, None)
+   
+    ax2.plot(pars, error_line, '-o', label = 'snaps %.1d and %.1d' %(combs[c][0] + 1, combs[c][1] + 1))
+
+ax2.set_ylim([-0.01, 0.2])
+ax2.legend(bbox_to_anchor=(1.4, 1.0))
+
+
+plt.tight_layout()
+plt.savefig('line_plots.png', dpi = 300)    
+
+plt.show()  
+
+
+
+
+
     
     
     

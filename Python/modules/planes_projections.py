@@ -5,11 +5,19 @@ Created on Tue Sep 29 11:36:59 2020
 @author: afpsaros
 """
 
+import tensorflow as tf
+from reg_classes import DNN
 import itertools
 import numpy as np
 flatten = itertools.chain.from_iterable
 
 class planes_projections:
+    
+    def __init__(self, ws, bs):
+        self.sw, self.lw = self.shapeslengths(ws[0])
+        self.sb, self.lb = self.shapeslengths(bs[0])
+        self.wkeys = ws[0].keys()
+        self.bkeys = bs[0].keys()
     
     def dictovec(self, a):   
         # receives a dictionary and converts its values into a vector
@@ -93,6 +101,71 @@ class planes_projections:
         
         return prx, pry
     
+    def createplane(self, ws, bs, pars, DNN_dict, tr_dict):
+             
+        if len(ws[0]) == 1:
+            w1vec = np.float32(np.zeros(self.abtovec(ws[1], bs[1]).shape))
+        else:
+            w1vec = self.abtovec(ws[0], bs[0])
+        w2vec = self.abtovec(ws[1], bs[1])
+        w3vec = self.abtovec(ws[2], bs[2])
+        
+        u_hat_vec, v_hat_vec, u_norm, v_norm, inner = \
+        self.abcvectobasis(w1vec, w2vec, w3vec, self.wkeys, self.bkeys, self.sw, self.lw, self.sb, self.lb)
+                
+        error_mat = []
+        
+        for par_1 in pars:
+            error_v = []
+            for par_2 in pars:        
+                wvec_new = w1vec + par_1 * u_hat_vec + par_2 * v_hat_vec
+                weights, biases = self.cvectodict(wvec_new, self.wkeys, self.bkeys, self.sw, self.lw, self.sb, self.lb)      
+                
+                g = tf.Graph()
+                sess = tf.Session(graph = g)
+                with g.as_default() as g:  
+                    model = DNN.standard(DNN_dict, sess, seed = 1)
+                    error_v.append(model.score_w(tr_dict, weights, biases)[0])
+    
+            error_mat.append(error_v)       
+        
+        _for_projection = (w1vec, u_hat_vec, v_hat_vec)
+        _for_plot = (u_norm, v_norm, inner)
+        
+        return error_mat, _for_projection, _for_plot
+    
+    def projmultoplane(self, ws, bs, _for_projection):
+        
+        proj_x = []
+        proj_y = []
+        for c in range(len(ws)):
+            _prx, _pry = self.projtoplane(self.abtovec(ws[c], bs[c]), *_for_projection)
+            proj_x.append(_prx)
+            proj_y.append(_pry)   
+            
+        return (proj_x, proj_y)
+    
+    def lineloss(self, ws, bs, pars, DNN_dict, tr_dict, inter, x):
+      
+        error_line = []
+        w1vec = self.abtovec(ws[0], bs[0])
+        w2vec = self.abtovec(ws[1], bs[1])
+        for par in pars:
+            wvec_new = par * w1vec + (1 - par) * w2vec
+            weights, biases = self.cvectodict(wvec_new, self.wkeys, self.bkeys, self.sw, self.lw, self.sb, self.lb)
+    
+            g = tf.Graph()
+            sess = tf.Session(graph = g)
+            with g.as_default() as g:  
+                model = DNN.standard(DNN_dict, sess, seed = 1)
+                error_line.append(model.score_w(tr_dict, weights, biases)[0])
+                if par == inter and inter is not None:
+                    inter_pred = model.pred_w(x, weights, biases)
+                else:
+                    inter_pred = None
+                                   
+        return error_line, inter_pred
+        
 #%%
 if __name__ == '__main__':
     
@@ -181,51 +254,58 @@ if __name__ == '__main__':
             opt_weights.append(_fw)
             opt_biases.append(_fb)    
 #%%
-    pj = planes_projections()
-            
-    sw, lw = pj.shapeslengths(opt_weights[0])
-    sb, lb = pj.shapeslengths(opt_biases[0])
-    wkeys = opt_weights[0].keys()
-    bkeys = opt_biases[0].keys()
-    
-    w1vec = pj.abtovec(opt_weights[0], opt_biases[0])
-    w2vec = pj.abtovec(opt_weights[1], opt_biases[1])
-    w3vec = pj.abtovec(opt_weights[2], opt_biases[2])
-    
-    u_hat_vec, v_hat_vec, u_norm, v_norm, inner = \
-    pj.abcvectobasis(w1vec, w2vec, w3vec, wkeys, bkeys, sw, lw, sb, lb)
-    
     pars = np.linspace(-5, 22, 10)
-    error_mat = []
     
     tr_dict = {
         'Xt': data.Xt_scal,
         'Yt': data.Yt_scal
     }  
-    for par_1 in pars:
-        error_v = []
-        for par_2 in pars:        
-            wvec_new = w1vec + par_1 * u_hat_vec + par_2 * v_hat_vec
-            weights, biases = pj.cvectodict(wvec_new, wkeys, bkeys, sw, lw, sb, lb)      
+    
+    pj = planes_projections(opt_weights, opt_biases)
+    
+    error_mat, _for_projection, (u_norm, v_norm, inner) = \
+        pj.createplane(opt_weights, opt_biases, pars, DNN_dict, tr_dict)
             
-            g = tf.Graph()
-            sess = tf.Session(graph = g)
-            with g.as_default() as g:  
-                model = DNN.standard(DNN_dict, sess, seed = 1)
-                error_v.append(model.score_w(tr_dict, weights, biases)[0])
+    # sw, lw = pj.shapeslengths(opt_weights[0])
+    # sb, lb = pj.shapeslengths(opt_biases[0])
+    # wkeys = opt_weights[0].keys()
+    # bkeys = opt_biases[0].keys()
+    
+    # w1vec = pj.abtovec(opt_weights[0], opt_biases[0])
+    # w2vec = pj.abtovec(opt_weights[1], opt_biases[1])
+    # w3vec = pj.abtovec(opt_weights[2], opt_biases[2])
+    
+    # u_hat_vec, v_hat_vec, u_norm, v_norm, inner = \
+    # pj.abcvectobasis(w1vec, w2vec, w3vec, wkeys, bkeys, sw, lw, sb, lb)
+    
 
-        error_mat.append(error_v)             
+    # for par_1 in pars:
+    #     error_v = []
+    #     for par_2 in pars:        
+    #         wvec_new = w1vec + par_1 * u_hat_vec + par_2 * v_hat_vec
+    #         weights, biases = pj.cvectodict(wvec_new, wkeys, bkeys, sw, lw, sb, lb)      
+            
+    #         g = tf.Graph()
+    #         sess = tf.Session(graph = g)
+    #         with g.as_default() as g:  
+    #             model = DNN.standard(DNN_dict, sess, seed = 1)
+    #             error_v.append(model.score_w(tr_dict, weights, biases)[0])
+
+    #     error_mat.append(error_v)             
 #%%
-    basis = np.concatenate((u_hat_vec.reshape(-1,1), v_hat_vec.reshape(-1,1)), axis = 1)
-    ata = np.linalg.inv(np.matmul(basis.transpose(), basis))
+    # basis = np.concatenate((u_hat_vec.reshape(-1,1), v_hat_vec.reshape(-1,1)), axis = 1)
+    # ata = np.linalg.inv(np.matmul(basis.transpose(), basis))
     
-    init_proj_x = []
-    init_proj_y = []
+    # init_proj_x = []
+    # init_proj_y = []
     
-    for c in range(num):
-        prx, pry = pj.projtoplane(pj.abtovec(init_weights[c], init_biases[c]), w1vec, u_hat_vec, v_hat_vec)
-        init_proj_x.append(prx)
-        init_proj_y.append(pry)    
+    # for c in range(num):
+    #     # prx, pry = pj.projtoplane(pj.abtovec(init_weights[c], init_biases[c]), w1vec, u_hat_vec, v_hat_vec)
+    #     prx, pry = pj.projtoplane(pj.abtovec(init_weights[c], init_biases[c]), *_for_projection)
+    #     init_proj_x.append(prx)
+    #     init_proj_y.append(pry)  
+        
+    init_proj = pj.projmultoplane(init_weights, init_biases, _for_projection)
     
     xx, yy = np.meshgrid(pars, pars)
     
@@ -235,42 +315,53 @@ if __name__ == '__main__':
     im1 = ax1.contourf(xx, yy, np.array(error_mat).transpose(), 200, origin='lower', cmap='RdGy')
     fig.colorbar(im1, ax=ax1)
     ax1.scatter([0, u_norm, inner / u_norm], [0, 0, v_norm], marker = 'x', color = 'k', s = 50, label = 'final')
-    ax1.scatter(init_proj_x, init_proj_y, marker = 'x', color = 'm', s = 50, label = 'initial')
+    # ax1.scatter(init_proj_x, init_proj_y, marker = 'x', color = 'm', s = 50, label = 'initial')
+    ax1.scatter(*init_proj, marker = 'x', color = 'm', s = 50, label = 'initial')
     ax1.legend();
     
     im2 = ax2.contour(xx, yy, np.array(error_mat).transpose(), 40, origin='lower', cmap='RdGy')
     fig.colorbar(im2, ax=ax2)
     ax2.scatter([0, u_norm, inner / u_norm], [0, 0, v_norm], color = 'k', marker = 'x', s = 50, label = 'final')
-    ax2.scatter(init_proj_x, init_proj_y, marker = 'x', color = 'm', s = 50, label = 'initial')
+    # ax2.scatter(init_proj_x, init_proj_y, marker = 'x', color = 'm', s = 50, label = 'initial')
+    ax2.scatter(*init_proj, marker = 'x', color = 'm', s = 50, label = 'initial')
     ax2.legend();        
     
 #%%
     combs = [[0, 1], [1, 2], [0, 2]]
     pars = np.linspace(0, 1, 11)
     
-    inter_pred = []
+    inters = []
     x = data.Xe.reshape(-1,1)
     x_scal = data.Xe_scal
     
+    inter = 0.5
     plt.title('Loss on the line connecting 2 optima', fontsize = 20)
     for c in range(3):
-        error_line = []
-        w1vec = pj.abtovec(opt_weights[combs[c][0]], opt_biases[combs[c][0]])
-        w2vec = pj.abtovec(opt_weights[combs[c][1]], opt_biases[combs[c][1]])
-        for par in pars:
-            wvec_new = par * w1vec + (1 - par) * w2vec
-            weights, biases = pj.cvectodict(wvec_new, wkeys, bkeys, sw, lw, sb, lb)
+        
+        _ws = [opt_weights[combs[c][0]], opt_weights[combs[c][1]]]
+        _bs = [opt_biases[combs[c][0]], opt_biases[combs[c][1]]]
+        
+        error_line, inter_pred = pj.lineloss(_ws, _bs, pars, DNN_dict, tr_dict, inter, x_scal)
+        inter_pred = data.scaler_y.inverse_transform(inter_pred)
+        inters.append(inter_pred)
+        
+        # error_line = []
+        # w1vec = pj.abtovec(opt_weights[combs[c][0]], opt_biases[combs[c][0]])
+        # w2vec = pj.abtovec(opt_weights[combs[c][1]], opt_biases[combs[c][1]])
+        # for par in pars:
+        #     wvec_new = par * w1vec + (1 - par) * w2vec
+        #     weights, biases = pj.cvectodict(wvec_new, wkeys, bkeys, sw, lw, sb, lb)
     
-            g = tf.Graph()
-            sess = tf.Session(graph = g)
-            with g.as_default() as g:  
-                model = DNN.standard(DNN_dict, sess, seed = 1)
-                error_line.append(model.score_w(tr_dict, weights, biases)[0])
+        #     g = tf.Graph()
+        #     sess = tf.Session(graph = g)
+        #     with g.as_default() as g:  
+        #         model = DNN.standard(DNN_dict, sess, seed = 1)
+        #         error_line.append(model.score_w(tr_dict, weights, biases)[0])
                 
-                if par == .5:
-                    pred = model.pred_w(x_scal, weights, biases)
-                    pred = data.scaler_y.inverse_transform(pred)
-                    inter_pred.append(pred)
+        #         if par == .5:
+        #             pred = model.pred_w(x_scal, weights, biases)
+        #             pred = data.scaler_y.inverse_transform(pred)
+        #             inter_pred.append(pred)
    
         plt.plot(pars, error_line, '-o', label = 'optima %.1d and %.1d' %(combs[c][0]+1, combs[c][1]+1))
     
@@ -279,7 +370,7 @@ if __name__ == '__main__':
     
     plt.title('Intermediate predictions', fontsize = 20)
     for c in range(3):
-        plt.plot(x, inter_pred[c], label = 'combo {}'.format(combs[c]))
+        plt.plot(x, inters[c], label = 'combo {}'.format(combs[c]))
         
     plt.legend(bbox_to_anchor=(1.4, 1.0))
     plt.show()   
