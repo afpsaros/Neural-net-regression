@@ -20,16 +20,16 @@ from planes_projections import planes_projections
 import pickle 
 
 with open('sm_out.txt', 'rb') as f:
-    [budgets, M_snaps, M_preds, M_errors] = pickle.load(f)
+    [budgets, M_snaps, M_preds, M_errors, M_inits] = pickle.load(f)
     
 with open('ca_out.txt', 'rb') as f:
-    [CA_snaps, CA_preds, CA_errors] = pickle.load(f)     
+    [CA_snaps, CA_preds, CA_errors, SN_R_preds] = pickle.load(f)     
 
 c = len(M_snaps[0][0])
 reps = len(M_snaps) 
 
 #%%
-pj = planes_projections() 
+pj = planes_projections(*M_snaps[0]) 
 w_vecs = []
 y = []
 

@@ -19,18 +19,21 @@ from global_search import *
 import pickle 
 
 with open('sm_out.txt', 'rb') as f:
-    [budgets, M_snaps, M_preds, M_errors] = pickle.load(f)
+    [budgets, M_snaps, M_preds, M_errors, M_inits] = pickle.load(f)
 
 M = len(M_snaps)  
     
 with open('ens_out.txt', 'rb') as f:
-    [no_models, ENS_errors] = pickle.load(f)     
+    [no_models, ENS_errors, ENS_preds] = pickle.load(f)     
     
 with open('vary_snaps_out.txt', 'rb') as f:
     [snap_nums, SN_R_errors, SN_R_means] = pickle.load(f)   
 
 with open('NC_vary_snaps_out.txt', 'rb') as f:
-    [snap_nums, NC_R_errors, NC_R_means] = pickle.load(f)      
+    [snap_nums, NC_R_errors, NC_R_means, NC_R_preds] = pickle.load(f)      
+    
+with open('km_out.txt', 'rb') as f:
+    [no_models, KM_errors, KM_preds] = pickle.load(f)    
 #%%  
 # for i in range(len(snap_rep_errors)):          
 #     plt.plot(snap_nums, snap_rep_errors[i], '-o', label = 'rep {}'.format(i+1))
@@ -39,6 +42,7 @@ plt.figure(figsize=(5,4))
 plt.plot(snap_nums, SN_R_means, '-o', label = 'Snapshot ensemble')
 plt.plot(snap_nums, NC_R_means, '-o', label = 'No-cycle ensemble')    
 plt.plot(no_models, [np.mean(el) for el in ENS_errors], '-o', label = 'True ensemble')   
+plt.plot(no_models, [np.mean(el) for el in KM_errors], '-o', label = 'Super ensemble')   
 
 sm_mean = np.mean(list(zip(*M_errors))[-1])
 

@@ -30,10 +30,10 @@ print([x-y for i, j in zip(M_errors_1, M_errors_2) for x, y in zip(i,j)])
 print(sum([x.flatten()-y.flatten() for i, j in zip(M_preds_1, M_preds_2) for x, y in zip(i,j)]))
 #%%
 with open('ca_out_1.txt', 'rb') as f:
-    [CA_snaps_1, CA_preds_1, CA_errors_1] = pickle.load(f)
+    [CA_snaps_1, CA_preds_1, CA_errors_1, SN_R_preds_1] = pickle.load(f)
     
 with open('ca_out_2.txt', 'rb') as f:
-    [CA_snaps_2, CA_preds_2, CA_errors_2] = pickle.load(f)
+    [CA_snaps_2, CA_preds_2, CA_errors_2, SN_R_preds_2] = pickle.load(f)
     
 
 print([x-y for i, j in zip(CA_errors_1, CA_errors_2) for x, y in zip(i,j)])

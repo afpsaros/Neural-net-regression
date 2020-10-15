@@ -34,7 +34,7 @@ fit_dict = {
     'callbacks': None,
     'initialize': 1,
     'wd_par': 0,
-    'num_epochs': 30000,
+    'num_epochs': 3000,
     'Xt': data.Xt_scal,
     'Yt': data.Yt_scal,
     'Xv': data.Xv_scal,
@@ -105,7 +105,7 @@ with g.as_default() as g:
     
     fit_dict['callbacks'] = callbacks
     
-    snap_step = 5000
+    snap_step = 500
     fit_dict['decay'] = ['cosine_restarts',snap_step, lr_ratio, 1., 1.]
         
     # model = DNN.standard(DNN_dict, sess, seed = 0)

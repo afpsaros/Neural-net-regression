@@ -20,7 +20,7 @@ from planes_projections import planes_projections
 import pickle 
 
 with open('sm_out.txt', 'rb') as f:
-    [budgets, M_snaps, M_preds, M_errors] = pickle.load(f)
+    [budgets, M_snaps, M_preds, M_errors, M_inits] = pickle.load(f)
     
 c = len(M_snaps[0][0])
 reps = len(M_snaps) 
@@ -64,17 +64,19 @@ fit_dict = {
 snap_nums = np.arange(1, 7, 1)
 
 NC_R_errors = []
+NC_R_preds = []
 for r in range(reps):
     print(r)
     g = tf.Graph()
     sess = tf.Session(graph = g)
     with g.as_default() as g:    
 
-        model = DNN.standard(DNN_dict, sess, seed = 0)
+        model = DNN.standard(DNN_dict, sess, seed = 1)
         
         snap_weights, snap_biases = M_snaps[r]
   
         NC_errors = [] 
+        preds = []
         for snap_num in snap_nums:   
             snap_range = np.arange(-1 - (snap_num - 1), 0, 1)
             
@@ -83,8 +85,10 @@ for r in range(reps):
             pred = model.pred_ens(x_scal, ensemble)
             pred = data.scaler_y.inverse_transform(pred)
             
+            preds.append(pred)
             NC_errors.append(data.assess_pred(pred)[1])
         
+        NC_R_preds.append(preds)
         NC_R_errors.append(NC_errors)
        
 NC_R_means = [np.mean(line) for line in list(zip(*NC_R_errors))]
@@ -92,4 +96,4 @@ NC_R_means = [np.mean(line) for line in list(zip(*NC_R_errors))]
 import pickle 
 
 with open('NC_vary_snaps_out.txt', 'wb') as f:
-    pickle.dump([snap_nums, NC_R_errors, NC_R_means], f)  
+    pickle.dump([snap_nums, NC_R_errors, NC_R_means, NC_R_preds], f)  

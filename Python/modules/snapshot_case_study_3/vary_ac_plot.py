@@ -19,7 +19,7 @@ from global_search import *
 import pickle 
 
 with open('sm_out.txt', 'rb') as f:
-    [budgets, M_snaps, M_preds, M_errors] = pickle.load(f)
+    [budgets, M_snaps, M_preds, M_errors, M_inits] = pickle.load(f)
 
 # M = len(M_snaps) 
 

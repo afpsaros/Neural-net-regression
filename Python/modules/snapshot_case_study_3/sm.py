@@ -59,6 +59,7 @@ M = 6
 M_snaps = []
 M_errors = []
 M_preds = []
+M_inits = []
 for m in range(M):
     print(m)
     g = tf.Graph()
@@ -66,6 +67,10 @@ for m in range(M):
     with g.as_default() as g:    
         
         callbacks = []
+        
+        initial, final = 1, 0
+        inifin = None if initial == 0 and final == 0 else InitialFinal(initial, final)
+        if inifin is not None: callbacks.append(inifin)
 
         snap_step = 5000
         snap = None if snap_step is None else Snapper(snap_step)   
@@ -77,6 +82,9 @@ for m in range(M):
         model = DNN.standard(DNN_dict, sess, seed = m + 1)
 
         model.fit_from_dict(fit_dict)
+        
+        _iw, _ib, _, _ = inifin.get_params()
+        M_inits.append((_iw, _ib))
         
         snap_weights, snap_biases = snap.get_snaps()
         M_snaps.append((snap_weights, snap_biases))
@@ -107,7 +115,7 @@ file.close()
 import pickle 
 
 with open('sm_out.txt', 'wb') as f:
-    pickle.dump([budgets, M_snaps, M_preds, M_errors], f)
+    pickle.dump([budgets, M_snaps, M_preds, M_errors, M_inits], f)
     
 # with open('sm_out.txt', 'rb') as f:
 #     [budgets, M_snaps, M_errors] = pickle.load(f)    

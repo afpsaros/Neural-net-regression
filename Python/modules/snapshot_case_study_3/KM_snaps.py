@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Oct  7 13:53:15 2020
+Created on Thu Oct 15 12:01:18 2020
 
 @author: afpsaros
 """
-
 
 import sys
 sys.path.insert(0,'..')
@@ -20,11 +19,19 @@ import math
 from itertools import combinations
 
 import pickle
+
+with open('ca_out.txt', 'rb') as f:
+    [CA_snaps, CA_preds, CA_errors, SN_R_preds] = pickle.load(f)     
+
+c = len(CA_snaps[0][0])
+reps = len(CA_snaps)     
 #%%   
 with open('data_instance.txt', 'rb') as f:
     data = pickle.load(f)    
 
 x_scal = data.Xe_scal
+
+x = data.Xe.flatten()
 #%%
 DNN_dict = {
     'input dimension': 1,
@@ -58,19 +65,15 @@ DNN_dict['layer width'] = int(width.split(')')[0][1:])
 
 fit_dict['lr'] = float(line.split(',')[2][2:])
 #%%
-
 def binom(n, k):
     return math.factorial(n) // math.factorial(k) // math.factorial(n - k)
-
-with open('sm_out.txt', 'rb') as f:
-    [budgets, M_snaps, M_preds, M_errors, M_inits] = pickle.load(f)
     
 no_models_max = 6
 
 no_models = np.arange(1, no_models_max + 1, 1)
 #%%
-ENS_errors = []
-ENS_preds = []
+KM_errors = []
+KM_preds = []
 for m in no_models:
     
     combs = combinations(np.arange(0, no_models_max, 1), m) 
@@ -84,11 +87,16 @@ for m in no_models:
         with g.as_default() as g:
             model = DNN.standard(DNN_dict, sess, seed = 1) 
             
-            ens_weights = [M_snaps[comb[i]][0][-1] for i in range(m)]
-            ens_biases = [M_snaps[comb[i]][1][-1] for i in range(m)]
-                            
-            ens_range = range(m)          
-            ensemble = model.fun_ensemble(ens_weights, ens_biases, ens_range)
+            ew = [CA_snaps[comb[i]][0] for i in range(m)]
+            ew = [item for sublist in ew for item in sublist]
+            
+            # print([comb[i] for i in range(m)])
+            
+            eb = [CA_snaps[comb[i]][1] for i in range(m)]
+            eb = [item for sublist in eb for item in sublist]
+
+            ens_range = range(c * m)          
+            ensemble = model.fun_ensemble(ew, eb, ens_range)
                     
             pred = model.pred_ens(x_scal, ensemble)
             pred = data.scaler_y.inverse_transform(pred)
@@ -96,28 +104,18 @@ for m in no_models:
             preds.append(pred)
             errors.append(data.assess_pred(pred)[1])
     
-    ENS_preds.append(preds)        
-    ENS_errors.append(errors)
-            
+    KM_preds.append(preds)        
+    KM_errors.append(errors)
     
-#%%
-for mi, m in enumerate(no_models): 
-    plt.scatter(m * np.ones(len(ENS_errors[mi])), ENS_errors[mi])   
-
-plt.plot(no_models, [np.mean(el) for el in ENS_errors])    
-
-sm_mean = np.mean(list(zip(*M_errors))[-1])
-
-plt.plot(no_models, sm_mean * np.ones(len(no_models)))         
-plt.show()
-# print('rel', (sm_mean - np.mean(ENS_errors[-1])) / sm_mean * 100) 
-        
 #%%
 import pickle 
 
-with open('ens_out.txt', 'wb') as f:
-    pickle.dump([no_models, ENS_errors, ENS_preds], f)      
+with open('km_out.txt', 'wb') as f:
+    pickle.dump([no_models, KM_errors, KM_preds], f)      
     
-# with open('ens_out.txt', 'rb') as f:
-#     [no_models, ENS_errors, ENS_preds] = pickle.load(f)
+# with open('km_out.txt', 'rb') as f:
+#     [no_models, KM_errors, KM_preds] = pickle.load(f)    
     
+    
+    
+        

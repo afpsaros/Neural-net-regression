@@ -117,7 +117,6 @@ for c in cycles:
         
     C_errors.append(np.mean(R_errors))
         
-
 #%%
 import pickle 
 

@@ -20,10 +20,10 @@ from planes_projections import planes_projections
 import pickle 
 
 with open('sm_out.txt', 'rb') as f:
-    [budgets, M_snaps, M_preds, M_errors] = pickle.load(f)
+    [budgets, M_snaps, M_preds, M_errors, M_init] = pickle.load(f)
    
 with open('ca_out.txt', 'rb') as f:
-    [CA_snaps, CA_preds, CA_errors] = pickle.load(f)    
+    [CA_snaps, CA_preds, CA_errors, SN_R_preds] = pickle.load(f)    
 #%%
 
 with open('data_instance.txt', 'rb') as f:
@@ -57,20 +57,18 @@ r = 4
 
 plane_ws, plane_bs = M_snaps[r][0][-3:], M_snaps[r][1][-3:]
 
-pars_1 = np.linspace(-8, 8, 30)
+pars_1 = np.linspace(-10, 8, 10)
 
 error_mat_1, _for_projection_1, (u_norm_1, v_norm_1, inner_1) = \
     pj.createplane(plane_ws, plane_bs, pars_1, DNN_dict, tr_dict)
 #%%
 plane_ws, plane_bs = CA_snaps[r][0][-3:], CA_snaps[r][1][-3:]  
 
-pars_2 = np.linspace(-8, 20, 30)   
+pars_2 = np.linspace(-8, 20, 10)   
  
 error_mat_2, _for_projection_2, (u_norm_2, v_norm_2, inner_2) = \
     pj.createplane(plane_ws, plane_bs, pars_2, DNN_dict, tr_dict)
-#%%
-projected = pj.projmultoplane(M_snaps[r][0][:-3], M_snaps[r][1][:-3], _for_projection_1)
-    
+#%%    
 xx, yy = np.meshgrid(pars_1, pars_1)
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
@@ -79,6 +77,10 @@ norm = plt.Normalize(0, 0.5)
 im1 = ax1.contourf(xx, yy, np.array(error_mat_1).transpose(), 200, origin='lower', cmap='RdGy', norm = norm)
 fig.colorbar(im1, ax=ax1)
 
+projected = pj.projmultoplane([M_inits[r][0]], [M_inits[r][1]], _for_projection_1)
+ax1.scatter(*projected, marker = '.', color = 'k', s = 100, label = 'initial')
+
+projected = pj.projmultoplane(M_snaps[r][0][:-3], M_snaps[r][1][:-3], _for_projection_1)
 ax1.scatter(*projected, marker = 'x', color = 'm', s = 50, label = 'early snaps')
 ax1.scatter([0], [0], marker = 'x', color = 'y', s = 50, label = 'snap -2')
 ax1.scatter([u_norm_1], [0], marker = 'x', color = 'b', s = 50, label = 'snap -1')
@@ -86,14 +88,16 @@ ax1.scatter([inner_1 / u_norm_1], [v_norm_1], marker = 'x', color = 'k', s = 50,
 
 # ax1.legend(); 
 
-projected = pj.projmultoplane(CA_snaps[r][0][:-3], CA_snaps[r][1][:-3], _for_projection_2)
-   
 xx, yy = np.meshgrid(pars_2, pars_2)
 
 ax2.set_title('Cosine annealing')
 im2 = ax2.contourf(xx, yy, np.array(error_mat_2).transpose(), 200, origin='lower', cmap='RdGy', norm = norm)
 fig.colorbar(im2, ax=ax2)
 
+projected = pj.projmultoplane([M_inits[r][0]], [M_inits[r][1]], _for_projection_2)
+ax2.scatter(*projected, marker = '.', color = 'k', s = 100, label = 'initial')
+
+projected = pj.projmultoplane(CA_snaps[r][0][:-3], CA_snaps[r][1][:-3], _for_projection_2)
 ax2.scatter(*projected, marker = 'x', color = 'm', s = 50, label = 'early snaps')
 ax2.scatter([0], [0], marker = 'x', color = 'y', s = 50, label = 'snap -2')
 ax2.scatter([u_norm_2], [0], marker = 'x', color = 'b', s = 50, label = 'snap -1')

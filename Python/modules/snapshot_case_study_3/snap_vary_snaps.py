@@ -91,11 +91,15 @@ if sum([b % c  for b in budgets]) != 0:
 snap_step = int(b / c)
 fit_dict['decay'] = ['cosine_restarts',snap_step, lr_ratio, 1., 1.]
      
-SN_R_errors = []
+
 #%%
 CA_snaps = []
 CA_errors = []
 CA_preds = []
+
+SN_R_errors = []
+SN_R_preds = []
+
 for r in range(reps):
     print(r)
     g = tf.Graph()
@@ -107,8 +111,8 @@ for r in range(reps):
         if snap is not None: callbacks.append(snap) 
         
         fit_dict['callbacks'] = callbacks
-        # model = DNN.standard(DNN_dict, sess, seed = r + 1)
-        model = DNN.standard(DNN_dict, sess, seed = 0)
+        model = DNN.standard(DNN_dict, sess, seed = r + 1)
+        # model = DNN.standard(DNN_dict, sess, seed = 0)
 
         model.fit_from_dict(fit_dict)
         
@@ -129,6 +133,7 @@ for r in range(reps):
         CA_errors.append(errors)
 ###############################################################################        
         SN_errors = [] 
+        preds = []
         for snap_num in snap_nums:   
             snap_range = np.arange(-1 - (snap_num - 1), 0, 1)
             
@@ -137,8 +142,10 @@ for r in range(reps):
             pred = model.pred_ens(x_scal, ensemble)
             pred = data.scaler_y.inverse_transform(pred)
             
+            preds.append(pred)
             SN_errors.append(data.assess_pred(pred)[1])
         
+        SN_R_preds.append(preds)
         SN_R_errors.append(SN_errors)
        
 SN_R_means = [np.mean(line) for line in list(zip(*SN_R_errors))]
@@ -149,7 +156,7 @@ with open('vary_snaps_out.txt', 'wb') as f:
     pickle.dump([snap_nums, SN_R_errors, SN_R_means], f)  
 
 with open('ca_out.txt', 'wb') as f:
-    pickle.dump([CA_snaps, CA_preds, CA_errors], f)  
+    pickle.dump([CA_snaps, CA_preds, CA_errors, SN_R_preds], f)  
 
 # with open('vary_snaps_out.txt', 'rb') as f:
 #     [snap_nums, SN_R_errors, SN_R_means] = pickle.load(f)    

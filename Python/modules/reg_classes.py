@@ -87,6 +87,20 @@ class regressor(scores):
                 self.ensemble = tf.math.add(self.ensemble, tf.math.divide(self.fun_test(sw, sb).fp, m))   
                 
         return self.ensemble
+    
+    # def fun_ens_ens(self, ens_list, ens_range):
+        
+    #     m = len(ens_range)
+    #     for i, ei in enumerate(ens_range):
+            
+    #         ens_i = ens_list[ei]
+            
+    #         if i == 0:
+    #             self.ensemble = tf.math.divide(ens_i, m)
+    #         else:
+    #             self.ensemble = tf.math.add(self.ensemble, tf.math.divide(ens_i, m))   
+                
+    #     return self.ensemble
         
     def fit_from_dict(self, fit_dict):
         return self.fit(*list(fit_dict.values()))  

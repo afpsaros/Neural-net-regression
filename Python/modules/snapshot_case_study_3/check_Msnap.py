@@ -63,7 +63,7 @@ def binom(n, k):
     return math.factorial(n) // math.factorial(k) // math.factorial(n - k)
 
 with open('sm_out.txt', 'rb') as f:
-    [budgets, M_snaps, M_errors] = pickle.load(f)
+    [budgets, M_snaps, M_preds, M_errors] = pickle.load(f)
     
 no_models_max = 6
 

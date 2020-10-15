@@ -20,10 +20,10 @@ from planes_projections import planes_projections
 import pickle 
 
 with open('sm_out.txt', 'rb') as f:
-    [budgets, M_snaps, M_preds, M_errors] = pickle.load(f)
+    [budgets, M_snaps, M_preds, M_errors, M_inits] = pickle.load(f)
    
 with open('ca_out.txt', 'rb') as f:
-    [CA_snaps, CA_preds, CA_errors] = pickle.load(f)    
+    [CA_snaps, CA_preds, CA_errors, SN_R_preds] = pickle.load(f)    
 #%%
 
 with open('data_instance.txt', 'rb') as f:
@@ -58,7 +58,7 @@ r1, r2 = 4, 1
 plane_ws = [[0], M_snaps[r1][0][-1], M_snaps[r2][0][-1]]
 plane_bs = [[0], M_snaps[r1][1][-1], M_snaps[r2][1][-1]]
 
-pars_1 = np.linspace(-5, 40, 30)
+pars_1 = np.linspace(-5, 40, 10)
 
 error_mat_1, _for_projection_1, (u_norm_1, v_norm_1, inner_1) = \
     pj.createplane(plane_ws, plane_bs, pars_1, DNN_dict, tr_dict)
@@ -66,7 +66,7 @@ error_mat_1, _for_projection_1, (u_norm_1, v_norm_1, inner_1) = \
 plane_ws = [[0], CA_snaps[r1][0][-1], CA_snaps[r2][0][-1]]
 plane_bs = [[0], CA_snaps[r1][1][-1], CA_snaps[r2][1][-1]]
 
-pars_2 = np.linspace(-5, 50, 30)
+pars_2 = np.linspace(-5, 50, 10)
  
 error_mat_2, _for_projection_2, (u_norm_2, v_norm_2, inner_2) = \
     pj.createplane(plane_ws, plane_bs, pars_2, DNN_dict, tr_dict)
@@ -80,6 +80,12 @@ im1 = ax1.contourf(xx, yy, np.array(error_mat_1).transpose(), 200, origin='lower
 fig.colorbar(im1, ax=ax1)
 
 ax1.scatter([0], [0], marker = 's', s = 50, label = 'origin')
+
+projected = pj.projmultoplane([M_inits[r1][0]], [M_inits[r1][1]], _for_projection_1)
+ax1.scatter(*projected, marker = '.', color = 'k', s = 100, label = 'initial')
+
+projected = pj.projmultoplane([M_inits[r2][0]], [M_inits[r2][1]], _for_projection_1)
+ax1.scatter(*projected, marker = '.', color = 'k', s = 100)
 
 projected = pj.projmultoplane(M_snaps[r1][0][:-1], M_snaps[r1][1][:-1], _for_projection_1)
 ax1.scatter(*projected, marker = '.', color = 'm', s = 50, label = 'snaps')
@@ -99,6 +105,12 @@ im2 = ax2.contourf(xx, yy, np.array(error_mat_2).transpose(), 200, origin='lower
 fig.colorbar(im2, ax=ax2)
 
 ax2.scatter([0], [0], marker = 's', s = 50, label = 'origin')
+
+projected = pj.projmultoplane([M_inits[r1][0]], [M_inits[r1][1]], _for_projection_2)
+ax2.scatter(*projected, marker = '.', color = 'k', s = 100, label = 'initial')
+
+projected = pj.projmultoplane([M_inits[r2][0]], [M_inits[r2][1]], _for_projection_2)
+ax2.scatter(*projected, marker = '.', color = 'k', s = 100)
 
 projected = pj.projmultoplane(CA_snaps[r1][0][:-1], CA_snaps[r1][1][:-1], _for_projection_2)
 ax2.scatter(*projected, marker = '.', color = 'm', s = 50, label = 'snaps')
