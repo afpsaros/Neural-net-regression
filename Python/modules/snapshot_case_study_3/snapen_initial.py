@@ -26,6 +26,12 @@ with open('data_instance.txt', 'rb') as f:
 
 x_scal = data.Xe_scal
 #%%
+with open('budget_info.txt', 'r') as f:
+    l = list(f)
+    line = l[0].strip()   
+    
+total_budget, mini_budget, given_step = [int(line.split(',')[i]) for i in range(3)]
+#%%
 DNN_dict = {
     'input dimension': 1,
     'output dimension': 1,
@@ -68,9 +74,9 @@ random_seed = 3
 ev_arch = {}
     # 'wd_par': ([0, -5, -3], 'e'),
 ev_params = {
-    'num_epochs': ([30000], 'b'),
+    'num_epochs': ([total_budget], 'b'),
     'lr': ([-4, -2], 'd'),
-    'callbacks': ([5000], 'b'),
+    'callbacks': ([given_step], 'b'),
     'decay': ([-2, -1], 'd')
     }    
 

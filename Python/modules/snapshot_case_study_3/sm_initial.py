@@ -31,6 +31,12 @@ data.plot_eval_data(1)
 with open('data_instance.txt', 'wb') as f:
     pickle.dump(data, f)
 #%%
+with open('budget_info.txt', 'r') as f:
+    l = list(f)
+    line = l[0].strip()   
+    
+total_budget, mini_budget, given_step = [int(line.split(',')[i]) for i in range(3)]
+#%%
 DNN_dict = {
     'input dimension': 1,
     'output dimension': 1,
@@ -42,7 +48,7 @@ fit_dict = {
     'callbacks': None,
     'initialize': 1,
     'wd_par': 0,
-    'num_epochs': 30000,
+    'num_epochs': total_budget,
     'Xt': data.Xt_scal,
     'Yt': data.Yt_scal,
     'Xv': data.Xv_scal,
@@ -65,8 +71,8 @@ n_random = 50
 random_seed = 1
 
 ev_arch = {
-        'number of layers': ([3, 6], 'a'),
-        'layer width': ([20, 50], 'a')
+        'number of layers': ([3, 8], 'a'),
+        'layer width': ([20, 80], 'a')
         }
 
 ev_params = {

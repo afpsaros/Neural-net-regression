@@ -79,6 +79,7 @@ with g.as_default() as g:
         
 tr_error, val_error = loss.get_loss_history()
 
+fig = plt.figure()
 plt.yscale('log')
 plt.plot(tr_error, label = 'training')
 plt.plot(val_error, label = 'validation')
@@ -86,7 +87,8 @@ plt.xlabel('Epoch', fontsize = 15)
 plt.ylabel('Error', fontsize = 15)
 plt.tight_layout()
 plt.savefig('sm_rep_loss_plot.png', dpi = 300)
-plt.show()
+plt.close(fig)
+# plt.show()
 #%%
 with open("snapen_best_arch.txt", "r") as f:
 
@@ -121,6 +123,7 @@ with g.as_default() as g:
         
 tr_error, val_error = loss.get_loss_history()
 
+fig = plt.figure()
 plt.yscale('log')
 plt.plot(tr_error, label = 'training')
 plt.plot(val_error, label = 'validation')
@@ -128,4 +131,5 @@ plt.xlabel('Epoch', fontsize = 15)
 plt.ylabel('Error', fontsize = 15)
 plt.tight_layout()
 plt.savefig('snap_rep_loss_plot.png', dpi = 300)
-plt.show()
+plt.close(fig)
+# plt.show()

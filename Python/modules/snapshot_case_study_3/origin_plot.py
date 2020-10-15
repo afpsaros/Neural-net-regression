@@ -66,7 +66,7 @@ error_mat_1, _for_projection_1, (u_norm_1, v_norm_1, inner_1) = \
 plane_ws = [[0], CA_snaps[r1][0][-1], CA_snaps[r2][0][-1]]
 plane_bs = [[0], CA_snaps[r1][1][-1], CA_snaps[r2][1][-1]]
 
-pars_2 = np.linspace(-5, 50, 30)
+pars_2 = np.linspace(-5, 60, 30)
  
 error_mat_2, _for_projection_2, (u_norm_2, v_norm_2, inner_2) = \
     pj.createplane(plane_ws, plane_bs, pars_2, DNN_dict, tr_dict)
