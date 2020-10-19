@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.6.29) (preloaded format=pdflatex 2020.7.10)  15 OCT 2020 18:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.6.29) (preloaded format=pdflatex 2020.7.10)  19 OCT 2020 17:36
 entering extended mode
 **./main.tex
 (main.tex
@@ -966,6 +966,9 @@ LaTeX Warning: Label `' multiply defined.
 
 LaTeX Warning: Label `' multiply defined.
 
+
+LaTeX Warning: Label `' multiply defined.
+
 )
 \openout1 = `main.aux'.
 
@@ -1002,7 +1005,18 @@ Package biblatex Info: Data encoding 'utf8' specified.
 
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
- (main.bbl)
+ (main.bbl
+
+Package biblatex Warning: BibTeX reported the following issues
+(biblatex)                with 'huang2017snapshot':
+(biblatex)                - Can't use 'eprinttype' + 'archiveprefix'.
+
+
+Package biblatex Warning: BibTeX reported the following issues
+(biblatex)                with 'loshchilov2016sgdr':
+(biblatex)                - Can't use 'eprinttype' + 'archiveprefix'.
+
+)
 Package biblatex Info: Reference section=0 on input line 9.
 Package biblatex Info: Reference segment=0 on input line 9.
 
@@ -1088,172 +1102,242 @@ Package: ltcaption 2020/05/30 v1.4b longtable captions (AR)
 )
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
-<./figs/sm_rep_fun.png, id=7, 433.62pt x 289.08pt>
-File: ./figs/sm_rep_fun.png Graphic file (type png)
-<use ./figs/sm_rep_fun.png>
-Package pdftex.def Info: ./figs/sm_rep_fun.png  used on input line 30.
-(pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
+ [1
+
+
+
+{C:/Users/apsaros/AppData/Local/MiKTeX/pdftex/config/pdftex.map}]
+<./figs/learning_schedule.png, id=45, 361.35pt x 289.08pt>
+File: ./figs/learning_schedule.png Graphic file (type png)
+<use ./figs/learning_schedule.png>
+Package pdftex.def Info: ./figs/learning_schedule.png  used on input line 56.
+(pdftex.def)             Requested size: 228.76247pt x 183.01237pt.
+ [2 <./figs/learning_schedule.png>]
 LaTeX Font Info:    Trying to load font information for OMS+rsfs on input line 
-32.
- (C:\Users\apsaros\AppData\Local\Programs\MiKTeX\tex/latex/calrsfs\omsrsfs.fd)
-LaTeX Font Info:    Trying to load font information for U+msa on input line 32.
+65.
+
+(C:\Users\apsaros\AppData\Local\Programs\MiKTeX\tex/latex/calrsfs\omsrsfs.fd)
+LaTeX Font Info:    Trying to load font information for U+msa on input line 65.
+
 
 (C:\Users\apsaros\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 32.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 65.
 
 
 (C:\Users\apsaros\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<./figs/sm_rep_err.png, id=9, 433.62pt x 289.08pt>
+<./figs/datapoints.png, id=57, 433.62pt x 289.08pt>
+File: ./figs/datapoints.png Graphic file (type png)
+<use ./figs/datapoints.png>
+Package pdftex.def Info: ./figs/datapoints.png  used on input line 74.
+(pdftex.def)             Requested size: 266.88568pt x 177.93091pt.
+
+[3 <./figs/datapoints.png>]
+<./figs/sm_rep_fun.png, id=70, 433.62pt x 289.08pt>
+File: ./figs/sm_rep_fun.png Graphic file (type png)
+<use ./figs/sm_rep_fun.png>
+Package pdftex.def Info: ./figs/sm_rep_fun.png  used on input line 148.
+(pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
+<./figs/sm_rep_err.png, id=71, 433.62pt x 289.08pt>
 File: ./figs/sm_rep_err.png Graphic file (type png)
 <use ./figs/sm_rep_err.png>
-Package pdftex.def Info: ./figs/sm_rep_err.png  used on input line 35.
+Package pdftex.def Info: ./figs/sm_rep_err.png  used on input line 153.
 (pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
-<./figs/snap_rep_fun.png, id=10, 433.62pt x 289.08pt>
+<./figs/snap_rep_fun.png, id=72, 433.62pt x 289.08pt>
 File: ./figs/snap_rep_fun.png Graphic file (type png)
 <use ./figs/snap_rep_fun.png>
-Package pdftex.def Info: ./figs/snap_rep_fun.png  used on input line 40.
+Package pdftex.def Info: ./figs/snap_rep_fun.png  used on input line 158.
 (pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
-<./figs/snap_rep_err.png, id=11, 433.62pt x 289.08pt>
+<./figs/snap_rep_err.png, id=73, 433.62pt x 289.08pt>
 File: ./figs/snap_rep_err.png Graphic file (type png)
 <use ./figs/snap_rep_err.png>
-Package pdftex.def Info: ./figs/snap_rep_err.png  used on input line 45.
+Package pdftex.def Info: ./figs/snap_rep_err.png  used on input line 164.
 (pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
-<./figs/ens_rep_fun.png, id=12, 433.62pt x 289.08pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 165--165
+
+ []
+
+<./figs/ens_rep_fun.png, id=74, 433.62pt x 289.08pt>
 File: ./figs/ens_rep_fun.png Graphic file (type png)
 <use ./figs/ens_rep_fun.png>
-Package pdftex.def Info: ./figs/ens_rep_fun.png  used on input line 50.
+Package pdftex.def Info: ./figs/ens_rep_fun.png  used on input line 169.
 (pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
-<./figs/ens_rep_err.png, id=13, 433.62pt x 289.08pt>
+<./figs/ens_rep_err.png, id=75, 433.62pt x 289.08pt>
 File: ./figs/ens_rep_err.png Graphic file (type png)
 <use ./figs/ens_rep_err.png>
-Package pdftex.def Info: ./figs/ens_rep_err.png  used on input line 55.
+Package pdftex.def Info: ./figs/ens_rep_err.png  used on input line 176.
 (pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
-<./figs/sm_rep_loss_plot.png, id=14, 433.62pt x 289.08pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 146--179
+[][] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 146--179
+[] []
+ []
+
+[4]
+<./figs/snap_rep_std.png, id=80, 433.62pt x 289.08pt>
+File: ./figs/snap_rep_std.png Graphic file (type png)
+<use ./figs/snap_rep_std.png>
+Package pdftex.def Info: ./figs/snap_rep_std.png  used on input line 185.
+(pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
+File: ./figs/snap_rep_err.png Graphic file (type png)
+<use ./figs/snap_rep_err.png>
+Package pdftex.def Info: ./figs/snap_rep_err.png  used on input line 190.
+(pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
+<./figs/ens_std.png, id=81, 433.62pt x 289.08pt>
+File: ./figs/ens_std.png Graphic file (type png)
+<use ./figs/ens_std.png>
+Package pdftex.def Info: ./figs/ens_std.png  used on input line 195.
+(pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
+File: ./figs/ens_rep_err.png Graphic file (type png)
+<use ./figs/ens_rep_err.png>
+Package pdftex.def Info: ./figs/ens_rep_err.png  used on input line 201.
+(pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 183--204
+[][] []
+ []
+
+[5 <./figs/sm_rep_fun.png> <./figs/sm_rep_err.png> <./figs/snap_rep_fun.png> <.
+/figs/snap_rep_err.png> <./figs/ens_rep_fun.png> <./figs/ens_rep_err.png>]
+<./figs/sm_rep_loss_plot.png, id=96, 462.528pt x 346.896pt>
 File: ./figs/sm_rep_loss_plot.png Graphic file (type png)
 <use ./figs/sm_rep_loss_plot.png>
-Package pdftex.def Info: ./figs/sm_rep_loss_plot.png  used on input line 64.
-(pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
-<./figs/snap_rep_loss_plot.png, id=15, 433.62pt x 289.08pt>
+Package pdftex.def Info: ./figs/sm_rep_loss_plot.png  used on input line 211.
+(pdftex.def)             Requested size: 171.56894pt x 128.67767pt.
+<./figs/snap_rep_loss_plot.png, id=97, 462.528pt x 346.896pt>
 File: ./figs/snap_rep_loss_plot.png Graphic file (type png)
 <use ./figs/snap_rep_loss_plot.png>
-Package pdftex.def Info: ./figs/snap_rep_loss_plot.png  used on input line 69.
-(pdftex.def)             Requested size: 171.56894pt x 114.38162pt.
+Package pdftex.def Info: ./figs/snap_rep_loss_plot.png  used on input line 216.
 
-
-LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 74.
-
-<./figs/vary_b.png, id=16, 361.35pt x 289.08pt>
+(pdftex.def)             Requested size: 171.56894pt x 128.67767pt.
+<./figs/vary_b.png, id=98, 361.35pt x 289.08pt>
 File: ./figs/vary_b.png Graphic file (type png)
 <use ./figs/vary_b.png>
-Package pdftex.def Info: ./figs/vary_b.png  used on input line 79.
+Package pdftex.def Info: ./figs/vary_b.png  used on input line 225.
 (pdftex.def)             Requested size: 171.56894pt x 137.25708pt.
-<./figs/vary_ac.png, id=17, 361.35pt x 289.08pt>
+<./figs/vary_ac.png, id=99, 361.35pt x 289.08pt>
 File: ./figs/vary_ac.png Graphic file (type png)
 <use ./figs/vary_ac.png>
-Package pdftex.def Info: ./figs/vary_ac.png  used on input line 86.
+Package pdftex.def Info: ./figs/vary_ac.png  used on input line 232.
 (pdftex.def)             Requested size: 171.56894pt x 137.25708pt.
-<./figs/vary_snaps.png, id=18, 361.35pt x 289.08pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 233--233
+
+ []
+
+<./figs/vary_snaps.png, id=100, 544.9158pt x 268.1217pt>
 File: ./figs/vary_snaps.png Graphic file (type png)
 <use ./figs/vary_snaps.png>
-Package pdftex.def Info: ./figs/vary_snaps.png  used on input line 92.
-(pdftex.def)             Requested size: 171.56894pt x 137.25708pt.
-[1
+Package pdftex.def Info: ./figs/vary_snaps.png  used on input line 238.
+(pdftex.def)             Requested size: 266.88568pt x 131.31941pt.
 
+Underfull \hbox (badness 10000) in paragraph at lines 222--242
+[]$[]$ $[]$
+ []
 
-
-{C:/Users/apsaros/AppData/Local/MiKTeX/pdftex/config/pdftex.map} <./figs/sm_rep
-_fun.png> <./figs/sm_rep_err.png> <./figs/snap_rep_fun.png> <./figs/snap_rep_er
-r.png> <./figs/ens_rep_fun.png> <./figs/ens_rep_err.png>]
-<./figs/kmn_plot.png, id=36, 289.08pt x 144.54pt>
+[6 <./figs/snap_rep_std.png> <./figs/ens_std.png> <./figs/sm_rep_loss_plot.png>
+ <./figs/snap_rep_loss_plot.png>]
+<./figs/kmn_plot.png, id=111, 289.08pt x 144.54pt>
 File: ./figs/kmn_plot.png Graphic file (type png)
 <use ./figs/kmn_plot.png>
-Package pdftex.def Info: ./figs/kmn_plot.png  used on input line 104.
+Package pdftex.def Info: ./figs/kmn_plot.png  used on input line 248.
 (pdftex.def)             Requested size: 228.76247pt x 114.38162pt.
- [2 <./figs/sm_rep_loss_plot.png> <./figs/snap_rep_loss_plot.png>] [3 <./figs/v
-ary_b.png> <./figs/vary_ac.png> <./figs/vary_snaps.png> <./figs/kmn_plot.png>]
-<./figs/params_tSNE_0.png, id=55, 361.35pt x 289.08pt>
+ [7 <./figs/vary_b.png> <./figs/vary_ac.png> <./figs/vary_snaps.png>]
+<./figs/params_tSNE_0.png, id=122, 361.35pt x 289.08pt>
 File: ./figs/params_tSNE_0.png Graphic file (type png)
 <use ./figs/params_tSNE_0.png>
-Package pdftex.def Info: ./figs/params_tSNE_0.png  used on input line 116.
+Package pdftex.def Info: ./figs/params_tSNE_0.png  used on input line 258.
 (pdftex.def)             Requested size: 154.411pt x 123.53004pt.
-<./figs/params_tSNE_1.png, id=56, 361.35pt x 289.08pt>
+<./figs/params_tSNE_1.png, id=123, 361.35pt x 289.08pt>
 File: ./figs/params_tSNE_1.png Graphic file (type png)
 <use ./figs/params_tSNE_1.png>
-Package pdftex.def Info: ./figs/params_tSNE_1.png  used on input line 123.
+Package pdftex.def Info: ./figs/params_tSNE_1.png  used on input line 265.
 (pdftex.def)             Requested size: 154.411pt x 123.53004pt.
-<./figs/params_tSNE_2.png, id=57, 361.35pt x 289.08pt>
+<./figs/params_tSNE_2.png, id=124, 361.35pt x 289.08pt>
 File: ./figs/params_tSNE_2.png Graphic file (type png)
 <use ./figs/params_tSNE_2.png>
-Package pdftex.def Info: ./figs/params_tSNE_2.png  used on input line 129.
+Package pdftex.def Info: ./figs/params_tSNE_2.png  used on input line 271.
 (pdftex.def)             Requested size: 154.411pt x 123.53004pt.
-<./figs/preds_tSNE_0.png, id=58, 361.35pt x 289.08pt>
+<./figs/preds_tSNE_0.png, id=125, 361.35pt x 289.08pt>
 File: ./figs/preds_tSNE_0.png Graphic file (type png)
 <use ./figs/preds_tSNE_0.png>
-Package pdftex.def Info: ./figs/preds_tSNE_0.png  used on input line 144.
+Package pdftex.def Info: ./figs/preds_tSNE_0.png  used on input line 284.
 (pdftex.def)             Requested size: 154.411pt x 123.53004pt.
-<./figs/preds_tSNE_1.png, id=59, 361.35pt x 289.08pt>
+<./figs/preds_tSNE_1.png, id=126, 361.35pt x 289.08pt>
 File: ./figs/preds_tSNE_1.png Graphic file (type png)
 <use ./figs/preds_tSNE_1.png>
-Package pdftex.def Info: ./figs/preds_tSNE_1.png  used on input line 151.
+Package pdftex.def Info: ./figs/preds_tSNE_1.png  used on input line 291.
 (pdftex.def)             Requested size: 154.411pt x 123.53004pt.
-<./figs/preds_tSNE_2.png, id=60, 361.35pt x 289.08pt>
+<./figs/preds_tSNE_2.png, id=127, 361.35pt x 289.08pt>
 File: ./figs/preds_tSNE_2.png Graphic file (type png)
 <use ./figs/preds_tSNE_2.png>
-Package pdftex.def Info: ./figs/preds_tSNE_2.png  used on input line 157.
+Package pdftex.def Info: ./figs/preds_tSNE_2.png  used on input line 297.
 (pdftex.def)             Requested size: 154.411pt x 123.53004pt.
- [4 <./figs/params_tSNE_0.png> <./figs/params_tSNE_1.png> <./figs/params_tSNE_2
-.png>]
-<./figs/params_cosine_similarities.png, id=69, 433.62pt x 144.54pt>
+ [8 <./figs/kmn_plot.png> <./figs/params_tSNE_0.png> <./figs/params_tSNE_1.png>
+ <./figs/params_tSNE_2.png>]
+<./figs/params_cosine_similarities.png, id=138, 433.62pt x 144.54pt>
 File: ./figs/params_cosine_similarities.png Graphic file (type png)
 <use ./figs/params_cosine_similarities.png>
 Package pdftex.def Info: ./figs/params_cosine_similarities.png  used on input l
-ine 172.
+ine 310.
 (pdftex.def)             Requested size: 381.26692pt x 127.09633pt.
-<./figs/preds_cosine_similarities.png, id=70, 433.62pt x 144.54pt>
+<./figs/preds_cosine_similarities.png, id=139, 433.62pt x 144.54pt>
 File: ./figs/preds_cosine_similarities.png Graphic file (type png)
 <use ./figs/preds_cosine_similarities.png>
 Package pdftex.def Info: ./figs/preds_cosine_similarities.png  used on input li
-ne 179.
+ne 317.
 (pdftex.def)             Requested size: 381.26692pt x 127.09633pt.
-<./figs/planes.png, id=71, 867.24pt x 361.35pt>
+ [9 <./figs/preds_tSNE_0.png> <./figs/preds_tSNE_1.png> <./figs/preds_tSNE_2.pn
+g>]
+<./figs/planes.png, id=148, 867.24pt x 361.35pt>
 File: ./figs/planes.png Graphic file (type png)
 <use ./figs/planes.png>
-Package pdftex.def Info: ./figs/planes.png  used on input line 187.
+Package pdftex.def Info: ./figs/planes.png  used on input line 325.
 (pdftex.def)             Requested size: 381.26692pt x 158.86215pt.
-<./figs/line_plots.png, id=72, 867.24pt x 361.35pt>
-File: ./figs/line_plots.png Graphic file (type png)
-<use ./figs/line_plots.png>
-Package pdftex.def Info: ./figs/line_plots.png  used on input line 194.
-(pdftex.def)             Requested size: 381.26692pt x 158.86215pt.
-<./figs/origin_planes.png, id=73, 867.24pt x 361.35pt>
+<./figs/origin_planes.png, id=149, 867.24pt x 361.35pt>
 File: ./figs/origin_planes.png Graphic file (type png)
 <use ./figs/origin_planes.png>
-Package pdftex.def Info: ./figs/origin_planes.png  used on input line 201.
+Package pdftex.def Info: ./figs/origin_planes.png  used on input line 332.
 (pdftex.def)             Requested size: 381.26692pt x 158.86215pt.
+ [10 <./figs/params_cosine_similarities.png> <./figs/preds_cosine_similarities.
+png> <./figs/planes.png>]
+<./figs/line_plots.png, id=161, 867.24pt x 361.35pt>
+File: ./figs/line_plots.png Graphic file (type png)
+<use ./figs/line_plots.png>
+Package pdftex.def Info: ./figs/line_plots.png  used on input line 339.
+(pdftex.def)             Requested size: 381.26692pt x 158.86215pt.
+[11 <./figs/origin_planes.png> <./figs/line_plots.png>]
+
+Package biblatex Warning: Name format 'last-first' deprecated.
+(biblatex)                Please use 'family-given' instead.
+(biblatex)                Using 'family-given' now.
 
 
-LaTeX Warning: Empty bibliography on input line 212.
+Underfull \hbox (badness 2875) in paragraph at lines 372--372
+[][]\OT1/cmr/m/n/10 Huang, G. et al. (2017). \  Snap-shot En-sem-bles: Train 1,
+ Get M for Free".
+ []
 
 
 Package caption Warning: Unused \captionsetup[table] on input line 160.
 See the caption package documentation for explanation.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 214.
-[5 <./figs/preds_tSNE_0.png> <./figs/preds_tSNE_1.png> <./figs/preds_tSNE_2.png
->] [6 <./figs/params_cosine_similarities.png> <./figs/preds_cosine_similarities
-.png> <./figs/planes.png>] [7 <./figs/line_plots.png> <./figs/origin_planes.png
->]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 214.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 374.
+[12]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 374.
  (main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 214.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 214.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 374.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 374.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 6D38B21895D2A4C81C9AF9521005705F;42.
+(rerunfilecheck)             Checksum: F2BC6B2E5D13CBEABC549B76AAF6DC73;311.
 
 
 LaTeX Warning: There were multiply-defined labels.
@@ -1263,23 +1347,37 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 19848 strings out of 480790
- 341388 string characters out of 2896363
- 858326 words of memory out of 3000000
- 35503 multiletter control sequences out of 15000+200000
- 536657 words of font info for 42 fonts, out of 3000000 for 9000
+ 20146 strings out of 480790
+ 347355 string characters out of 2896363
+ 860775 words of memory out of 3000000
+ 35770 multiletter control sequences out of 15000+200000
+ 540985 words of font info for 59 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,9n,47p,1658b,1619s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Users/apsaros/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/c
-m/cmbx10.pfb><C:/Users/apsaros/AppData/Local/Programs/MiKTeX/fonts/type1/public
-/amsfonts/cm/cmbx12.pfb><C:/Users/apsaros/AppData/Local/Programs/MiKTeX/fonts/t
-ype1/public/amsfonts/cm/cmbx9.pfb><C:/Users/apsaros/AppData/Local/Programs/MiKT
-eX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/apsaros/AppData/Local/Pro
-grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/apsaros/AppData
-/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb>
-Output written on main.pdf (7 pages, 2746484 bytes).
+ 43i,9n,54p,1658b,1619s stack positions out of 5000i,500n,10000p,200000b,50000s
+ <C:\Users\apsaros\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tc
+rm1000.pk><C:/Users/apsaros/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
+sfonts/cm/cmbx10.pfb><C:/Users/apsaros/AppData/Local/Programs/MiKTeX/fonts/type
+1/public/amsfonts/cm/cmbx12.pfb><C:/Users/apsaros/AppData/Local/Programs/MiKTeX
+/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/apsaros/AppData/Local/Progr
+ams/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/apsaros/AppData/
+Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/apsar
+os/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/U
+sers/apsaros/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9
+.pfb><C:/Users/apsaros/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfont
+s/cm/cmr10.pfb><C:/Users/apsaros/AppData/Local/Programs/MiKTeX/fonts/type1/publ
+ic/amsfonts/cm/cmr12.pfb><C:/Users/apsaros/AppData/Local/Programs/MiKTeX/fonts/
+type1/public/amsfonts/cm/cmr6.pfb><C:/Users/apsaros/AppData/Local/Programs/MiKT
+eX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/apsaros/AppData/Local/Prog
+rams/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/apsaros/AppData/L
+ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/apsaro
+s/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Us
+ers/apsaros/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10
+.pfb><C:/Users/apsaros/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfont
+s/cm/cmti9.pfb><C:/Users/apsaros/AppData/Local/Programs/MiKTeX/fonts/type1/publ
+ic/amsfonts/cm/cmtt10.pfb>
+Output written on main.pdf (12 pages, 3261849 bytes).
 PDF statistics:
- 127 PDF objects out of 1000 (max. 8388607)
- 19 named destinations out of 1000 (max. 500000)
- 124 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 244 PDF objects out of 1000 (max. 8388607)
+ 36 named destinations out of 1000 (max. 500000)
+ 184 words of extra memory for PDF output out of 10000 (max. 10000000)
 

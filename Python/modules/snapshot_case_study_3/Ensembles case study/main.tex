@@ -5,7 +5,7 @@
 
 \usepackage[english]{babel}
 \usepackage{blindtext}
-
+\usepackage{amsmath}
 \begin{document}
 	
 	\sloppy
@@ -13,7 +13,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\begin{center}	
 		\Large
-		\textbf{Case study on ensembles}\\
+		\textbf{Case study on snapshot ensembles}\\
 		\large
 		Apostolos Psaros\\	
 		\today
@@ -22,188 +22,348 @@
 	\vskip 0.5in
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Figures}
-\begin{figure}[htbp]
+\section{Main idea}
+\noindent
+\textbf{Here is the main problem:}
+\begin{itemize}
+	\item Different local optima typically correspond to well-performing (low test error) and diverse (making different mistakes) predictions. 
+	\item By training with GD-based optimizers we obtain 1 set of optimal weights: no uncertainty and no-diversity.
+	\item Can we modify the standard training procedure in order to 1) average different predictions and reduce generalization error and 2) obtain uncertainty estimates?
+\end{itemize}
+\textbf{Families of approaches:}
+\begin{itemize}
+	\item Scalable MCMC samplers: Similar updates to SGD with added noise. 
+	Learning rate schedule and amount of noise are selected so that the samples correspond to the true posterior.
+	\item Use a preconditioner (like we do in AdaGrad and Adam for different reasons) so that the SGD trajectory becomes a true sampler. 
+	Interesting but hard theoretical problem.
+	\item Dropout variational inference. Predictions are not very diverse. 
+	\item Bayes by backprop: Variational inference with subsampling and reparametrization trick. Similar criticism as dropout.
+	\item Efficient Laplace approximation: Fit a Gaussian to the obtained optimum by using second order information of the loss. 
+	\item Wilson's approaches: Use trajectory parameters and average weights instead of predictions.	
+\end{itemize}
+\textbf{Snapshot ensemble:}
+\begin{itemize}
+	\item Use cyclical learning rate (see Fig.~\ref{fig:lr_sched}).
+	\item Anneal learning rate up to a certain value and then restart.
+	\item Perform many cycles and sample (take a snapshot) just before the restart.
+	\item This is called warm restart.
+	\item Simple modification to standard algorithm and for free accuracy increase and uncertainty estimate.
+	\item Papers: \textcite{smith2017cyclical, huang2017snapshot,loshchilov2016sgdr, garipov2018loss}.
+\end{itemize}
+
+\begin{figure}[H]
 	\centering
-	\begin{subfigure}{.45\textwidth}
+	\includegraphics[width=0.6\linewidth]{./figs/learning_schedule.png}  
+	\caption{Learning rate schedule: theoretical (SGDR paper) and as computed by tensorflow (sanity check). Snapshot locations also shown (taken before lr restart).}
+	\label{fig:lr_sched}
+\end{figure}
+
+\newpage
+\section{Experiment information}
+\noindent
+\textbf{True function:}
+\begin{equation}
+f(x) = 
+\begin{cases} 
+5 + \sum_{k = 1}^{15} sin(kx) &\text{if } - \pi \leq x < 0\\
+cos(10x) & \text{if } 0 \leq x \leq \pi
+\end{cases}
+\end{equation}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.7\linewidth]{./figs/datapoints.png}  
+	\caption{Training and validation data.}
+	\label{}
+\end{figure}
+
+\noindent
+\textbf{Data:}
+\begin{center}
+	\begin{tabular}{ | c || c |} 
+		\hline
+		Training datapoints & 70 \\
+		\hline
+		Validation datapoints & 30 \\
+		\hline
+		Noise std & 0 \\
+		\hline
+		Evaluation datapoints & 200 \\
+		\hline
+	\end{tabular}
+\end{center}
+
+
+\noindent
+\textbf{What we want to see:}
+\begin{itemize}
+	\item Snapshots should give low error predictions and diverse; i.e., with high point-wise standard deviation.
+	\item When ensembled, the final predictions should give a better test error compared to a single model.
+	\item Uncertainty should be higher at the locations of large error. Predictions should agree on over-specified areas and disagree on under-specified ones.
+	\item Snapshot ensembles (1 trajectory) are expected to be less accurate than deep ensembles (many trajectories). 
+	\item Snapshots with constant learning rate should be less diverse than snapshots with cosine annealing and restarts.
+	\item But snapshots with cosine annealing are expected to be less diverse than deep ensembles.	
+\end{itemize}
+
+\noindent
+\textbf{Architecture and hyperparameters:}
+\begin{center}
+	\begin{tabular}{ | c || c| c|} 
+		\hline
+		 & Standard lr & Cosine annealing	\\
+		\hline
+		Depth & \multicolumn{2}{c|}{5*} \\
+		\hline
+		Width  & \multicolumn{2}{c|}{49*} \\
+		\hline
+		Max budget (epochs)& \multicolumn{2}{c|}{60,000} \\
+		\hline
+		Optimizer& \multicolumn{2}{c|}{Adam} \\
+		\hline
+		Initializer& \multicolumn{2}{c|}{Xavier} \\
+		\hline
+		Repetitions& \multicolumn{2}{c|}{6} \\
+		\hline
+		Number of cycles (if not varying) &  NA & 6\\ 
+		\hline
+		Snapshot step (if not varying) & NA  & $10,000$\\ 
+		\hline
+		Number of snapshots (if not varying) &  NA  & 6\\ 
+		\hline
+		Constant lr & 4e-4* & NA\\ 
+		\hline
+		Cosine annealing min lr & NA & 8e-5**\\ 
+		\hline
+		Cosine annealing max lr & NA & 1e-3**\\ 
+		\hline
+	\end{tabular}
+\end{center}
+\noindent *: obtained via random search \\
+\noindent **: obtained via random search with fixed architecture
+
+\section{Figures}
+
+\begin{figure}[H]
+	\begin{subfigure}[b]{.45\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{./figs/sm_rep_fun.png}  
-		\caption{a}
+		\caption{Single model: A representative predicted function.}
 	\end{subfigure}
-	\begin{subfigure}{.45\textwidth}
+	\begin{subfigure}[b]{.45\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{./figs/sm_rep_err.png}  
-		\caption{b}
+		\caption{Single model: Associated point-wise error.}
 	\end{subfigure}
-	\begin{subfigure}{.45\textwidth}
+	\begin{subfigure}[b]{.45\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{./figs/snap_rep_fun.png}  
-		\caption{c}
+		\caption{Snapshot ensemble: A representative predicted function $\pm 2$ stds.
+		Uncertainty estimates obtained via snapshots of a single trajectory.}
 	\end{subfigure}
-	\begin{subfigure}{.45\textwidth}
+	\begin{subfigure}[b]{.45\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{./figs/snap_rep_err.png}  
-		\caption{d}
+		\caption{Snapshot ensemble: Associated point-wise error. \newline \newline}
 	\end{subfigure}
-	\begin{subfigure}{.45\textwidth}
+	\begin{subfigure}[b]{.45\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{./figs/ens_rep_fun.png}  
-		\caption{e}
+		\caption{True ensemble: A representative predicted function $\pm 2$ stds.
+		Uncertainty estimates obtained via different trajectories.}
 	\end{subfigure}
-	\begin{subfigure}{.45\textwidth}
+	\hspace{1cm}
+	\begin{subfigure}[b]{.45\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{./figs/ens_rep_err.png}  
-		\caption{f}
+		\caption{True ensemble: Associated point-wise error. \newline}
 	\end{subfigure}
+	\caption{Representative predicted functions, uncertainty estimates and point-wise errors for a single model, a snapshot ensemble and a true ensemble.}
 \end{figure}
-\blindtext
-\begin{figure}[htbp]
+
+\begin{figure}[H]
+	\begin{subfigure}[b]{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/snap_rep_std.png}  
+		\caption{Snapshot ensemble: Standard deviation of predicted functions corresponding to snapshots from 1 trajectory.}
+	\end{subfigure}
+	\begin{subfigure}[b]{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/snap_rep_err.png}  
+		\caption{Snapshot ensemble: Associated point-wise error. \newline}
+	\end{subfigure}
+	\begin{subfigure}[b]{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/ens_std.png}  
+		\caption{True ensemble: Standard deviation of predicted functions corresponding to final parameters from different trajectories.}
+	\end{subfigure}
+	\hspace{1cm}
+	\begin{subfigure}[b]{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/ens_rep_err.png}  
+		\caption{True ensemble: Associated point-wise error. \newline}
+	\end{subfigure}
+	\caption{Representative uncertainty estimates and point-wise errors for a snapshot ensemble and a true ensemble.}
+\end{figure}
+
+\begin{figure}[H]
 	\centering
 	\begin{subfigure}{.45\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{./figs/sm_rep_loss_plot.png}  
-		\caption{a}
+		\caption{Standard learning rate.}
 	\end{subfigure}
 	\begin{subfigure}{.45\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{./figs/snap_rep_loss_plot.png}  
-		\caption{b}
+		\caption{Cosine annealing.}
 	\end{subfigure}
-	\caption{caption.}
+	\caption{Representative training/validation loss trajectories. Overfit begins after 60,000 epochs for this specific architecture.}
 \end{figure}
-\begin{figure}[]
-	\centering
+\begin{figure}[H]
 	\begin{subfigure}{.45\textwidth}
 		\centering
 		% include first image
 		\includegraphics[width=1\linewidth]{./figs/vary_b.png}  
-		\caption{Varying budget for fixed number of cycles (6) and number of snapshots (6). \newline}
+		\caption{Varying budget for fixed number of cycles and number of snapshots. Comparison with single-cycle ensemble (cosine annealing with random restarts). This is why we need \textit{warm restarts}.}
 		\label{fig:sub-first}
 	\end{subfigure}
 	\begin{subfigure}{.45\textwidth}
 		\centering
 		% include second image
 		\includegraphics[width=1\linewidth]{./figs/vary_ac.png}  
-		\caption{Varying number of cycles for fixed budget (30,000 epochs) and number of snapshots (same as number of cycles).}
+		\caption{Varying number of cycles for fixed budget and number of snapshots (same as number of cycles).\newline\newline}
 		\label{fig:sub-second}
 	\end{subfigure}
-	\begin{subfigure}{.45\textwidth}
+	\begin{subfigure}{1\textwidth}
 		\centering
-		\includegraphics[width=1\linewidth]{./figs/vary_snaps.png}  
-		\caption{Varying number of snapshots for fixed number of cycles (6) and budget (30,000 epochs).}
+		\includegraphics[width=.7\linewidth]{./figs/vary_snaps.png}  
+		\caption{Snapshot ensemble (cosine annealing and varying number of snapshots), no-cycle ensemble (standard lr and varying number of snapshots), true ensemble (varying number of trajectories), and super ensemble (varying number of trajectories and fixed number of snapshots). Budget and number of cycles is fixed for all cases.}
 		\label{fig:sub-second}
 	\end{subfigure}
-	\caption{Comparisons between single models, snapshot ensembles, no-cycle ensembles (standard lr), single-cycle ensembles (cosine annealing with no warm restarts), and true ensembles.}
+	\caption{Relative $\ell_2$ test error. Comparisons between single models, snapshot ensembles, no-cycle ensembles (standard lr), single-cycle ensembles (cosine annealing with no warm restarts), and true ensembles.}
 	\label{fig:fig}
 \end{figure}
 
-\blindtext
-
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{./figs/kmn_plot.png}  
-	\caption{Put your sub-caption here}
+	\caption{Super ensembles: Relative $\%$ $\ell_2$ test error for varying number of trajectories (rows) and number of snapshots in a trajectory (columns).}
 	\label{fig:sub-first}
 \end{figure}
 
-\blindtext
-
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\begin{subfigure}{.45\textwidth}
 		\centering
 		% include first image
 		\includegraphics[width=.9\linewidth]{./figs/params_tSNE_0.png}  
-		\caption{Put your sub-caption here}
+		\caption{2 trajectories with standard learning rate (light colors) and 2 with cosine annealing (dark colors).}
 		\label{fig:sub-first}
 	\end{subfigure}
 	\begin{subfigure}{.45\textwidth}
 		\centering
 		% include second image
 		\includegraphics[width=.9\linewidth]{./figs/params_tSNE_1.png}  
-		\caption{Put your sub-caption here}
+		\caption{2 trajectories with standard learning rate (light colors) and 2 with cosine annealing (dark colors).}
 		\label{fig:sub-second}
 	\end{subfigure}
 	\begin{subfigure}{.45\textwidth}
 		\centering
 		\includegraphics[width=.9\linewidth]{./figs/params_tSNE_2.png}  
-		\caption{Put your sub-caption here}
+		\caption{2 trajectories with standard learning rate (light colors) and 2 with cosine annealing (dark colors).}
 		\label{fig:sub-second}
 	\end{subfigure}
-	\caption{Put your caption here}
+	\caption{t-SNE of parameters from different trajectories for both standard learning rate and cosine annealing. Large circles represent final parameters, small circles earlier snapshots and squares the earliest considered snapshots (not necessarily the initializations). Lighter colors represent standard learning rate and darker colors cosine annealing.}
 	\label{fig:fig}
 \end{figure}
 
-\blindtext
-
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\begin{subfigure}{.45\textwidth}
 		\centering
 		% include first image
 		\includegraphics[width=.9\linewidth]{./figs/preds_tSNE_0.png}  
-		\caption{Put your sub-caption here}
+		\caption{2 trajectories with standard learning rate (light colors) and 2 with cosine annealing (dark colors).}
 		\label{fig:sub-first}
 	\end{subfigure}
 	\begin{subfigure}{.45\textwidth}
 		\centering
 		% include second image
 		\includegraphics[width=.9\linewidth]{./figs/preds_tSNE_1.png}  
-		\caption{Put your sub-caption here}
+		\caption{2 trajectories with standard learning rate (light colors) and 2 with cosine annealing (dark colors).}
 		\label{fig:sub-second}
 	\end{subfigure}	
 	\begin{subfigure}{.45\textwidth}
 		\centering
 		\includegraphics[width=.9\linewidth]{./figs/preds_tSNE_2.png}  
-		\caption{Put your sub-caption here}
+		\caption{2 trajectories with standard learning rate (light colors) and 2 with cosine annealing (dark colors).}
 		\label{fig:sub-second}
 	\end{subfigure}
-	\caption{Put your caption here}
+	\caption{t-SNE of predicted functions from different trajectories for both standard learning rate and cosine annealing. Large circles represent predictions corresponding to final parameters, small circles to earlier snapshots and squares to the earliest considered snapshots (not necessarily the initializations). Lighter colors represent standard learning rate and darker colors cosine annealing.}
 	\label{fig:fig}
 \end{figure}
 
-\blindtext
-
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\begin{subfigure}{1\textwidth}
 		\centering
 		% include first image
 		\includegraphics[width=1\linewidth]{./figs/params_cosine_similarities.png}  
-		\caption{Put your sub-caption here}
+		\caption{Cosine similarity ($\%$) of parameters corresponding to different snapshots. Far-left column shows the associated relative $\ell_2$ test error.}
 		\label{fig:sub-first}
 	\end{subfigure}
 	\begin{subfigure}{1\textwidth}
 		\centering
 		% include second image
 		\includegraphics[width=1\linewidth]{./figs/preds_cosine_similarities.png}  
-		\caption{Put your sub-caption here}
+		\caption{Cosine similarity ($\%$) of predicted functions corresponding to different snapshots. Far-left column shows the associated relative $\ell_2$ test error.}
 		\label{fig:sub-second}
 	\end{subfigure}	
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{./figs/planes.png}  
-	\caption{}
+	\caption{Training loss on the plane defined by the last 3 snapshots of one trajectory. Earlier snapshots and initial parameters are projected on the plane.}
 	\label{}
 \end{figure}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=1\linewidth]{./figs/line_plots.png}  
-	\caption{}
-	\label{}
-\end{figure}
-
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{./figs/origin_planes.png}  
-	\caption{}
+	\caption{Training loss on the plane defined by the origin (0) and the final parameters from 2 trajectories with different initializations. Earlier snapshots and initial parameters are projected on the plane.}
 	\label{}
 \end{figure}
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{./figs/line_plots.png}  
+	\caption{Training loss on the line connecting the final parameters from a trajectory and earlier snapshots of that trajectory.}
+	\label{}
+\end{figure}
 
+\section{What's next for function approximation}
+\noindent
+\textbf{Make sure the results hold for:}
+\begin{itemize}
+	\item ``Easier'' functions that are well approximated by a single model.
+	\item Different number of datapoints.
+	\item Added noise to the data.
+\end{itemize}
+Also try to evaluate the quality of the obtained uncertainty.
+
+\section{Towards ePINNs?}
+\noindent
+\textbf{Incorporate to PINNs:}
+\begin{itemize}
+	\item As it is for better accuracy and for-free uncertainty.
+	\item Try to devise a method for active learning while training: resample at high-uncertainty areas.
+\end{itemize}
+\noindent
+\textbf{What I think would be publishable:}
+\begin{itemize}
+	\item Have 3 techniques: 1 for-free (like snapshot ensembles), 1 with intermediate cost (like scalable MCMC) and a more expensive one (like replica MCMC). 
+	\item Compare and discuss applicability for PINNs for big data and large dimensions.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
 

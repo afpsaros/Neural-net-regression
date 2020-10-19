@@ -25,8 +25,14 @@ n_eval = 200
 scale = 1
 
 data = data_getter(n, s, val_split, n_eval).create_data().preproc(scale)
-data.plot_tr_data()
-data.plot_eval_data(1)
+data.plot_tr_data(0)
+# data.plot_eval_data(0)
+plt.xlabel('x', fontsize = 15)
+plt.ylabel('y', fontsize = 15)
+plt.legend()
+plt.tight_layout()
+plt.savefig('datapoints.png', dpi = 300)
+plt.show()
 
 with open('data_instance.txt', 'wb') as f:
     pickle.dump(data, f)

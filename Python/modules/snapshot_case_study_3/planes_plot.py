@@ -53,27 +53,28 @@ pj = planes_projections(*M_snaps[0])
 reps = len(M_snaps)
 c = len(M_snaps[0][0])
 #%%
-r = 4
+r = 0
 
 plane_ws, plane_bs = M_snaps[r][0][-3:], M_snaps[r][1][-3:]
 
-pars_1 = np.linspace(-6, 10, 50)
+pars_1 = np.linspace(-6, 6, 50)
 
 error_mat_1, _for_projection_1, (u_norm_1, v_norm_1, inner_1) = \
     pj.createplane(plane_ws, plane_bs, pars_1, DNN_dict, tr_dict)
 #%%
 plane_ws, plane_bs = CA_snaps[r][0][-3:], CA_snaps[r][1][-3:]  
 
-pars_2 = np.linspace(-15, 20, 50)   
+pars_2 = np.linspace(-8, 6, 50)   
  
 error_mat_2, _for_projection_2, (u_norm_2, v_norm_2, inner_2) = \
     pj.createplane(plane_ws, plane_bs, pars_2, DNN_dict, tr_dict)
-#%%    
+
+#%%
 xx, yy = np.meshgrid(pars_1, pars_1)
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 ax1.set_title('Standard learning rate')
-norm = plt.Normalize(0, 3)
+norm = plt.Normalize(0, 4)
 im1 = ax1.contourf(xx, yy, np.array(error_mat_1).transpose(), 200, origin='lower', cmap='RdGy', norm = norm)
 fig.colorbar(im1, ax=ax1)
 
@@ -127,7 +128,9 @@ for c in range(len(combs)):
    
     ax1.plot(pars, error_line, '-o', label = 'snaps %.1d and %.1d' %(combs[c][0] + 1, combs[c][1] + 1))
 
-ax1.set_ylim([-0.01, 0.35])
+ylim = [-0.01, 0.22]
+
+ax1.set_ylim(ylim)
 
 pars = np.linspace(0, 1, 11)
 
@@ -141,7 +144,7 @@ for c in range(len(combs)):
    
     ax2.plot(pars, error_line, '-o', label = 'snaps %.1d and %.1d' %(combs[c][0] + 1, combs[c][1] + 1))
 
-ax2.set_ylim([-0.01, 0.35])
+ax2.set_ylim(ylim)
 ax2.legend(bbox_to_anchor=(1.4, 1.0))
 
 

@@ -42,7 +42,7 @@ x_scal = data.Xe_scal
 x = data.Xe.flatten()
 
 #%%
-r = 0
+r = 1
 
 ylim = [0, 2.2]
 

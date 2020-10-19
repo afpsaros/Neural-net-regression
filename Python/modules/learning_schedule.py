@@ -35,7 +35,7 @@ DNN_dict = {
 
 callbacks = []
 
-snap_step = 999
+snap_step = 99
 snap = None if snap_step is None else Snapper(snap_step)   
 if snap is not None: callbacks.append(snap) 
 
@@ -51,7 +51,7 @@ fit_dict = {
     'callbacks': callbacks,
     'initialize': 1,
     'wd_par': 0,
-    'num_epochs': 1000,
+    'num_epochs': 100,
     'Xt': data.Xt_scal,
     'Yt': data.Yt_scal,
     'Xv': data.Xv_scal,

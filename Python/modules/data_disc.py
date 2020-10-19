@@ -75,11 +75,14 @@ class data_getter:
             
         return self
               
-    def plot_tr_data(self):
-        plt.plot(*list(zip(*self.data_tr)), 'bo', label = 'train data')
-        plt.plot(*list(zip(*self.data_val)), 'ro', label = 'val data')
+    def plot_tr_data(self, show):
+        plt.plot(*list(zip(*self.data_tr)), 'bo', label = 'training data')
+        plt.plot(*list(zip(*self.data_val)), 'ro', label = 'validation data')
         plt.legend()
-        plt.show()
+        
+        if show == 1:
+            plt.legend()
+            plt.show()
         
     def plot_eval_data(self, show):
         plt.plot(*list(zip(*self.data_eval)), label = 'true function')

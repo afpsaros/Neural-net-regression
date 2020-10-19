@@ -27,7 +27,7 @@ c = len(KMN_errors[0])
 # print(np.array(KMN_errors).round(2))
 # print(np.transpose(np.array(KMN_errors).round(2)))
 
-KMN_errors = np.flip(np.array(KMN_errors).round(2), 0)
+KMN_errors = np.flip((100 * np.array(KMN_errors)).round(2), 0)
 
 print(KMN_errors)
     

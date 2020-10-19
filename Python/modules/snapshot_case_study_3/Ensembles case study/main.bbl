@@ -17,8 +17,170 @@
 \endgroup
 
 \datalist[entry]{nyt/global//global/global}
-\preamble{%
-\newcommand{\noopsort}[1]{}
-}
+  \entry{garipov2018loss}{inproceedings}{}
+    \name{author}{5}{}{%
+      {{hash=GT}{%
+         family={Garipov},
+         familyi={G\bibinitperiod},
+         given={Timur},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=IP}{%
+         family={Izmailov},
+         familyi={I\bibinitperiod},
+         given={Pavel},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=PD}{%
+         family={Podoprikhin},
+         familyi={P\bibinitperiod},
+         given={Dmitrii},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=VDP}{%
+         family={Vetrov},
+         familyi={V\bibinitperiod},
+         given={Dmitry\bibnamedelima P},
+         giveni={D\bibinitperiod\bibinitdelim P\bibinitperiod},
+      }}%
+      {{hash=WAG}{%
+         family={Wilson},
+         familyi={W\bibinitperiod},
+         given={Andrew\bibnamedelima G},
+         giveni={A\bibinitperiod\bibinitdelim G\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{GT+1}
+    \strng{fullhash}{GTIPPDVDPWAG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2018}
+    \field{labeldatesource}{}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{booktitle}{Advances in {{Neural Information Processing Systems}}}
+    \field{pages}{8789\bibrangedash 8798}
+    \field{title}{Loss Surfaces, Mode Connectivity, and Fast Ensembling of
+  Dnns}
+    \field{year}{2018}
+  \endentry
+
+  \entry{huang2017snapshot}{article}{}
+    \name{author}{6}{}{%
+      {{hash=HG}{%
+         family={Huang},
+         familyi={H\bibinitperiod},
+         given={Gao},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=LY}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Yixuan},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=PG}{%
+         family={Pleiss},
+         familyi={P\bibinitperiod},
+         given={Geoff},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=LZ}{%
+         family={Liu},
+         familyi={L\bibinitperiod},
+         given={Zhuang},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=HJE}{%
+         family={Hopcroft},
+         familyi={H\bibinitperiod},
+         given={John\bibnamedelima E.},
+         giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+      {{hash=WKQ}{%
+         family={Weinberger},
+         familyi={W\bibinitperiod},
+         given={Kilian\bibnamedelima Q.},
+         giveni={K\bibinitperiod\bibinitdelim Q\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HG+1}
+    \strng{fullhash}{HGLYPGLZHJEWKQ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2017}
+    \field{labeldatesource}{}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \verb{eprint}
+    \verb 1704.00109
+    \endverb
+    \field{title}{Snapshot {{Ensembles}}: {{Train}} 1, Get {{M}} for Free}
+    \field{journaltitle}{arXiv:1704.00109 [cs]}
+    \field{eprinttype}{arxiv}
+    \field{eprintclass}{cs}
+    \field{year}{2017}
+    \warn{\item Can't use 'eprinttype' + 'archiveprefix'}
+  \endentry
+
+  \entry{loshchilov2016sgdr}{article}{}
+    \name{author}{2}{}{%
+      {{hash=LI}{%
+         family={Loshchilov},
+         familyi={L\bibinitperiod},
+         given={Ilya},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=HF}{%
+         family={Hutter},
+         familyi={H\bibinitperiod},
+         given={Frank},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{LIHF1}
+    \strng{fullhash}{LIHF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2016}
+    \field{labeldatesource}{}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \verb{eprint}
+    \verb 1608.03983
+    \endverb
+    \field{title}{Sgdr: {{Stochastic}} Gradient Descent with Warm Restarts}
+    \field{journaltitle}{arXiv preprint arXiv:1608.03983}
+    \field{eprinttype}{arxiv}
+    \field{year}{2016}
+    \warn{\item Can't use 'eprinttype' + 'archiveprefix'}
+  \endentry
+
+  \entry{smith2017cyclical}{inproceedings}{}
+    \name{author}{1}{}{%
+      {{hash=SLN}{%
+         family={Smith},
+         familyi={S\bibinitperiod},
+         given={Leslie\bibnamedelima N},
+         giveni={L\bibinitperiod\bibinitdelim N\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {{IEEE}}%
+    }
+    \strng{namehash}{SLN1}
+    \strng{fullhash}{SLN1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2017}
+    \field{labeldatesource}{}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{booktitle}{2017 {{IEEE Winter Conference}} on {{Applications}} of
+  {{Computer Vision}} ({{WACV}})}
+    \field{pages}{464\bibrangedash 472}
+    \field{title}{Cyclical Learning Rates for Training Neural Networks}
+    \field{year}{2017}
+  \endentry
 \enddatalist
 \endinput
