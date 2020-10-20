@@ -54,7 +54,7 @@
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{./figs/learning_schedule.png}  
-	\caption{Learning rate schedule: theoretical (SGDR paper) and as computed by tensorflow (sanity check). Snapshot locations also shown (taken before lr restart).}
+	\caption{Learning rate schedule: theoretical \autocite{loshchilov2016sgdr} and as computed by tensorflow (sanity check). Snapshot locations also shown (taken before lr restart).}
 	\label{fig:lr_sched}
 \end{figure}
 
@@ -96,7 +96,7 @@ cos(10x) & \text{if } 0 \leq x \leq \pi
 \noindent
 \textbf{What we want to see:}
 \begin{itemize}
-	\item Snapshots should give low error predictions and diverse; i.e., with high point-wise standard deviation.
+	\item Snapshots should give low error predictions and diverse; i.e., with high point-wise standard deviation and different point-wise errors.
 	\item When ensembled, the final predictions should give a better test error compared to a single model.
 	\item Uncertainty should be higher at the locations of large error. Predictions should agree on over-specified areas and disagree on under-specified ones.
 	\item Snapshot ensembles (1 trajectory) are expected to be less accurate than deep ensembles (many trajectories). 
@@ -394,7 +394,14 @@ cos(10x) & \text{if } 0 \leq x \leq \pi
 	\item Different number of datapoints.
 	\item Added noise to the data.
 \end{itemize}
-Also try to evaluate the quality of the obtained uncertainty.
+Also try to evaluate the quality of the obtained uncertainty by producing a figure similar to Fig.~\ref{fig:to_do}.
+In the end we want to have a figure regarding accuracy and one regarding uncertainty.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{./figs/fig_to_do.png}  
+	\caption{Figure to produce: Show how snapshot and other for-free ensembles compare with the exact predictive distribution. Note how VI is overconfident between data clusters.}
+	\label{fig:to_do}
+\end{figure}
 
 \section{Towards ePINNs?}
 \noindent

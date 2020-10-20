@@ -33,6 +33,13 @@ tr_dict = {
     'Xt': data.Xt_scal,
     'Yt': data.Yt_scal
 } 
+
+eval_dict = {
+    'Xe': data.Xe_scal,
+    'Ye': data.Ye_scal
+} 
+
+use_dict = eval_dict
 #%%
 DNN_dict = {
     'input dimension': 1,
@@ -57,24 +64,24 @@ r = 0
 
 plane_ws, plane_bs = M_snaps[r][0][-3:], M_snaps[r][1][-3:]
 
-pars_1 = np.linspace(-6, 6, 30)
+pars_1 = np.linspace(-6, 6, 10)
 
 error_mat_1, _for_projection_1, (u_norm_1, v_norm_1, inner_1) = \
-    pj.createplane(plane_ws, plane_bs, pars_1, DNN_dict, tr_dict)
+    pj.createplane(plane_ws, plane_bs, pars_1, DNN_dict, use_dict)
 #%%
 plane_ws, plane_bs = CA_snaps[r][0][-3:], CA_snaps[r][1][-3:]  
 
-pars_2 = np.linspace(-8, 6, 30)   
+pars_2 = np.linspace(-8, 6, 10)   
  
 error_mat_2, _for_projection_2, (u_norm_2, v_norm_2, inner_2) = \
-    pj.createplane(plane_ws, plane_bs, pars_2, DNN_dict, tr_dict)
+    pj.createplane(plane_ws, plane_bs, pars_2, DNN_dict, use_dict)
 
 #%%
 xx, yy = np.meshgrid(pars_1, pars_1)
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 ax1.set_title('Standard learning rate')
-norm = plt.Normalize(0, 4)
+norm = plt.Normalize(0, 1)
 im1 = ax1.contourf(xx, yy, np.array(error_mat_1).transpose(), 200, origin='lower', cmap='RdGy', norm = norm)
 fig.colorbar(im1, ax=ax1)
 
@@ -124,7 +131,7 @@ for c in range(len(combs)):
     _ws = [M_snaps[r][0][combs[c][0]], M_snaps[r][0][combs[c][1]]]
     _bs = [M_snaps[r][1][combs[c][0]], M_snaps[r][1][combs[c][1]]]
     
-    error_line, _ = pj.lineloss(_ws, _bs, pars, DNN_dict, tr_dict, None, None)
+    error_line, _ = pj.lineloss(_ws, _bs, pars, DNN_dict, use_dict, None, None)
    
     ax1.plot(pars, error_line, '-o', label = 'snaps %.1d and %.1d' %(combs[c][0] + 1, combs[c][1] + 1))
 
@@ -140,7 +147,7 @@ for c in range(len(combs)):
     _ws = [CA_snaps[r][0][combs[c][0]], CA_snaps[r][0][combs[c][1]]]
     _bs = [CA_snaps[r][1][combs[c][0]], CA_snaps[r][1][combs[c][1]]]
     
-    error_line, _ = pj.lineloss(_ws, _bs, pars, DNN_dict, tr_dict, None, None)
+    error_line, _ = pj.lineloss(_ws, _bs, pars, DNN_dict, use_dict, None, None)
    
     ax2.plot(pars, error_line, '-o', label = 'snaps %.1d and %.1d' %(combs[c][0] + 1, combs[c][1] + 1))
 
