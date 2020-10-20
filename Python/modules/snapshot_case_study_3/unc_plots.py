@@ -30,6 +30,12 @@ with open('ens_out.txt', 'rb') as f:
     
 with open('NC_vary_snaps_out.txt', 'rb') as f:
     [snap_nums, NC_R_errors, NC_R_means, NC_R_preds] = pickle.load(f)    
+    
+with open('mcdrop_001_out.txt', 'rb') as f:
+    [DR_preds, DR_preds_mean_1, DR_preds_std_1, DR_errors] = pickle.load(f)       
+    
+with open('mcdrop_01_out.txt', 'rb') as f:
+    [DR_preds, DR_preds_mean_2, DR_preds_std_2, DR_errors] = pickle.load(f)    
 
 c = len(M_snaps[0][0])
 reps = len(M_snaps) 
@@ -65,22 +71,11 @@ plt.tight_layout()
 plt.savefig('ens_std.png', dpi = 300)
 plt.show()
 #%%
-
-
-# a = [[[[i + j]]*3 for j in range(5)] for i in range(10)]
-# print(a[0], len(a), len(a[0]), len(a[0][0]))
-# print(np.mean(a[0], 0))
-
-# # for r in range(reps):
-# #     for ci in range(c):
-# #         M_preds[r][ci] = M_preds[r][ci].flatten()
-# #         CA_preds[r][ci] = CA_preds[r][ci].flatten()
-
-# print(len(M_preds), len(M_preds[0]), len(M_preds[0][0]))
-        
-# plt.plot(np.mean([np.std(M_preds[r], 0) for r in range(reps)], 0))
-# plt.plot(np.mean([np.std(CA_preds[r], 0) for r in range(reps)], 0))
-# plt.show()
-
-# print(np.mean([np.std(M_preds[r], 0) for r in range(reps)]))
-# print(np.mean([np.std(CA_preds[r], 0) for r in range(reps)]))
+plt.plot(x, DR_preds_std_1[r])
+plt.xlabel('x', fontsize = 15)
+plt.ylabel('standard deviation', fontsize = 15)
+plt.ylim(ylim)
+plt.legend()
+plt.tight_layout()
+plt.savefig('mcdrop_001_std.png', dpi = 300)
+plt.show()

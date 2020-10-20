@@ -34,6 +34,12 @@ with open('NC_vary_snaps_out.txt', 'rb') as f:
     
 with open('km_out.txt', 'rb') as f:
     [no_models, KM_errors, KM_preds] = pickle.load(f)    
+    
+with open('mcdrop_001_out.txt', 'rb') as f:
+    [DR_preds, DR_preds_mean, DR_preds_std, DR_errors_1] = pickle.load(f)       
+    
+with open('mcdrop_01_out.txt', 'rb') as f:
+    [DR_preds, DR_preds_mean, DR_preds_std, DR_errors_2] = pickle.load(f)    
 #%%  
 # for i in range(len(snap_rep_errors)):          
 #     plt.plot(snap_nums, snap_rep_errors[i], '-o', label = 'rep {}'.format(i+1))
@@ -51,6 +57,13 @@ sm_mean = np.mean(list(zip(*M_errors))[-1])
 ax.plot(no_models, sm_mean * np.ones(len(no_models)), '--', label = 'Single model')      
 
 ax.set_xlim([snap_nums[0], snap_nums[-1]])
+
+dr_error = np.mean(DR_errors_1)
+ax.plot(no_models, dr_error * np.ones(len(no_models)), 'o', label = 'MC dropout (0.001)')     
+
+dr_error = np.mean(DR_errors_2)
+ax.plot(no_models, dr_error * np.ones(len(no_models)), '--', label = 'MC dropout (0.01)')  
+
 ax.set_xlabel('Number of models', fontsize = 15)
 ax.set_ylabel('Test error', fontsize = 15)
 ax.set_xticks(snap_nums) 

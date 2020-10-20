@@ -115,6 +115,8 @@ cos(10x) & \text{if } 0 \leq x \leq \pi
 		\hline
 		Width  & \multicolumn{2}{c|}{49*} \\
 		\hline
+		Activation function  & \multicolumn{2}{c|}{TanH} \\
+		\hline
 		Max budget (epochs)& \multicolumn{2}{c|}{60,000} \\
 		\hline
 		Optimizer& \multicolumn{2}{c|}{Adam} \\
@@ -180,6 +182,56 @@ cos(10x) & \text{if } 0 \leq x \leq \pi
 \end{figure}
 
 \begin{figure}[H]
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/mcdrop_01_rep_fun.png}  
+		\caption{MC dropout ($p = 0.01$ - $T=100$): A representative predicted function.}
+	\end{subfigure}
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/mcdrop_01_err.png}  
+		\caption{MC dropout ($p = 0.01$ - $T=100$): Associated point-wise error.}
+	\end{subfigure}
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/mcdrop_001_rep_fun.png}  
+		\caption{MC dropout ($p = 0.001$ - $T=100$): A representative predicted function.}
+	\end{subfigure}
+	\hspace{1cm}
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/mcdrop_001_err.png}  
+		\caption{MC dropout ($p = 0.001$ - $T=100$): Associated point-wise error.}
+	\end{subfigure}
+	\caption{Representative predicted functions, uncertainty estimates and point-wise errors for MC dropout.}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/sm_rep_loss_plot.png}  
+		\caption{Standard learning rate.}
+	\end{subfigure}
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/snap_rep_loss_plot.png}  
+		\caption{Cosine annealing.}
+	\end{subfigure}
+	\caption{Representative training/validation loss trajectories. Overfit begins after 60,000 epochs for this specific architecture.}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{subfigure}[b]{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/mcdrop_001_std.png}  
+		\caption{MC dropout ($p = 0.001$ - $T=100$): Standard deviation of predicted functions using 1 trajectory.}
+	\end{subfigure}
+	\begin{subfigure}[b]{.45\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{./figs/mcdrop_001_err.png}  
+		\caption{MC dropout ($p = 0.001$ - $T=100$): Associated point-wise error. \newline}
+	\end{subfigure}
 	\begin{subfigure}[b]{.45\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{./figs/snap_rep_std.png}  
@@ -205,20 +257,6 @@ cos(10x) & \text{if } 0 \leq x \leq \pi
 \end{figure}
 
 \begin{figure}[H]
-	\centering
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=1\linewidth]{./figs/sm_rep_loss_plot.png}  
-		\caption{Standard learning rate.}
-	\end{subfigure}
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=1\linewidth]{./figs/snap_rep_loss_plot.png}  
-		\caption{Cosine annealing.}
-	\end{subfigure}
-	\caption{Representative training/validation loss trajectories. Overfit begins after 60,000 epochs for this specific architecture.}
-\end{figure}
-\begin{figure}[H]
 	\begin{subfigure}{.45\textwidth}
 		\centering
 		% include first image
@@ -236,7 +274,7 @@ cos(10x) & \text{if } 0 \leq x \leq \pi
 	\begin{subfigure}{1\textwidth}
 		\centering
 		\includegraphics[width=.7\linewidth]{./figs/vary_snaps.png}  
-		\caption{Snapshot ensemble (cosine annealing and varying number of snapshots), no-cycle ensemble (standard lr and varying number of snapshots), true ensemble (varying number of trajectories), and super ensemble (varying number of trajectories and fixed number of snapshots). Budget and number of cycles is fixed for all cases.}
+		\caption{Snapshot ensemble (cosine annealing and varying number of snapshots), no-cycle ensemble (standard lr and varying number of snapshots), true ensemble (varying number of trajectories), and super ensemble (varying number of trajectories and fixed number of snapshots). Single model and MC dropout ($p = 0.001$ and $0.01$) are included as well. Budget and number of cycles is fixed for all cases.}
 		\label{fig:sub-second}
 	\end{subfigure}
 	\caption{Relative $\ell_2$ test error. Comparisons between single models, snapshot ensembles, no-cycle ensembles (standard lr), single-cycle ensembles (cosine annealing with no warm restarts), and true ensembles.}
@@ -324,6 +362,13 @@ cos(10x) & \text{if } 0 \leq x \leq \pi
 	\centering
 	\includegraphics[width=1\linewidth]{./figs/planes.png}  
 	\caption{Training loss on the plane defined by the last 3 snapshots of one trajectory. Earlier snapshots and initial parameters are projected on the plane.}
+	\label{}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{./figs/planes_large_max_lr.png}  
+	\caption{If we increase the restart learning rate from 1e-3 to 5e-3: Training loss on the plane defined by the last 3 snapshots of one trajectory. Earlier snapshots and initial parameters are projected on the plane.}
 	\label{}
 \end{figure}
 

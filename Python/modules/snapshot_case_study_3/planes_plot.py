@@ -57,14 +57,14 @@ r = 0
 
 plane_ws, plane_bs = M_snaps[r][0][-3:], M_snaps[r][1][-3:]
 
-pars_1 = np.linspace(-6, 6, 50)
+pars_1 = np.linspace(-6, 6, 30)
 
 error_mat_1, _for_projection_1, (u_norm_1, v_norm_1, inner_1) = \
     pj.createplane(plane_ws, plane_bs, pars_1, DNN_dict, tr_dict)
 #%%
 plane_ws, plane_bs = CA_snaps[r][0][-3:], CA_snaps[r][1][-3:]  
 
-pars_2 = np.linspace(-8, 6, 50)   
+pars_2 = np.linspace(-8, 6, 30)   
  
 error_mat_2, _for_projection_2, (u_norm_2, v_norm_2, inner_2) = \
     pj.createplane(plane_ws, plane_bs, pars_2, DNN_dict, tr_dict)
@@ -108,7 +108,7 @@ ax2.legend(bbox_to_anchor=(1.6, 1.0))
 
 plt.tight_layout()
 plt.savefig('planes.png', dpi = 300)   
-
+plt.show()
 #%%
 # r = 4
 
@@ -149,7 +149,7 @@ ax2.legend(bbox_to_anchor=(1.4, 1.0))
 
 
 plt.tight_layout()
-plt.savefig('line_plots.png', dpi = 300)    
+# plt.savefig('line_plots.png', dpi = 300)    
 
 plt.show()  
 
